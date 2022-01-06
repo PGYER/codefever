@@ -1,3 +1,5 @@
+!*/
+
 .vscode
 /env.yaml
 /config.yaml
@@ -19,6 +21,6 @@
 /misc/modify_authorized_keys.child.pipe
 /misc/modify_authorized_keys.master.pipe
 
-!/git-storage/hooks
-/file-storage/avatar/**
+/file-storage/**
 /git-storage/**
+!/git-storage/hooks

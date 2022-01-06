@@ -1,0 +1,60 @@
+#!/usr/local/php/bin/php
+<?php
+
+$action = (int) getenv('PGYER_ACTION');
+
+if (!$action) {
+    $repo = getenv('PGYER_REPO');
+    echo "[CodeFever Community]: Insufficient permisions, Make sure you have permission to access to {$repo}.";
+    exit(255);
+}
+
+$config = [
+    'endpoint' => 'http://cc.pgyer.appxia.cn/apiv1/internal/hooks',
+    'token' => 'codefever_community_api_token'
+];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $config['endpoint']);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Token: ' . $config['token'],
+    'Content-Type: application/json',
+    'Accept: application/json',
+]);
+curl_setopt($ch, CURLOPT_POST, 1);
+
+$input = fopen('php://stdin', 'r');
+stream_set_blocking($input, 0);
+$data = [
+    'uid' => getenv('PGYER_UID'),
+    'args' => $argv,
+    'stdin' => stream_get_contents($input)
+];
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+$response = curl_exec($ch);
+
+curl_close($ch);
+
+$result = json_decode($response, TRUE);
+
+if ($result) {
+    if (!$result['code']) {
+        if ($result['data'] && $result['data']['remote']) {
+            echo $result['data']['remote'];
+        }
+        exit(0);
+    } else {
+        echo 'Operation Stopped: ';
+        if ($result['data'] && $result['data']['remote']) {
+            echo $result['data']['remote'] . "\n";
+        }
+        echo 'Request-ID: ' . $result['request-id'] . "\n";
+    }
+} else {
+    echo 'Contact service@pgyer.com if operation rejected!';
+}
+
+exit(255);
