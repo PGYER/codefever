@@ -15,7 +15,7 @@
 /www/view/yarn-error.log*
 
 /http-gateway/main
-/ssh-gateway/main
+/ssh-gateway/shell/main
 
 /misc/modify_authorized_keys.pid
 /misc/modify_authorized_keys.child.pipe
