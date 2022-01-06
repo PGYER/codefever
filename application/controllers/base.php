@@ -28,8 +28,6 @@ class Base extends API_Controller
         $actualLang = in_array(strtolower($userLang), $cnLangArr) ? 'zh-cn' : 'english';
 
         $this->lang->load('base', $actualLang);
-        $this->lang->load('home', $actualLang);
-        $this->lang->load('service', $actualLang);
         $this->lang->load('user', $actualLang);
 
         $this->load->helper('language');
