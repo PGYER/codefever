@@ -1,0 +1,20 @@
+{
+    "require": {
+        "whichbrowser/parser": "^2.0",
+        "elasticsearch/elasticsearch": "~6.0.1",
+        "mustangostang/spyc": "0.5.*",
+        "guzzlehttp/guzzle": "^6.5",
+        "yunpian/yunpian-php-sdk" : "~1.0",
+        "endroid/qr-code": "^4.4"
+
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    }
+}

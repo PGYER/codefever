@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://www.frontjs.com/</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/home/tour</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>i
+<url>
+  <loc>https://www.frontjs.com/home/xcx</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/home/price</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/user/register</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/user/login</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/about</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/service</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/what</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/how</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/project</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/why_script_error</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/setting</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/switch</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/overview</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/resource_error_12</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/code_error</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/XHR_error</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/code_error_12</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/XHR_error_12</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/resource_error</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/details</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/sdk</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/errcode</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/app/userInfo/pay?productType=1</loc>
+  <lastmod>2018-05-31T03:45:27+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/app/userInfo/pay?productType=2</loc>
+  <lastmod>2018-05-31T03:45:27+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/app/userInfo/pay?productType=3</loc>
+  <lastmod>2018-05-31T03:45:27+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/user/resetPassword</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.frontjs.com/doc/view/error_report</loc>
+  <lastmod>2018-06-04T05:39:13+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>

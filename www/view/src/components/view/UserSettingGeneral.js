@@ -1,0 +1,327 @@
+// core
+import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
+import { injectIntl } from 'react-intl'
+
+// components
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import AvatarUploader from 'APPSRC/components/unit/AvatarUploader'
+import SetBaseInfo from 'APPSRC/components/view/unit/SetBaseInfo'
+import SetPassword from 'APPSRC/components/view/unit/SetPassword'
+import UserData from 'APPSRC/data_providers/UserData'
+import Constants from 'APPSRC/config/Constants'
+
+// helpers
+import NetworkHelper from 'APPSRC/helpers/NetworkHelper'
+import EventGenerator from 'APPSRC/helpers/EventGenerator'
+import ValidatorGenerator from 'APPSRC/helpers/ValidatorGenerator'
+
+const styles = (theme) => ({
+  header: {
+    lineHeight: theme.spacing(5) + 'px',
+    marginBottom: theme.spacing(4),
+    borderBottom: '1px solid ' + theme.palette.border
+  },
+  title: {
+    lineHeight: theme.spacing(3) + 'px',
+    paddingBottom: theme.spacing(2)
+  },
+  pl: {
+    paddingLeft: theme.spacing(4) + 'px !important'
+  },
+  btn: {
+    color: theme.palette.primary.main,
+    cursor: 'pointer'
+  },
+  paper: {
+    paddingBottom: theme.spacing(10)
+  },
+  flexRow: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  flexRowCenter: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    alignItems: 'center',
+    padding: theme.spacing(1.5) + 'px ' + theme.spacing(1) + 'px',
+    marginLeft: theme.spacing(4)
+  }
+})
+
+class UserSettingGeneral extends React.Component {
+  constructor (props) {
+    super(props)
+    this.updateUserInfo = this.updateUserInfo.bind(this)
+    this.mountedFlag = false
+    this.state = {
+      mfaMode: 0, // 0 = options, 1 = settings
+      mfaQRCodeData: '',
+      mfaSecret: '',
+      mfaCode1: '',
+      mfaCode2: '',
+      error: {}
+    }
+
+    this.checkMFAInput = ValidatorGenerator.stateValidator(this, [
+      {
+        name: 'mfaCode1',
+        passPattern: /^\d{6}$/,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error._S_invalid' },
+          { s: this.props.intl.formatMessage({ id: 'label.mfaCode' }) }
+        )
+      },
+      {
+        name: 'mfaCode2',
+        passPattern: /^\d{6}$/,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error._S_invalid' },
+          { s: this.props.intl.formatMessage({ id: 'label.mfaCode' }) }
+        )
+      }
+    ])
+
+    this.checkResponse = ValidatorGenerator.codeValidator(this, [
+      {
+        name: 'mfaCode1',
+        exceptionCode: 0x0411,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error._S_invalid' },
+          { s: this.props.intl.formatMessage({ id: 'label.mfaCode' }) }
+        )
+      },
+      {
+        name: 'mfaCode2',
+        exceptionCode: 0x0412,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error._S_invalid' },
+          { s: this.props.intl.formatMessage({ id: 'label.mfaCode' }) }
+        )
+      }
+    ])
+  }
+
+  componentDidMount () {
+    this.mountedFlag = true
+    this.updateUserInfo()
+  }
+
+  componentWillUnmount () {
+    this.mountedFlag = false
+  }
+
+  avatarUploaded (data) {
+    if (!data.code) {
+      this.props.dispatchEvent(EventGenerator.NewNotification(
+        this.props.intl.formatMessage({ id: 'message.updated' })
+        , 0)
+      )
+      this.updateUserInfo()
+    }
+  }
+
+  updateUserInfo (cb) {
+    UserData.getUserInfo()
+      .then(NetworkHelper.withEventdispatcher(this.props.dispatchEvent)(NetworkHelper.getJSONData))
+      .then((data) => {
+        if (!data.code) {
+          this.props.dispatchEvent({ type: 'data.currentUserInfo.update', data: data.data })
+          typeof cb === 'function' && cb()
+        }
+      })
+  }
+
+  prepareMFADeviceSetup () {
+    this.setState({ pending: true })
+    UserData.getMFAData()
+      .then(NetworkHelper.withEventdispatcher(this.props.dispatchEvent)(NetworkHelper.getJSONData))
+      .then(data => {
+        this.setState({ pending: false })
+        if (data && !data.code && data.data) {
+          this.setState({
+            mfaMode: 1,
+            mfaQRCodeData: data.data.image,
+            mfaSecret: data.data.secret,
+            mfaCode1: '',
+            mfaCode2: ''
+          })
+        }
+      })
+  }
+
+  revokeMFADevice () {
+    this.setState({ pending: true })
+    UserData.revokeMFAData()
+      .then(NetworkHelper.withEventdispatcher(this.props.dispatchEvent)(NetworkHelper.getJSONData))
+      .then(data => {
+        this.setState({ pending: false })
+        if (data && !data.code && data.data) {
+          this.updateUserInfo()
+          this.props.dispatchEvent(EventGenerator.NewNotification(this.props.intl.formatMessage({ id: 'message.removed' }), 0))
+        }
+      })
+  }
+
+  updateMFADevice () {
+    if (!this.checkMFAInput()) {
+      return false
+    }
+
+    if (this.state.mfaCode1 === this.state.mfaCode2) {
+      this.setState({
+        error: {
+          ...this.state.error,
+          mfaCode2: this.props.intl.formatMessage({ id: 'message.error.inputSame' })
+        }
+      })
+      return false
+    }
+
+    this.setState({ pending: true })
+    UserData.updateMFAData({
+      secret: this.state.mfaSecret,
+      code1: this.state.mfaCode1,
+      code2: this.state.mfaCode2
+    })
+      .then(NetworkHelper.withEventdispatcher(this.props.dispatchEvent)(NetworkHelper.getJSONData))
+      .then(data => {
+        this.setState({ pending: false })
+        if (!data.code) {
+          this.props.dispatchEvent(EventGenerator.NewNotification(this.props.intl.formatMessage({ id: 'message.updated' }), 0))
+          this.setState({
+            mfaMode: 0,
+            mfaQRCodeData: '',
+            mfaSecret: '',
+            mfaCode1: '',
+            mfaCode2: ''
+          })
+          this.updateUserInfo()
+        } else if (!this.checkResponse(data.code)) {
+          return false
+        } else if (data.code > 0x0400) {
+          this.props.dispatchEvent(EventGenerator.NewNotification(this.props.intl.formatMessage({ id: 'message.error.updateFail' }), 2))
+        }
+      })
+  }
+
+  render () {
+    const { currentUserInfo, classes, intl } = this.props
+
+    return (<Grid container spacing={2} className={classes.paper}>
+      <Grid item xs={12}>
+        <Typography variant='h6' component='div' gutterBottom className={classes.header}>{ intl.formatMessage({ id: 'menu.profile' }) }</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container className={classes.flexRowCenter}>
+          <Grid item xs={2}>
+            <Typography variant='body2' component='div'>{ intl.formatMessage({ id: 'label.userAvatar' }) }</Typography>
+          </Grid>
+          <Grid item xs={5} className={classes.flexRow}>
+            <AvatarUploader
+              name='avatar'
+              variant='circle'
+              appendData={{}}
+              src={Constants.HOSTS.PGYER_AVATAR_HOST + currentUserInfo.icon}
+              onUpdate={data => this.avatarUploaded(data)}
+              dataProvider={UserData.uploadAvatar}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+      <SetBaseInfo label='label.userName' name='name' infoName='name' update={this.updateUserInfo} />
+      <SetBaseInfo label='label.email' name='email' infoName='email' update={this.updateUserInfo} />
+      <SetBaseInfo label='label.team' name='team' infoName='team' update={this.updateUserInfo} />
+      <SetBaseInfo label='label.role' name='role' infoName='role' update={this.updateUserInfo} />
+
+      <Grid item xs={12}>
+        <Typography variant='h6' component='div' gutterBottom>{ intl.formatMessage({ id: 'label.security' }) }</Typography>
+      </Grid>
+      <SetPassword currentUserInfo={currentUserInfo} update={this.updateUserInfo} />
+
+      <Grid item xs={2}>
+          <Typography variant='h6' component='div' gutterBottom>{ intl.formatMessage({ id: 'label.twoFactorAuthentication' }) }</Typography>
+      </Grid>
+      <Grid item xs={5} />
+      { this.state.mfaMode === 0 && (!currentUserInfo.mfaEnabled
+        ? <Grid item xs={5} className={classes.pl}>
+          <Button variant='outlined' color='primary' className={classes.btn} disabled={this.state.pending} onClick={() => this.prepareMFADeviceSetup()}>{intl.formatMessage({ id: 'label.setupNewMFADevice' })}</Button>
+        </Grid>
+        : <Grid item xs={5} className={classes.pl}>
+          <Button variant='outlined' color='primary' className={classes.btn} disabled={this.state.pending} onClick={() => this.prepareMFADeviceSetup()}>{intl.formatMessage({ id: 'label.changeMFADevice' })}</Button>
+          &nbsp;&nbsp;
+          <Button variant='contained' color='primary' disabled={this.state.pending} onClick={() => this.revokeMFADevice()}>{intl.formatMessage({ id: 'label.removeMFADevice' })}</Button>
+        </Grid>) }
+      { this.state.mfaMode === 1 && <React.Fragment>
+        <Grid item xs={7}>
+          <Typography variant='body2' component='div' gutterBottom>{intl.formatMessage({ id: 'message.mfaGuide' })}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <img width={150} height={150} src={this.state.mfaQRCodeData} />
+        </Grid>
+        <Grid item xs={12} sm={7}>
+          <TextField
+            fullWidth
+            variant='outlined'
+            value={this.state.mfaCode1}
+            error={!!this.state.error.mfaCode1}
+            helperText={this.state.error.mfaCode1}
+            placeholder={intl.formatMessage({ id: 'label.mfaCode' })}
+            onChange={e => this.setState({ mfaCode1: e.target.value })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={7}>
+          <TextField
+            fullWidth
+            variant='outlined'
+            value={this.state.mfaCode2}
+            error={!!this.state.error.mfaCode2}
+            helperText={this.state.error.mfaCode2}
+            placeholder={intl.formatMessage({ id: 'label.mfaCode' })}
+            onChange={e => this.setState({ mfaCode2: e.target.value })}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant='contained' color='primary' disabled={this.state.pending} onClick={() => this.updateMFADevice()}>{intl.formatMessage({ id: 'label.save' })}</Button>
+          &nbsp;&nbsp;
+          <Button variant='outlined' color='primary' className={classes.btn} disabled={this.state.pending} onClick={() => this.setState({ mfaMode: 0 })}>{intl.formatMessage({ id: 'label.cancel' })}</Button>
+        </Grid>
+      </React.Fragment> }
+    </Grid>)
+  }
+}
+
+UserSettingGeneral.propTypes = {
+  currentUserInfo: PropTypes.object.isRequired,
+  dispatchEvent: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  intl: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    currentUserInfo: state.DataStore.currentUserInfo
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    dispatchEvent: (event) => { dispatch(event) }
+  }
+}
+
+export default injectIntl(
+  withStyles(styles)(
+    withRouter(
+      connect(mapStateToProps, mapDispatchToProps)(UserSettingGeneral)
+    )
+  )
+)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+  <testsuites>
+    <testsuite name="model">
+      <directory>tests/model</directory>
+    </testsuite>
+    <testsuite name="service">
+      <directory>tests/service</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="false">
+      <directory suffix=".php">application/controllers/api</directory>
+      <directory suffix=".php">application/controllers/apiv1</directory>
+      <directory suffix=".php">application/event_handlers</directory>
+      <directory suffix=".php">application/libraries/service</directory>
+      <directory suffix=".php">application/models</directory>
+      <exclude>
+        <file>application/event_handlers/EventHandler.php</file>
+        <file>application/libraries/service/autoLoader.php</file>
+      </exclude>
+    </whitelist>
+  </filter>
+</phpunit>

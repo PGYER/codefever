@@ -1,0 +1,63 @@
+
+/* codefever css */
+.btn-primary-_pgyer_codefever_ {
+    background: #0035EC;
+    color: white !important;
+}
+
+.btn-primary-_pgyer_codefever_:hover {
+    background: #4d72f2 !important;
+}
+.btn-primary-_pgyer_codefever_:active {
+    background: #002dbd !important;
+}
+
+.btn-secondry-_pgyer_codefever_ {
+    background: #E6E9F6;
+    color: #0035EC !important;
+}
+.btn-secondry-_pgyer_codefever_:hover {
+    background: #4d72f2;
+    color: white !important;
+}
+.btn-secondry-_pgyer_codefever_:active {
+    background: #4d72f2;
+    color: white !important;
+}
+
+.color-_pgyer_codefever_{
+    color: #0035EC !important;
+}
+
+.bg-color_pgyer_codefever_{
+    background-color: #0035EC !important;
+}
+
+.btn-outline_pgyer_codefever_{
+    color: #0035EC !important;
+    background-color: #fff !important;
+    border: 1px solid #0035EC;
+}
+
+.switch-register .register-method_pgyer_codefever_{
+    color: #0035EC;
+    border-color: #0035EC;
+    background-color:#E5EAFD;
+}
+
+.switch-register .register-method_pgyer_codefever_::before {
+    border-left-color: #0035EC;
+}
+
+.switch-register .register-method_pgyer_codefever_::after {
+    border-left-color: #E5EAFD;
+}
+
+.switch-register .register-logo-box_pgyer_codefever_ {
+    border-top-color: #0035EC;
+}
+
+/* 覆盖样式 */
+.color-grey{
+    color: grey !important;
+}

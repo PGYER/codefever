@@ -1,0 +1,7 @@
+---
+host: <host>
+allowRegister: true
+email:
+  name: CodeFever Community
+  from: git@mail.sender
+...

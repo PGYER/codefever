@@ -1,0 +1,136 @@
+
+
+/* 移动效果 */
+.animation-x {
+    opacity: 0;
+    animation: moveright 0.8s ease-out;
+    animation-fill-mode : forwards;
+    animation-delay: 0.2s;
+    animation-play-state: paused;
+}
+
+.animation-r {
+    opacity: 0;
+    animation: moveLeft 0.8s ease-out;
+    animation-fill-mode : forwards;
+    animation-delay: 0.2s;
+    animation-play-state: paused;
+}
+
+.animation-y {
+    opacity: 0;
+    animation: movetop 0.8s ease-out;
+    animation-fill-mode : forwards;
+    animation-delay: 0.2s;
+    animation-play-state: paused;
+}
+
+.animation-o {
+    opacity: 0;
+    animation: moveopacity 1.8s;
+    animation-fill-mode : forwards;
+    animation-delay: 0.4s;
+    animation-play-state: paused;
+}
+
+.running {
+    animation-play-state: running;
+}
+
+.running .animation-x {
+    animation-play-state: running;
+}
+
+.running .animation-r {
+    animation-play-state: running;
+}
+
+.running .animation-y {
+    animation-play-state: running;
+}
+
+.running .animation-o {
+    animation-play-state: running;
+}
+
+.delay-00 {
+    animation-delay: 0s;
+}
+
+.delay-0 {
+    animation-delay: 0.2s;
+}
+
+.delay-1 {
+    animation-delay: 0.4s;
+}
+
+.delay-2 {
+    animation-delay: 0.6s;
+}
+
+.delay-3 {
+    animation-delay: 0.8s;
+}
+
+.delay-4 {
+    animation-delay: 1s;
+}
+
+.delay-5 {
+    animation-delay: 1.2s;
+}
+
+.delay-6 {
+    animation-delay: 1.4s;
+}
+
+.delay-7 {
+    animation-delay: 1.6s;
+}
+
+@keyframes moveright
+{
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes moveLeft
+{
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes movetop
+{
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes moveopacity
+{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
