@@ -32,8 +32,8 @@ cp codefever-service-template /etc/init.d/codefever
 
 echo 'services installed!'
 
-cp ../config.template.yaml ./config.yaml
-cp ../env.template.yaml ./env.yaml
+cp ../config.template.yaml ../config.yaml
+cp ../env.template.yaml ../env.yaml
 
 echo 'env files generated!'
 
