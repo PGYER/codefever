@@ -11,7 +11,8 @@ useradd -rm git
 
 echo 'user www created!'
 
-sudo -u git ssh-keygen -A
+echo 'Generateing public key for ssh: (Just Press Enter Key!)'
+sudo -u git ssh-keygen -f /home/git/.ssh/id_rsa
 
 echo 'ssh for user git set!'
 
