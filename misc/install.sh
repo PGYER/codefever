@@ -31,6 +31,11 @@ cp codefever-service-template /etc/init.d/codefever
 
 echo 'services installed!'
 
+cp ../config.template.yaml ./config.yaml
+cp ../env.template.yaml ./env.yaml
+
+echo 'env files generated!'
+
 service codefever start
 service php-fpm start
 service nginx start
@@ -38,3 +43,9 @@ service nginx start
 echo 'services started!'
 
 echo 'Done!'
+
+echo '=== IMPORTANT NOTICE ==='
+echo '1. You shuold edit file </data/www/codefever-community/env.yaml: mysql/*> to finish mysql settings.'
+echo '2. You shuold edit file </data/www/codefever-community/env.yaml: session/*> to finish cookie settings.'
+echo '3. You shuold edit file </data/www/codefever-community/env.yaml: gateway/token> to finish git gateway security settings.'
+

@@ -1945,3 +1945,6 @@ ldap.max_links = -1
 
 ; List of headers files to preload, wildcard patterns allowed.
 ;ffi.preload=
+
+; Extensions for codefever-community
+extension=yaml
