@@ -42,7 +42,11 @@ chmod -R 0777 ../application/logs
 
 echo 'Log directory created!'
 
-/usr/local/php/bin/php ../application/libraries/composerlib/composer.phar install
+echo 'Loading composer libraries: (Just Press Enter Key!)'
+
+cd ../application/libraries/composerlib/
+/usr/local/php/bin/php ./composer.phar install
+cd -
 
 echo 'Composer libraries loaded!'
 
