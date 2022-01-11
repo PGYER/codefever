@@ -37,6 +37,15 @@ cp ../env.template.yaml ../env.yaml
 
 echo 'env files generated!'
 
+mkdir ../application/logs
+chmod -R 0777 ../application/logs
+
+echo 'Log directory created!'
+
+/usr/local/php/bin/php ../application/libraries/composerlib/composer.phar install
+
+echo 'Composer libraries loaded!'
+
 service codefever start
 service php-fpm start
 service nginx start
@@ -52,4 +61,3 @@ echo '1. You shuold edit file </data/www/codefever-community/env.yaml: mysql/*> 
 echo '2. You shuold edit file </data/www/codefever-community/env.yaml: session/*> to finish cookie settings.'
 echo '3. You shuold edit file </data/www/codefever-community/env.yaml: gateway/token> to finish git gateway security settings.'
 echo '4. Run sh ./create_db.sh after change env.yaml.'
-
