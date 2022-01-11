@@ -38,9 +38,14 @@ cp ../env.template.yaml ../env.yaml
 echo 'env files generated!'
 
 mkdir ../application/logs
-chmod -R 0777 ../application/logs
+chmod -R www:www ../application/logs
 
-echo 'Log directory created!'
+chmod -R 0777 ../git-storage
+
+mkdir ../storage
+chown -R www:www ../storage
+
+echo 'Enssential directory created!'
 
 echo 'Loading composer libraries: (Just Press Enter Key!)'
 

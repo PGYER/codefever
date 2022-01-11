@@ -1,7 +1,15 @@
 <?php
-
 define('BASE_PATH', dirname(__FILE__));
-define('AUTHORIZE_KEYS_FILE_DIR', '/home/cc/.ssh');
+
+$config = yaml_parse_file(dirname(BASE_PATH) . '/env.yaml');
+if ($config['users'] && $config['users']['www'] && $config['users']['git']) {
+    define('GIT_USER', $config['users']['git']);
+    define('WWW_USER', $config['users']['www']);
+} else {
+    exit(1);
+}
+
+define('AUTHORIZE_KEYS_FILE_DIR', '/home/' . GIT_USER . '/.ssh');
 define('AUTHORIZE_KEYS_FILE', AUTHORIZE_KEYS_FILE_DIR . '/authorized_keys');
 define('MASTER_PIPE_NAME', BASE_PATH . '/modify_authorized_keys.master.pipe');
 define('CHILD_PIPE_NAME', BASE_PATH . '/modify_authorized_keys.child.pipe');
@@ -11,10 +19,10 @@ if (!file_exists(AUTHORIZE_KEYS_FILE)) {
     mkdir(AUTHORIZE_KEYS_FILE_DIR);
     touch(AUTHORIZE_KEYS_FILE);
 
-    chown(AUTHORIZE_KEYS_FILE_DIR, 'cc');
-    chgrp(AUTHORIZE_KEYS_FILE_DIR, 'cc');
-    chown(AUTHORIZE_KEYS_FILE, 'cc');
-    chgrp(AUTHORIZE_KEYS_FILE, 'cc');
+    chown(AUTHORIZE_KEYS_FILE_DIR, GIT_USER);
+    chgrp(AUTHORIZE_KEYS_FILE_DIR, GIT_USER);
+    chown(AUTHORIZE_KEYS_FILE, GIT_USER);
+    chgrp(AUTHORIZE_KEYS_FILE, GIT_USER);
 }
 
 createDaemon();
@@ -49,7 +57,7 @@ function parentProcess()
 
 function childProcess()
 {
-    $info = posix_getpwnam('www');
+    $info = posix_getpwnam(WWW_USER);
     posix_setgid($info['gid']);
     posix_setuid($info['uid']);
 

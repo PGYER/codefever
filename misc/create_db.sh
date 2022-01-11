@@ -12,7 +12,7 @@ DB_NAME=`cat ../env.yaml | grep db: | awk -F: '{ print $2 }' | sed 's/^\s*//'`
 
 
 
-mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -e"CREATE DATABASE IF NOT EXISTS `$DB_NAME` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -e"CREATE DATABASE IF NOT EXISTS $DB_NAME DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
 
 echo "Database <$DB_NAME> created!"
 
@@ -23,3 +23,12 @@ echo 'Data structure created!'
 mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -D"$DB_NAME" -e"source db_data.sql";
 
 echo 'Default data created!'
+
+echo 'Done!'
+
+echo -e "\n\n\n"
+
+echo '=== IMPORTANT NOTICE ==='
+echo '1. Codefever community version is installed.'
+echo '2. Type http://127.0.0.1 OR http://<server ip> to login.'
+echo '3. Default login email: admin@codefever.cn, password: 123456 .'

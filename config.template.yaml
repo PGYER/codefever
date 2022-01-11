@@ -1,5 +1,5 @@
 ---
-host: localhost
+host: http://localhost
 allowRegister: true
 email:
   name: CodeFever Community
