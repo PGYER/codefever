@@ -44,6 +44,7 @@ chmod -R 0777 ../git-storage
 
 mkdir ../storage
 chown -R www:www ../storage
+chown -R www:www ../misc
 
 echo 'Enssential directory created!'
 
@@ -54,6 +55,10 @@ cd ../application/libraries/composerlib/
 cd -
 
 echo 'Composer libraries loaded!'
+
+echo 'export PATH=$PATH:/usr/local/git/bin' >> /home/git/.bash_profile
+
+echo 'Enviroment variable set!'
 
 service codefever start
 service php-fpm start

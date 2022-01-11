@@ -11,7 +11,7 @@ DESC="modify_authorized_keys_shell_running"
 PID=`ps -ef | grep -v awk | awk '/'$DESC'/{print $2}'`
 
 HTTP_GATEWAY=$BASE/http-gateway/main
-HTTP_GATEWAY_PID=`ps -ef | grep -v awk | awk '/'$HTTP_GATEWAY'/{print $2}'`
+HTTP_GATEWAY_PID=`ps -ef | grep -v awk | awk '/'http-gateway'/{print $2}'`
 
 start()
 {
@@ -85,7 +85,7 @@ case "$1" in
    ;;
 
    *)
-      echo "Usage: start|stop|restart"
+      echo "Usage: start|stop|restart|status"
    ;;
 esac
 

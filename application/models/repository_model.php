@@ -648,7 +648,7 @@ class Repository_model extends CI_Model
                 $commands = [
                     "mkdir {$repositoryPath}",
                     "cd {$repositoryPath}",
-                    "git init --bare",
+                    YAML_CLI_GIT . " init --bare",
                     "rm -r hooks",
                     "ln -s ../hooks hooks",
                     "chmod -R 0777 {$repositoryPath}",
@@ -658,8 +658,8 @@ class Repository_model extends CI_Model
                 $commands = [
                     "mkdir {$repositoryPath}",
                     "cd {$repositoryPath}",
-                    "git clone --bare {$command} .",
-                    "git remote remove origin",
+                    YAML_CLI_GIT . " clone --bare {$command} .",
+                    YAML_CLI_GIT . " remote remove origin",
                     "rm -r hooks",
                     "ln -s ../hooks hooks",
                     "chmod -R 0777 {$repositoryPath}",
@@ -671,7 +671,7 @@ class Repository_model extends CI_Model
                     "export GIT_COMMITTER_EMAIL={$email}",
                     "export GIT_AUTHOR_NAME={$name}",
                     "cd {$repositoryPath}",
-                    "git {$command}",
+                    YAML_CLI_GIT . " {$command}",
                 ];
                 break;
             case GIT_COMMAND_DIFF_REMOTE:
@@ -680,11 +680,11 @@ class Repository_model extends CI_Model
                 $remoteName = $remoteRKey . $nonce;
                 $commands = [
                     "cd {$repositoryPath}",
-                    "git remote add {$remoteName} {$remoteAccessURL}",
-                    "git fetch -q {$remoteName}",
-                    "git diff {$remoteCommitHash}...{$localCommitHash}",
-                    "git remote remove {$remoteName}",
-                    "git gc -q --prune=now",
+                    YAML_CLI_GIT . " remote add {$remoteName} {$remoteAccessURL}",
+                    YAML_CLI_GIT . " fetch -q {$remoteName}",
+                    YAML_CLI_GIT . " diff {$remoteCommitHash}...{$localCommitHash}",
+                    YAML_CLI_GIT . " remote remove {$remoteName}",
+                    YAML_CLI_GIT . " gc -q --prune=now",
                     "rm FETCH_HEAD",
                 ];
                 break;
@@ -694,11 +694,11 @@ class Repository_model extends CI_Model
                 $remoteName = $remoteRKey . $nonce;
                 $commands = [
                     "cd {$repositoryPath}",
-                    "git remote add {$remoteName} {$remoteAccessURL}",
-                    "git fetch -q {$remoteName}",
-                    "git log --cherry-pick --left-only {$localCommitHash}...{$remoteCommitHash} --pretty=\"{$prettyPattern}\"",
-                    "git remote remove {$remoteName}",
-                    "git gc -q --prune=now",
+                    YAML_CLI_GIT . " remote add {$remoteName} {$remoteAccessURL}",
+                    YAML_CLI_GIT . " fetch -q {$remoteName}",
+                    YAML_CLI_GIT . " log --cherry-pick --left-only {$localCommitHash}...{$remoteCommitHash} --pretty=\"{$prettyPattern}\"",
+                    YAML_CLI_GIT . " remote remove {$remoteName}",
+                    YAML_CLI_GIT . " gc -q --prune=now",
                     "rm FETCH_HEAD",
                 ];
                 break;
