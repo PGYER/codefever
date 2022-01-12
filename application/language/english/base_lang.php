@@ -1,4 +1,6 @@
 <?php
+    $lang['base_cn'] = '中文';
+    $lang['base_en'] = 'English';
     $lang['base_message'] = 'Message';
     $lang['base_error_message'] = 'Error message';
     $lang['base_error_message_tips'] = 'Sorry, please try again to visit the site, or refresh retry';

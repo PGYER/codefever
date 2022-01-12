@@ -31,4 +31,4 @@ echo -e "\n\n\n"
 echo '=== IMPORTANT NOTICE ==='
 echo '1. Codefever community version is installed.'
 echo '2. Type http://127.0.0.1 OR http://<server ip> to login.'
-echo '3. Default login email: admin@codefever.cn, password: 123456 .'
+echo '3. Default login email: root@codefever.cn, password: 123456 .'
