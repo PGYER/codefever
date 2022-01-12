@@ -111,7 +111,7 @@ function addAuthorizedKey(array $data)
 
     $sshGateway = dirname(BASE_PATH) . '/ssh-gateway/shell/main';
     $authorized = [
-        "command=\"{$sshGateway} \$SSH_ORIGINAL_COMMAND {$data['user']}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty",
+        "command=\"PATH=\$PATH:/usr/local/git/bin && {$sshGateway} \$SSH_ORIGINAL_COMMAND {$data['user']}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty",
         $data['type'],
         $data['key'],
         $data['name'],

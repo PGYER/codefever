@@ -911,7 +911,7 @@ default_socket_timeout = 60
 ;   Be sure to appropriately set the extension_dir directive.
 ;
 ;extension=bz2
-;extension=curl
+extension=curl
 ;extension=ffi
 ;extension=ftp
 ;extension=fileinfo

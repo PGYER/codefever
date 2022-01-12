@@ -56,10 +56,6 @@ cd -
 
 echo 'Composer libraries loaded!'
 
-echo 'export PATH=$PATH:/usr/local/git/bin' >> /home/git/.bash_profile
-
-echo 'Enviroment variable set!'
-
 service codefever start
 service php-fpm start
 service nginx start
