@@ -12,6 +12,7 @@ PID=`ps -ef | grep -v awk | awk '/'$DESC'/{print $2}'`
 
 HTTP_GATEWAY=$BASE/http-gateway/main
 HTTP_GATEWAY_PID=`ps -ef | grep -v awk | awk '/'http-gateway'/{print $2}'`
+GIT_USER=`cat ../env.yaml | grep git: | tail -n 1 | awk -F: '{ print $2 }' | sed 's/^\s*//'`
 
 start()
 {
@@ -23,7 +24,7 @@ start()
 
    if [[ -z "$HTTP_GATEWAY_PID" ]] ;then
       echo "Starting service: SSH authorized key sync ..."
-      nohup $HTTP_GATEWAY > /dev/null 2>&1 &
+      nohup sudo -u $GIT_USER $HTTP_GATEWAY > /dev/null 2>&1 &
    fi
    echo "Service started: HTTP gateway"
    exit 0;
