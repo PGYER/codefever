@@ -1,15 +1,6 @@
 #!/usr/local/php/bin/php
 <?php
-
-$action = (int) getenv('PGYER_ACTION');
-
-if (!$action) {
-    $repo = getenv('PGYER_REPO');
-    echo "[CodeFever Community]: Insufficient permisions, Make sure you have permission to access to {$repo}.";
-    exit(255);
-}
-
-$config = yaml_parse_file(dirname(__FILE__, 4) . '/env.yaml');
+$config = yaml_parse_file(dirname(__FILE__, 3) . '/env.yaml');
 
 if ($config['gateway'] && $config['gateway']['token'] && $config['gateway']['hooks']) {
     $config = [

@@ -107,8 +107,6 @@ func main () {
 				return
 			}
 
-			os.Setenv("PGYER_REPO", os.Args[2])
-			os.Setenv("PGYER_ACTION", responseData.Data.Action)
 			os.Setenv("PGYER_UID", responseData.Data.Uid)
 
 			cmd := exec.Command(os.Args[1], responseData.Data.Path)

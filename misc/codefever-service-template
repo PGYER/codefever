@@ -12,7 +12,7 @@ PID=`ps -ef | grep -v awk | awk '/'$DESC'/{print $2}'`
 
 HTTP_GATEWAY=$BASE/http-gateway/main
 HTTP_GATEWAY_PID=`ps -ef | grep -v awk | awk '/'http-gateway'/{print $2}'`
-GIT_USER=`cat ../env.yaml | grep git: | tail -n 1 | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+GIT_USER=`cat $BASE/env.yaml | grep git: | tail -n 1 | awk -F: '{ print $2 }' | sed 's/^\s*//'`
 
 start()
 {

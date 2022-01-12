@@ -100,8 +100,7 @@ func (t Handler) ServeHTTP (response http.ResponseWriter, request *http.Request)
     userAgentSub := userAgentPattern.FindSubmatch([]byte(userAgent))
 
     if (len(userAgentSub) == 0) {
-        response.Header().Set("Location", "https://codefever.pgyer.com")
-        response.WriteHeader(302)
+        response.WriteHeader(405)
         return
     }
 
@@ -175,7 +174,6 @@ func (t Handler) ServeHTTP (response http.ResponseWriter, request *http.Request)
         handler.Env = append(handler.Env, "REMOTE_USER=" + string(sub[1]))
         handler.Env = append(handler.Env, "REMOTE_ADDR=" + string(sub[2]))
         handler.Env = append(handler.Env, "PGYER_UID=" + pass)
-        handler.Env = append(handler.Env, "PGYER_ACTION=1")
     }
 
     handler.Env = append(handler.Env, "GIT_HTTP_EXPORT_ALL=")
