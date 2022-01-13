@@ -38,13 +38,13 @@ cp ../env.template.yaml ../env.yaml
 echo 'env files generated!'
 
 mkdir ../application/logs
-chmod -R www:www ../application/logs
+chmod -R git:git ../application/logs
 
 chmod -R 0777 ../git-storage
 
-mkdir ../storage
-chown -R www:www ../storage
-chown -R www:www ../misc
+mkdir ../file-storage
+chown -R git:git ../file-storage
+chown -R git:git ../misc
 
 echo 'Enssential directory created!'
 
