@@ -7,3 +7,4 @@
     $lang['base_go_home'] = 'Home';
     $lang['base_go_prepage'] = 'Return to previous page';
     $lang['base_confirm'] = 'Confirm';
+    $lang['base_directory'] = 'Directory';

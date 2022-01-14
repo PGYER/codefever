@@ -20,8 +20,8 @@ class Doc extends Base
     }
 
     public function index ()
-    { 
-        // doing nothing 
+    {
+        // doing nothing
     }
 
     public function cn()
@@ -57,18 +57,35 @@ class Doc extends Base
             $docDir = array_slice($segments, 2, -1);
         }
 
-        $menuFile = $rootDir . ($docDir ? implode('/', $docDir) : '') . '/index.md';
+        $menuFile = $rootDir . 'index.md';
+        $menu = $this->_extractMenu($menuFile);
+        $menuOptions = $menu;
+
+        foreach ($menu as &$item) {
+            $menuFile = $rootDir . $item['path'] . '/index.md';
+            if (!file_exists($menuFile)) {
+                continue;
+            }
+
+            $submenu = $this->_extractMenu($menuFile);
+            foreach ($submenu as &$item2) {
+                $item2['path'] = $item['path'] . '/' . $item2['path'];
+            }
+
+            $item['submenu'] = $submenu;
+        }
 
         if (!preg_match('/\.[a-z0-9]+/i', $docFile)) {
-            // docFile = /data/www/codefever-community/doc/zh-cn/installation
-            // menuFile = /data/www/codefever-community/doc/zh-cn/installation/index.md
-            $menuOptions = $this->_extractMenu($menuFile);
-
-            while ($menuOptions && count($menuOptions) > 0) {
+            $pathinfo = $_SERVER['PATH_INFO'];
+            while ($menu && count($menuOptions) > 0) {
                 if (strpos($menuOptions[0]['path'], '.') > 0) {
-                    $docFile .= '/' . $menuOptions[0]['path'];
+                    $pathinfo = rtrim($pathinfo, '/');
+                    $pathinfo .= '/' . $menuOptions[0]['path'];
+                    header("Location: $pathinfo");
                     break;
                 } else {
+                    $pathinfo = rtrim($pathinfo, '/');
+                    $pathinfo .= '/' . $menuOptions[0]['path'];
                     $docFile .= '/' . $menuOptions[0]['path'];
                     $menuOptions = $this->_extractMenu($docFile . '/index.md');
                 }
@@ -77,9 +94,8 @@ class Doc extends Base
 
         $this->load->view('doc/detail', [
             'segments' => $segments,
-            'menu' => str_replace('`', '\`', file_get_contents($menuFile)),
+            'menu' => $menu,
             'doc' => str_replace('`', '\`', file_get_contents($docFile)),
-            'docName' => $this->_docName($rootDir),
         ]);
     }
 
@@ -90,39 +106,12 @@ class Doc extends Base
         $lines = explode("\n", $data);
         foreach ($lines as $line) {
             $matches = [];
-            if (preg_match('/\[(\S+)\]\((\S+)\)/', $line, $matches)) {
+            if (preg_match('/\[([^\]]+)\]\(([^\)]+)\)/', $line, $matches)) {
                 array_push($output, ['name' => $matches[1], 'path' => trim($matches[2])]);
             }
         }
 
         return $output;
-    }
-
-    private function _docName(string $rootDir)
-    {
-        return function (string $path) use ($rootDir) {
-            if (!$path) {
-                return FALSE;
-            }
-
-            $docDir = substr($path, 8);
-            $docDir = substr($docDir, 0, strrpos($docDir, '/'));
-            $indexFile = $rootDir . $docDir . '/index.md';
-
-            if (!file_exists($indexFile)) {
-                return FALSE;
-            }
-
-            $path = str_replace(["/", "."], ["\\/", "\\."], $path);
-            $data = file_get_contents($indexFile);
-
-            preg_match("/\[(.+)\]\({$path}\)/i", $data, $matches);
-            if (!$matches) {
-                return FALSE;
-            }
-
-            return $matches[1];
-        };
     }
 
     private function _assets($path)
