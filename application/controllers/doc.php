@@ -76,6 +76,7 @@ class Doc extends Base
         }
 
         if (!preg_match('/\.[a-z0-9]+/i', $docFile)) {
+            $menuOptions = $this->_extractMenu($docFile . '/index.md');
             $pathinfo = $_SERVER['PATH_INFO'];
             while ($menu && count($menuOptions) > 0) {
                 if (strpos($menuOptions[0]['path'], '.') > 0) {

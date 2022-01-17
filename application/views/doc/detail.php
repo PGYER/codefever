@@ -47,15 +47,15 @@
                                 <div><a class="normal-link <?php echo $segments[1] == 'en' ? 'active' : ''; ?>" href="<?php echo '/doc/en/' . implode('/', array_slice($segments, 2)); ?>"><?php echo lang('base_en'); ?></a></div>
                             </div>
                         </span>
-                        <a class="btn" href="/user/login"><?php echo lang('user_login_btn_login'); ?></a>
+                        <a class="btn" href="/user/login"><?php echo lang('user_form_page_title'); ?></a>
                         <a class="btn btn-self-primary" href="/user/register"><?php echo lang('user_form_register_page_title'); ?></a>
                     </div>
                 </div>
                 <div class="doc-content flexRowCenter justifyContent alignStart">
-                    <div class="container doc markdown-body"></div>
-                    <div class="doc-nav">
-                        <div class="track"><div class="thumb"></div></div>
+                    <div class="doc-content-left">
+                        <div class="container doc markdown-body"></div>
                     </div>
+                    <div class="doc-nav"></div>
                 </div>
             </div>
         </div>
@@ -99,10 +99,6 @@
                     var contentHeight = $('.doc-content').innerHeight() + 64;
                     var scrollTop = $(this).scrollTop();
                     var progress = scrollTop / (contentHeight - height) * 100;
-                    var max = 100 * (1 - 28 / 300);
-                    var actual = progress > max ? max : progress;
-
-                    $('.doc-nav .thumb').css('top', actual + '%');
 
                     $('.title h1').css('display', scrollTop > 64 ? 'block' : 'none');
 

@@ -219,6 +219,17 @@ section {
     height: 100vh;
     overflow: auto;
 }
+.doc-left::-webkit-scrollbar {
+    width: 4px;
+}
+.doc-left::-webkit-scrollbar-thumb {
+    display: none;
+    border-radius: 4px;
+    background: #7f7f7f;
+}
+.doc-left:hover::-webkit-scrollbar-thumb {
+    display: block;
+}
 .doc-right {
     padding: 0;
 }
@@ -263,7 +274,7 @@ section {
     z-index: 2;
     height: 64px;
     position: sticky;
-    padding: 0px 16px;
+    padding: 0px 32px;
     background: #fff;
 }
 .header.shadow {
@@ -318,43 +329,36 @@ section {
 .lang .lang-menu > div:hover {
     background: #EFF3F8;
 }
-.doc {
-    width: calc(100% - 194px);
-    padding: 0px 64px 64px;
-}
 .doc-content {
     padding: 0px 16px;
+}
+.doc-content-left {
+    width: calc(100% - 194px);
+}
+.doc-content-left .doc {
+    margin: 0px auto;
+    padding: 0px 64px 64px;
 }
 .doc-nav {
     top: 80px;
     z-index: 1;
     width: 194px;
     position: sticky;
-    padding: 0px 16px;
+    border-left: 2px solid #DEE2EC;
 }
 .doc-nav a {
+    display: block;
     color: #7A859E;
     line-height: 28px;
     text-decoration: none;
+    padding: 0px 16px;
+    transform: translateX(-2px);
 }
 .doc-nav a.active,
 .doc-nav a:hover {
     font-weight: bold;
     color: #2F354D;
 }
-.doc-nav .track {
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 300px;
-    position: absolute;
-    background: #DEE2EC;
-}
-.doc-nav .thumb {
-    top: 0px;
-    left: 0px;
-    width: 2px;
-    height: 28px;
-    position: absolute;
-    background: #3455DB;
+.doc-nav a.active {
+    border-left: 2px solid #3455DB;
 }
