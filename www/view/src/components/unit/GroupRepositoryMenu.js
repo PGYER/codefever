@@ -6,12 +6,12 @@ import { withRouter } from 'react-router-dom'
 
 // components
 import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
-import { psRepository, psRepositoryGroup } from '@pgyer/icons'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import FilterGenerator from 'APPSRC/helpers/FilterGenerator'
@@ -21,9 +21,10 @@ import { injectIntl } from 'react-intl'
 // style
 const styles = theme => ({
   menu: {
-    top: theme.spacing(7) + 'px !important',
-    left: theme.spacing(3) + 'px !important',
-    width: theme.spacing(34) + 'px !important'
+    top: theme.spacing(8) + 1 + 'px !important',
+    width: theme.spacing(34) + 'px !important',
+    height: theme.spacing(40),
+    boxShadow: '0px 20px 40px 0px rgba(66, 72, 86, 0.1)'
   },
   button: {
     position: 'relative',
@@ -44,6 +45,25 @@ const styles = theme => ({
   },
   icon: {
     fontSize: theme.spacing(2) + 'px'
+  },
+  listIcon: {
+    minWidth: theme.spacing(3),
+    height: theme.spacing(3),
+    borderRadius: theme.spacing(0.5) + 'px',
+    display: 'inline-block',
+    marginRight: theme.spacing(1),
+    textAlign: 'center',
+    lineHeight: theme.spacing(3) + 'px',
+    backgroundColor: theme.palette.text.main,
+    color: '#fff'
+  },
+  activeListIcon: {
+    backgroundColor: theme.palette.primary.main
+  },
+  title: {
+    color: theme.palette.text.lighter,
+    fontSize: theme.spacing(1.5) + 'px',
+    padding: theme.spacing(1) + 'px ' + theme.spacing(2) + 'px'
   }
 })
 
@@ -51,11 +71,28 @@ class GroupRepositoryMenu extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      anchorElement: null
+      anchorElement: null,
+      repositoryList: this.props.repositoryList,
+      groupList: this.props.groupList,
+      enterMenu: false,
+      enterButton: false
     }
   }
 
   componentDidMount () {}
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.props.repositoryList !== nextProps.repositoryList ||
+      this.props.groupList !== nextProps.groupList
+    ) {
+      this.setState({
+        repositoryList: nextProps.repositoryList,
+        groupList: nextProps.groupList
+      })
+    }
+
+    return true
+  }
 
   getToRepository (repositoryInfo) {
     this.setState({ anchorElement: null })
@@ -68,13 +105,15 @@ class GroupRepositoryMenu extends Component {
   }
 
   render () {
-    const { classes, intl, history, match, currentRepositoryKey, currentGroupKey, repositoryList, groupList } = this.props
+    const { classes, intl, history, type, currentRepositoryKey, currentGroupKey } = this.props
+    const { repositoryList, groupList } = this.state
+
     const repositoryItems = repositoryList
       .filter(FilterGenerator.withPermission(UAC.PermissionCode.REPO_READ))
       .map((item, key) => (
         <MenuItem key={'r' + key} onClick={(ev) => { this.getToRepository(item) }} >
-          <ListItemIcon>
-            <FontAwesomeIcon icon={psRepository} className={classes.icon} />
+          <ListItemIcon className={[classes.listIcon, item.id === currentRepositoryKey ? classes.activeListIcon : ''].join(' ')}>
+            C
           </ListItemIcon>
           <ListItemText disableTypography primary={item.group.displayName + '/' + item.displayName} />
         </MenuItem>)
@@ -84,57 +123,81 @@ class GroupRepositoryMenu extends Component {
       .filter(FilterGenerator.withPermission(UAC.PermissionCode.REPO_READ))
       .map((item, key) => (
         <MenuItem key={'g' + key} onClick={(ev) => { this.getToGroup(item) }} >
-          <ListItemIcon>
-            <FontAwesomeIcon icon={psRepositoryGroup} className={classes.icon} />
+          <ListItemIcon className={[classes.listIcon, item.id === currentGroupKey ? classes.activeListIcon : ''].join(' ')}>
+            C
           </ListItemIcon>
-          <ListItemText disableTypography primary={item.displayName + ' /'} />
+          <ListItemText disableTypography primary={item.displayName} />
         </MenuItem>)
       )
 
-    const currentProject = repositoryList
-      .filter(FilterGenerator.id(currentRepositoryKey))[0]
-
-    const currentGroup = groupList
-      .filter(FilterGenerator.id(currentGroupKey))[0]
-
     return (
       <span>
-        {this.props.repositoryList.length + this.props.groupList.length
+        {((type === 'repository' &&
+          (repositoryList.length + groupList.length)) ||
+          (type === 'group' &&
+          groupList.length))
           ? <Button
             color='inherit'
-            aria-owns='user-menu'
+            aria-owns={'menu-' + type}
             aria-haspopup='true'
             className={classes.button}
-            onClick={(ev) => { this.setState({ anchorElement: ev.currentTarget }) }}
+            onClick={() => {
+              this.setState({ anchorElement: null, enterButton: false, enterMenu: false })
+              history.push(type === 'repository' ? '/repositories' : '/groups')
+            }}
+            onMouseEnter={(ev) => {
+              this.setState({
+                enterButton: true,
+                anchorElement: ev.currentTarget
+              })
+            }}
+            onMouseLeave={() => {
+              this.setState({ enterButton: false })
+              setTimeout(() => !this.state.enterMenu && this.setState({ anchorElement: null, enterButton: false, enterMenu: false }), 100)
+            }}
           >
-            { currentProject
-              ? currentProject.displayName
-              : currentGroup
-                ? currentGroup.displayName + ' /'
-                : intl.formatMessage({ id: 'menu.repository_pl' })
-            }
+            { type === 'repository' && intl.formatMessage({ id: 'menu.repository_pl' })}
+            { type === 'group' && intl.formatMessage({ id: 'menu.group_pl' })}
             <FontAwesomeIcon icon={faAngleDown} />
           </Button>
           : <Button
             color='inherit'
-            aria-owns='user-menu'
+            aria-owns={'menu-' + type}
             aria-haspopup='true'
-            onClick={(ev) => { history.push('/repositories/new') }}
-            disabled
+            onClick={() => { history.push(type === 'repository' ? '/repositories/new' : '/groups/new') }}
           >
-            {intl.formatMessage({ id: 'label.newRepository' })}
+            { type === 'repository' && intl.formatMessage({ id: 'label.newRepository' })}
+            { type === 'group' && intl.formatMessage({ id: 'label.newGroup' })}
           </Button>}
 
-        { (this.props.repositoryList.length + this.props.groupList.length) > 0 &&
+        {((type === 'repository' &&
+          (repositoryList.length + groupList.length) > 0) ||
+          (type === 'group' &&
+          groupList.length > 0)) &&
         <Menu
-          id='user-menu'
+          id={'menu-' + type}
           anchorEl={this.state.anchorElement}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
           open={Boolean(this.state.anchorElement)}
           onClose={(ev) => { this.setState({ anchorElement: null }) }}
-          classes={{ paper: classes.menu }}
+          PaperProps={{ className: classes.menu }}
+          getContentAnchorEl={null}
+          onMouseEnter={() => { this.setState({ enterMenu: true }) }}
+          onMouseLeave={() => {
+            this.setState({
+              anchorElement: null,
+              enterButton: false,
+              enterMenu: false
+            })
+          }}
         >
-          { match.params.repositoryName && repositoryItems }
-          { match.params.groupName && !match.params.repositoryName && GroupItems }
+          <Grid className={classes.title}>
+            { type === 'repository' && intl.formatMessage({ id: 'label.repository' })}
+            { type === 'group' && intl.formatMessage({ id: 'label.group' })}
+          </Grid>
+          { type === 'repository' && repositoryItems }
+          { type === 'group' && GroupItems }
         </Menu> }
       </span>
     )
@@ -145,12 +208,12 @@ GroupRepositoryMenu.propTypes = {
   classes: PropTypes.object.isRequired,
   // dispatchEvent: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
   repositoryList: PropTypes.array.isRequired,
   groupList: PropTypes.array.isRequired,
   currentRepositoryKey: PropTypes.string,
   currentGroupKey: PropTypes.string,
-  intl: PropTypes.object.isRequired
+  intl: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {

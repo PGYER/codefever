@@ -50,6 +50,7 @@ const data = {
   repositoryAvatar: [Term.repository, Phrase.avatar].join(phraseSeperator),
   groupAvatar: [Term.group, Phrase.avatar].join(phraseSeperator),
   basicInfo: '基本信息',
+  newPasswordConfirm: [Phrase.confirm, Phrase.newPassword].join(phraseSeperator),
   security: '安全性',
   setupNewMFADevice: '设置 MFA 设备',
   changeMFADevice: '更换 MFA 设备',

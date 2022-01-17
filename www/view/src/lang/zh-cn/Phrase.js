@@ -110,7 +110,8 @@ const data = {
   doc: '文档',
   adminArea: '管理后台',
 
-  edit: '编辑'
+  edit: '编辑',
+  confirm: '确认'
 }
 
 export default { ...data, __namespace__: 'phrase' }

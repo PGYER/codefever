@@ -110,7 +110,8 @@ const data = {
   doc: 'DOC',
   adminArea: 'Admin Area',
 
-  edit: 'Edit'
+  edit: 'Edit',
+  confirm: 'Confirm'
 }
 
 export default { ...data, __namespace__: 'phrase' }

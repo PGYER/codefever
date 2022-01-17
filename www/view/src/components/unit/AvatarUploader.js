@@ -51,6 +51,10 @@ const styles = (theme) => ({
   userInfoAvatar: {
     width: theme.spacing(7),
     height: theme.spacing(7)
+  },
+  circleUserInfoAvatar: {
+    width: theme.spacing(10),
+    height: theme.spacing(10)
   }
 })
 
@@ -101,10 +105,10 @@ class AvatarUploader extends React.Component {
           <Avatar
             variant={variant}
             src={src}
-            className={classNames(classes.userInfoAvatar)}
+            className={classNames(variant === 'circular' ? classes.circleUserInfoAvatar : classes.userInfoAvatar)}
           />
           {this.state.showImgIcon &&
-            <Grid className={[classes.iconBox, variant === 'circle' ? classes.iconBoxCircle : classes.iconBoxRounded].join(' ')}>
+            <Grid className={[classes.iconBox, variant === 'circular' ? classes.iconBoxCircle : classes.iconBoxRounded].join(' ')}>
               <FontAwesomeIcon icon={faPlus} className={classes.editIcon} />
             </Grid>
           }

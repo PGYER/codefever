@@ -50,6 +50,7 @@ const data = {
   repositoryAvatar: [Term.repository, Phrase.avatar].join(phraseSeperator),
   groupAvatar: [Term.group, Phrase.avatar].join(phraseSeperator),
   basicInfo: 'Basic Info',
+  newPasswordConfirm: [Phrase.confirm, Phrase.newPassword].join(phraseSeperator),
   security: 'Security',
   setupNewMFADevice: 'Setup New MFA Device',
   changeMFADevice: 'Change MFA Device',

@@ -1633,10 +1633,10 @@
   resolved "https://registry.yarnpkg.com/@pgyer/essential-component/-/essential-component-0.0.19.tgz#47e658f2bdf82d419f8176d3536f5c1c9cd42f51"
   integrity sha512-nVox5xQZT3CyW/OtSAQvY/38p7qbj2dW/SS9kGAISlAyUd0VVvRq2BOYLZ+Dd99mogtNGzSlrPnEqVhjP91ICw==
 
-"@pgyer/icons@latest":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@pgyer/icons/-/icons-0.0.13.tgz#82653bdf297f5901b98b4db049184714131b53fa"
-  integrity sha512-Rd8H3lsh1BFVnh3Mjd/+pjtkjq/2WtKlW7s3HI33LLPmZidjcSO77aKReFjXB28ABlQCUNfP87Js/3MBw2iBKQ==
+"@pgyer/icons@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@pgyer/icons/-/icons-0.0.15.tgz#fbf9234f897290b2e01729db773756fc23bfc747"
+  integrity sha512-5+iltVpCcPn39IG5PVDMgpxWId32sJsPPM1AX2RWIfC+kwtF5pTo1MIAMeIhJWjPSUiNcsM93zm5CK0XQrQexQ==
 
 "@pgyer/mui-theme-preset@latest":
   version "0.0.3"

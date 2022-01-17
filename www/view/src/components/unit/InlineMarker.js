@@ -29,7 +29,7 @@ const styles = (theme) => ({
 
 class InlineMarker extends React.Component {
   render () {
-    const { classes, theme, icon, text, color } = this.props
+    const { classes, theme, icon, text, color, background } = this.props
     const extraColor = {
       containedInfo: {
         main: theme.palette.primary.contrastText,
@@ -37,15 +37,16 @@ class InlineMarker extends React.Component {
       }
     }
 
+    const bg = background === undefined ? true : background
     const palette = color
       ? (theme.palette[color] ? theme.palette : extraColor)[color]
       : theme.palette.primary
     return icon
-      ? <span className={[classes.root, classes.iconPadding].join(' ')} style={{ backgroundColor: palette.lighter, color: palette.main }}>
+      ? <span className={[classes.root, classes.iconPadding].join(' ')} style={{ backgroundColor: bg ? palette.lighter : '', color: palette.main }}>
         <div className={classes.icon}><FontAwesomeIcon icon={icon} /></div>
         {text}
       </span>
-      : <span className={[classes.root, 'text-overflow'].join(' ')} style={{ backgroundColor: palette.lighter, color: palette.main }}>
+      : <span className={[classes.root, 'text-overflow'].join(' ')} style={{ backgroundColor: bg ? palette.lighter : '', color: palette.main }}>
         {text}
       </span>
   }
@@ -56,7 +57,8 @@ InlineMarker.propTypes = {
   theme: PropTypes.object.isRequired,
   icon: PropTypes.object,
   text: PropTypes.string.isRequired,
-  color: PropTypes.string
+  color: PropTypes.string,
+  background: PropTypes.bool
 }
 
 export default withTheme(

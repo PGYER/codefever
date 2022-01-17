@@ -36,10 +36,10 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   linkObjectName: {
-    color: theme.palette.text.main
+    color: theme.palette.text.main + ' !important'
   },
   linkCommitMessage: {
-    color: theme.palette.text.light
+    color: theme.palette.text.light + ' !important'
   },
   commit: {
     '& > li': {

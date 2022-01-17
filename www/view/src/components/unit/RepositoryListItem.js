@@ -59,7 +59,7 @@ class RepositoryCard extends Component {
       className={classes.container}
       onClick={(ev) => { history.push(makeLink(repositoryInfo.group.name, repositoryInfo.name)) }}
     >
-      <Grid item xs={6} md={4}>
+      <Grid item xs={6} md={5}>
         <Grid container spacing={2}>
           <Grid item>
             { repositoryInfo.icon
@@ -104,13 +104,15 @@ class RepositoryCard extends Component {
         <Grid item />
       </Grid>
       <Hidden mdDown>
-        <Grid item md={4} container alignItems='center'>
+        <Grid item md={3} container alignItems='center'>
           { repositoryInfo.members.map((item, key) => {
-            return <Grid key={key} item>
-              <Avatar src={Constants.HOSTS.PGYER_AVATAR_HOST + item.icon} className={classes.avatar}>
-                { item.name && item.name[0].toUpperCase() }
-              </Avatar>
-            </Grid>
+            return key > 7
+              ? false
+              : <Grid key={key} item>
+                <Avatar src={Constants.HOSTS.PGYER_AVATAR_HOST + item.icon} className={classes.avatar}>
+                  { item.name && item.name[0].toUpperCase() }
+                </Avatar>
+              </Grid>
           }) }
         </Grid>
       </Hidden>

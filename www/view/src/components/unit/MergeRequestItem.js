@@ -10,8 +10,8 @@ import { injectIntl } from 'react-intl'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { plMerge, psConfirm } from '@pgyer/icons'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { plMerge, plMerged, plForbid, plConfirm } from '@pgyer/icons'
 import MergeRequestReviewers from 'APPSRC/components/unit/MergeRequestReviewers'
 import FormattedTime from 'APPSRC/components/unit/FormattedTime'
 import InlineMarker from 'APPSRC/components/unit/InlineMarker'
@@ -99,8 +99,9 @@ class MergeRequestItem extends React.Component {
       <Grid item>
         <Typography variant='body1' component='div' className={[classes.oneline, classes.title].join((' '))}>
           {data.titleLink}&nbsp;&nbsp;&nbsp;&nbsp;
-          {data.status === mergeRequestStatus.merged && <InlineMarker color='success' icon={psConfirm} text={intl.formatMessage({ id: 'message.merged' })} />}
-          {data.status === mergeRequestStatus.closed && <InlineMarker color='error' icon={faTimesCircle} text={intl.formatMessage({ id: 'message.closed' })} />}
+          {data.status === mergeRequestStatus.open && <InlineMarker color='success' background={false} icon={plConfirm} text={intl.formatMessage({ id: 'message.opened' })} />}
+          {data.status === mergeRequestStatus.merged && <InlineMarker color='info' background={false} icon={plMerged} text={intl.formatMessage({ id: 'message.merged' })} />}
+          {data.status === mergeRequestStatus.closed && <InlineMarker color='warning' background={false} icon={plForbid} text={intl.formatMessage({ id: 'message.closed' })} />}
         </Typography>
         <Typography variant='body2' component='div' className={classes.oneline}>
           <Typography component='span'>{!isRepository && data.targetRepository.name}</Typography>

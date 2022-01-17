@@ -24,7 +24,8 @@ const styles = (theme) => ({
   header: {
     lineHeight: theme.spacing(5) + 'px',
     marginBottom: theme.spacing(4),
-    borderBottom: '1px solid ' + theme.palette.border
+    borderBottom: '1px solid ' + theme.palette.border,
+    fontSize: '18px'
   },
   paper: {
     padding: theme.spacing(2)

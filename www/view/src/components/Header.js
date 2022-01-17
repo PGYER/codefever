@@ -20,14 +20,21 @@ import UserOption from 'APPSRC/components/unit/UserOption'
 import withScrollTrigger from 'APPSRC/helpers/withScrollTrigger'
 import LanguageSelect from 'APPSRC/components/unit/LanguageSelect'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
-import { psAddAlt, plMerge, plBell, plHelp, plRepair } from '@pgyer/icons'
+import { psAddAlt, plMerge, plSetting, plBell, plHelp, plRepair } from '@pgyer/icons'
+import GroupRepositoryMenu from 'APPSRC/components/unit/GroupRepositoryMenu'
 
 // style
 const styles = theme => ({
   appBar: {
     width: '100%',
-    zIndex: theme.zIndex.drawer - 1,
+    zIndex: theme.zIndex.drawer,
     borderBottom: '1px solid ' + theme.palette.border
+  },
+  img: {
+    height: theme.spacing(4),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(6),
+    cursor: 'pointer'
   },
   placeholder: {
     display: 'inline-block',
@@ -73,16 +80,29 @@ class Header extends React.Component {
   }
 
   render () {
-    const { classes, currentUserInfo, scrollTrigger, expandStatus, history, intl, notificationOpenStatusToggle } = this.props
+    const { classes, currentUserInfo, scrollTrigger, history, intl, notificationOpenStatusToggle } = this.props
     return (
       <AppBar position='fixed' color='default' className={classes.appBar} elevation={scrollTrigger ? 2 : 0}>
         <Toolbar>
-          <Grid container justifyContent='space-between'>
-            <Grid item>
-              <div className={[
-                classes.placeholder,
-                expandStatus ? classes.placeholderExpanded : classes.placeholderCollapsed
-              ].join(' ')} />
+          <Grid container justifyContent='space-between' alignItems='center'>
+            <Grid item className={classes.options}>
+              <img
+                className={classes.img}
+                src='/static/00000000000000/images/logo-community.png'
+                onClick={() => history.push('/repositories')}
+              />
+              <Grid item className={classes.optionItem}>
+                <GroupRepositoryMenu type='repository' />
+              </Grid>
+              <Grid item className={classes.optionItem}>
+                <GroupRepositoryMenu type='group' />
+              </Grid>
+              <SquareIconButton label='label.mergeRequest' onClick={() => {
+                history.push('/mergerequests')
+              }} icon={plMerge} className={classes.optionItem} />
+              <SquareIconButton label='label.setting' onClick={() => {
+                history.push('/settings')
+              }} icon={plSetting} className={classes.optionItem} />
             </Grid>
             <Grid item className={classes.options}>
               <SquareIconButton label='label.create' color='primary' onClick={e => this.setState({ newMenuAnchor: e.currentTarget })} icon={psAddAlt} className={classes.optionItem} />
@@ -115,9 +135,6 @@ class Header extends React.Component {
                   <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.createMergeRequest' })} />
                 </MenuItem>
               </Menu>
-              <SquareIconButton label='label.mergeRequest' onClick={() => {
-                history.push('/mergerequests')
-              }} icon={plMerge} className={classes.optionItem} />
               <SquareIconButton label='label.notification' icon={plBell} badge={currentUserInfo.unReadNotification} className={classes.optionItem} onClick={e => notificationOpenStatusToggle()} />
               <LanguageSelect className={classes.optionItem} />
               <SquareIconButton label='label.help' onClick={e => this.setState({ helpMenuAnchor: e.currentTarget })} icon={plHelp} className={classes.optionItem} />
@@ -152,7 +169,6 @@ Header.propTypes = {
   intl: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  expandStatus: PropTypes.bool.isRequired,
   scrollTrigger: PropTypes.bool.isRequired,
   currentUserInfo: PropTypes.object.isRequired,
   notificationOpenStatusToggle: PropTypes.func.isRequired
@@ -160,7 +176,6 @@ Header.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    expandStatus: state.DrawerStates.expandStatus,
     currentUserInfo: state.DataStore.currentUserInfo
   }
 }
