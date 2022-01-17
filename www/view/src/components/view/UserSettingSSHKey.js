@@ -183,7 +183,7 @@ class UserSettingSSHKey extends React.Component {
                   <Grid item xs={12}>
                     <Typography variant='subtitle1' component='div' gutterBottom>
                       { intl.formatMessage({ id: 'label.addSSHKey' }) } &nbsp;
-                      <ShowHelper type='icon' doc='sshKey' />
+                      <ShowHelper type='icon' doc='/common/sshKey.md' />
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>

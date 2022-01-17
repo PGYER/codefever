@@ -1,6 +1,7 @@
 // core
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { withStyles, withTheme } from '@material-ui/core/styles'
 
@@ -18,17 +19,28 @@ const styles = (theme) => ({
 })
 
 class ShowHelper extends React.Component {
+  showDoc () {
+    const { doc, currentLanguage } = this.props
+
+    let language = 'cn'
+    if (currentLanguage === 'en-us') {
+      language = 'en'
+    }
+
+    window.open('/doc/' + language + doc, '_blank')
+  }
+
   render () {
-    const { docID, tooltip, title, type, intl } = this.props
+    const { tooltip, title, type, intl } = this.props
     if (type === 'button') {
-      return <Button variant='contained' color='primary' onClick={() => { window.getDoc(docID) }}>
+      return <Button variant='contained' color='primary' onClick={() => this.showDoc() }>
         <FontAwesomeIcon icon={plHelp} />&nbsp;&nbsp;
         {title || intl.formatMessage({ id: 'label.learnMore' })}
       </Button>
     } else if (type === 'icon') {
       return <Tooltip title={tooltip || intl.formatMessage({ id: 'label.learnMore' })} placement='top'>
         <Typography variant='body2' component='span'>
-          <a style={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => { window.getDoc(docID) }}>
+          <a style={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => this.showDoc() }>
             <FontAwesomeIcon icon={plHelp} />
           </a>
         </Typography>
@@ -36,7 +48,7 @@ class ShowHelper extends React.Component {
     } else {
       return <Tooltip title={tooltip || intl.formatMessage({ id: 'label.learnMore' })} placement='top'>
         <Typography variant='body2' component='span'>
-          <a style={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => { window.getDoc(docID) }}>
+          <a style={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => this.showDoc() }>
             {title || intl.formatMessage({ id: 'label.learnMore' })}&nbsp;
             <FontAwesomeIcon icon={plHelp} />
           </a>
@@ -47,15 +59,31 @@ class ShowHelper extends React.Component {
 }
 
 ShowHelper.propTypes = {
-  docID: PropTypes.string,
+  doc: PropTypes.string.isRequired,
   title: PropTypes.string,
   tooltip: PropTypes.string,
   type: PropTypes.string,
-  intl: PropTypes.object.isRequired
+  intl: PropTypes.object.isRequired,
+  currentLanguage: PropTypes.string.isRequired
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    currentLanguage: state.DataStore.currentLanguage
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+  }
 }
 
 export default injectIntl(
   withTheme(
-    withStyles(styles)(ShowHelper)
+    withStyles(styles)(
+      connect(mapStateToProps, mapDispatchToProps)(
+        ShowHelper
+      )
+    )
   )
 )

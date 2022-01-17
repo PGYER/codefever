@@ -74,13 +74,12 @@ class Header extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      newMenuAnchor: null,
-      helpMenuAnchor: null
+      newMenuAnchor: null
     }
   }
 
   render () {
-    const { classes, currentUserInfo, scrollTrigger, history, intl, notificationOpenStatusToggle } = this.props
+    const { classes, currentUserInfo, scrollTrigger, history, intl, notificationOpenStatusToggle, currentLanguage } = this.props
     return (
       <AppBar position='fixed' color='default' className={classes.appBar} elevation={scrollTrigger ? 2 : 0}>
         <Toolbar>
@@ -137,25 +136,8 @@ class Header extends React.Component {
               </Menu>
               <SquareIconButton label='label.notification' icon={plBell} badge={currentUserInfo.unReadNotification} className={classes.optionItem} onClick={e => notificationOpenStatusToggle()} />
               <LanguageSelect className={classes.optionItem} />
-              <SquareIconButton label='label.help' onClick={e => this.setState({ helpMenuAnchor: e.currentTarget })} icon={plHelp} className={classes.optionItem} />
+              <SquareIconButton label='label.doc' onClick={e => window.open('/doc/' + (currentLanguage === 'en-us' ? 'en' : 'cn'), '_blank')} icon={plHelp} className={classes.optionItem} />
               {currentUserInfo.admin && <SquareIconButton label='label.adminArea' onClick={() => { history.push('/admin') }} icon={plRepair} className={classes.optionItem} />}
-              <Menu
-                id='help-menu'
-                anchorEl={this.state.helpMenuAnchor}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                PaperProps={{ className: classes.menu }}
-                getContentAnchorEl={null}
-                open={Boolean(this.state.helpMenuAnchor)}
-                onClose={e => this.setState({ helpMenuAnchor: null })}
-              >
-                <MenuItem onClick={e => {
-                  this.setState({ helpMenuAnchor: null })
-                  window.postMessage({ verifyKey: 'kf_doc_verify_key' }, window.location.origin)
-                }}>
-                  <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.getHelp' })} />
-                </MenuItem>
-              </Menu>
               <UserOption className={classes.optionItem} />
             </Grid>
           </Grid>
@@ -171,12 +153,14 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
   scrollTrigger: PropTypes.bool.isRequired,
   currentUserInfo: PropTypes.object.isRequired,
-  notificationOpenStatusToggle: PropTypes.func.isRequired
+  notificationOpenStatusToggle: PropTypes.func.isRequired,
+  currentLanguage: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currentUserInfo: state.DataStore.currentUserInfo
+    currentUserInfo: state.DataStore.currentUserInfo,
+    currentLanguage: state.DataStore.currentLanguage
   }
 }
 

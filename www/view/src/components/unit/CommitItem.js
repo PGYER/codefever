@@ -14,7 +14,7 @@ import Avatar from '@material-ui/core/Avatar'
 import SmartLink from 'APPSRC/components/unit/SmartLink'
 import CommitHashChip from 'APPSRC/components/unit/CommitHashChip'
 import FormattedTime from 'APPSRC/components/unit/FormattedTime'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 import Constants from 'APPSRC/config/Constants'
 import { injectIntl } from 'react-intl'
 
@@ -97,7 +97,7 @@ class CommitItem extends Component {
                     &nbsp;
                     <ShowHelper
                       type='icon'
-                      docID='2411cf176aa198cf701a5d422d70a58c'
+                      doc='/common/multiEmail.md'
                       tooltip={intl.formatMessage({ id: 'message.itsMyEmail' })}
                     />
                   </React.Fragment> }

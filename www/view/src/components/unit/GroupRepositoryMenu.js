@@ -95,13 +95,21 @@ class GroupRepositoryMenu extends Component {
   }
 
   getToRepository (repositoryInfo) {
-    this.setState({ anchorElement: null })
+    this.initAnchor()
     this.props.history.push('/' + repositoryInfo.group.name + '/' + repositoryInfo.name + '/')
   }
 
   getToGroup (groupInfo) {
-    this.setState({ anchorElement: null })
+    this.initAnchor()
     this.props.history.push('/groups/' + groupInfo.name + '/')
+  }
+
+  initAnchor () {
+    this.setState({
+      anchorElement: null,
+      enterButton: false,
+      enterMenu: false
+    })
   }
 
   render () {
@@ -142,7 +150,7 @@ class GroupRepositoryMenu extends Component {
             aria-haspopup='true'
             className={classes.button}
             onClick={() => {
-              this.setState({ anchorElement: null, enterButton: false, enterMenu: false })
+              this.initAnchor()
               history.push(type === 'repository' ? '/repositories' : '/groups')
             }}
             onMouseEnter={(ev) => {
@@ -153,7 +161,7 @@ class GroupRepositoryMenu extends Component {
             }}
             onMouseLeave={() => {
               this.setState({ enterButton: false })
-              setTimeout(() => !this.state.enterMenu && this.setState({ anchorElement: null, enterButton: false, enterMenu: false }), 100)
+              setTimeout(() => !this.state.enterMenu && this.initAnchor(), 100)
             }}
           >
             { type === 'repository' && intl.formatMessage({ id: 'menu.repository_pl' })}
@@ -184,13 +192,7 @@ class GroupRepositoryMenu extends Component {
           PaperProps={{ className: classes.menu }}
           getContentAnchorEl={null}
           onMouseEnter={() => { this.setState({ enterMenu: true }) }}
-          onMouseLeave={() => {
-            this.setState({
-              anchorElement: null,
-              enterButton: false,
-              enterMenu: false
-            })
-          }}
+          onMouseLeave={() => this.initAnchor()}
         >
           <Grid className={classes.title}>
             { type === 'repository' && intl.formatMessage({ id: 'label.repository' })}
