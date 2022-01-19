@@ -1,13 +1,21 @@
-# Roll back the file to the specified version
+# 回退文件到指定版本
 
-Roll back a file to the specified version, for example:
+### 回退文件到指定版本
 
-> git checkout commit_hash file...
+如果需要回退某个文件到指定版本，则需要:
 
-After the command is executed successfully, the file content in the working directory is rolled back to the file content of the specified version, and has been saved to the temporary storage area.
+```shell
+git checkout <commit hash> <file path>
+```
 
-You can also specify the number of rollback versions to perform the rollback operation, for example:
+命令执行成功后, 工作目录的文件内容回退到指定版本的文件内容, 同时已保存至暂存区。
 
-> git checkout master~num file...
+还可以指定回退的版本数来进行回退操作，例如：
 
-After the command is executed successfully, the content of the file in the working directory is rolled back to the content of the latest **num+1** commit of **master** and saved to the temporary storage area.
+```shell
+git checkout master~<num> <file path>
+```
+
+命令执行成功后, 工作目录中的文件内容回退到 `master` 分支最近的第 `<num> + 1` 次提交的内容, 并保存至暂存区。
+
+参照: [Git 常用命令参考](git_command_reference.md)

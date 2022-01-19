@@ -1,13 +1,11 @@
-[How to get and set SSH Key ?](/doc/en/common/sshKey.md)
+[Generate & Set SSH Key](ssh_key.md)
 
-[HTTP(S) or SSH?](/doc/en/common/cloneMethod.md)
+[HTTP or SSH](clone_method.md)
 
-[How do I choose a member role?](/doc/en/common/memberRole.md)
+[Member Roles](role.md)
 
-[Can file changes submitted using multiple email addresses be retroactive?](/doc/en/common/multiEmail.md)
+[Track Multiple Email for One User](multiple_email.md)
 
-[What is a tag? How is it different from Branch](/doc/en/common/tag.md)
+[Git Workflows](workflow.md)
 
-[How do I choose a workflow when using CodeFever?](/doc/en/common/workFlow.md)
-
-[How do I retroactively file modifications?](/doc/en/common/history.md)
+[Track File Changes](history.md)

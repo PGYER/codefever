@@ -1,25 +1,35 @@
-# Revert the committed changes
+# 还原提交的改动
 
-Sometimes it is necessary to revert the changes of a commit, which can be achieved by using the **git revert** command, for example:
+### 使用 git revert 来回滚
 
-> git revert commit_hash
+有时需要还原某一次提交的改动, 可以使用 `git revert` 命令实现, 例如:
 
-After the command is executed successfully, the changes whose commit hash is **commit_hash** are restored. If there is no conflict, a new commit will be automatically created. Add the **-n** option if you do not want the commit to be created automatically.
+```shell
+git revert <commit hash>
+```
 
-You can also restore a previous commit based on the current **HEAD**, for example:
+命令执行成功后, 仓库会还原到提交哈希为 `<commit hash>` 的改动, 如果没有冲突, 会自动创建一次新的提交。如果不希望自动创建提交, 加上 `-n` 选项。
 
-> git revert HEAD~num
+还可以以当前 `HEAD` 为基准, 还原之前的某次提交, 例如:
 
-After the command is executed successfully, the latest **num+1** commit changes are restored. If there is no conflict, a new commit will be created automatically.
+```shell
+git revert HEAD~<num>
+```
 
-You can also specify a range to revert the changes of several commits, for example:
+命令执行成功后, 仓库会还原最近 `<num> + 1` 次提交的改动, 如果没有冲突, 会自动创建一次新的提交。
 
-> git revert -n master~num1.. master~num2
+还可以指定一个范围还原某几次提交的改动，例如：
 
-After the command is executed successfully, the changes from the most recent **num1** (inclusive) commit to the most recent **num2+1** (inclusive) commit are reverted.
+```shell
+git revert -n <master>~<num1> .. <master>~<num2>
+```
 
-Because the **-n** option is used, the restored result is saved in the staging area, and a new commit needs to be created manually.
+命令执行成功后, 仓库会还原最近的第 `<num1>` 次(包括)提交到最近的 `<num1>` 次(包括)提交的改动。
 
-When the **-n** option is used, if the result of the revert operation is not as expected, the revert operation can be undone before creating a new commit, for example:
+因为使用了 `-n` 选项，还原的结果保存到了暂存区中, 需要手动创建新的提交。
 
-> git revert --abort
+在使用 `-n` 选项时, 如果还原操作的结果不符合预期, 在创建新的提交之前, 可以撤销本次还原操作, 例如:
+
+```shell
+git revert --abort
+```

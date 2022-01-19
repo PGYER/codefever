@@ -1,13 +1,15 @@
-# How to retroactively modify files?
+# 如何追溯文件修改 ？
 
-CodeFever provides two ways to trace file modification, namely **History** and **Blame**.
+`CodeFever` 提供两种方式进行文件修改的追溯, 分别是 `历史` 和 `Blame` 。
 
-**History**: Refers to a list of all the change records of a file from its creation to its current state.
+### 历史 和 Blame 的区别
 
-**Blame**: Refers to who edited each line at the end of the current state of the file.
+`历史`: 是指文件从创建到当前状态所有的变更记录的列表。
 
-Generally speaking, **History** is used to trace the change process of a file, while **Blame** is used to view the last editor of each line of the current file.
+`Blame`: 是指文件当前状态每一行最后是有谁编辑的。
 
-The history and Blame buttons can be found in the title bar of the file content display of the specific file.
+一般来说，`历史` 用于追溯文件的变化过程，而 `Blame` 用于查看当前文件每一行的最后编辑者。
 
-![](/doc/cn/common/assets/f51de0753df4474fa8feeb0b88f1bcdb.png)
+历史 和 Blame 按钮可以在具体文件的文件内容展示标题栏找到。
+
+参考: [仓库/查看文件](../repository/view_files.md) 中 `查看文件历史` 一节

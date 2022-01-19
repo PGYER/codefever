@@ -1,13 +1,15 @@
-[Clone the repository locally](/doc/en/git/clone.md)
+[Clone to Local](clone.md)
 
-[Create the first branch](/doc/en/git/createBranch.md)
+[Create First Branch](create_branch.md)
 
-[Push a new branch](/doc/en/git/pushBranch.md)
+[Push a Branch](push_branch.md)
 
-[Revert the committed changes](/doc/en/git/revert.md)
+[Rstore Changes](revert.md)
 
-[Roll back a file to the specified version](/doc/en/git/checkout.md)
+[Checkout](checkout.md)
 
-[Remote repository source management](/doc/en/git/remote.md)
+[Remote Repository](remote.md)
 
-[Local branch merge](/doc/en/git/mergeBranch.md)
+[Merge Localy](merge_branch.md)
+
+[Git Command Refrence](git_command_reference.md)
