@@ -16,7 +16,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@pgyer/essential-component": "^0.0.19",
-    "@pgyer/icons": "latest",
+    "@pgyer/icons": "^0.0.16",
     "@pgyer/mui-theme-preset": "latest",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",

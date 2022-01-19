@@ -31,7 +31,7 @@ import {
 
 import TabHeader from 'APPSRC/components/unit/TabHeader'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 
 import { formatNumber, makeLink } from 'APPSRC/helpers/VaribleHelper'
 import NetworkHelper from 'APPSRC/helpers/NetworkHelper'
@@ -131,7 +131,7 @@ class RepositoryDashboard extends Component {
                       : '' }
                   </Typography>
                   <Typography variant='caption' component='div' className={classes.subtext}>
-                    {intl.formatMessage({ id: 'label.repositoryID' }) }: {repositoryConfig.repository.id}
+                    {repositoryConfig.repository.description}
                   </Typography>
                 </Grid>
               </Grid>
@@ -198,7 +198,7 @@ class RepositoryDashboard extends Component {
                       { this.state.popoverTab === 0 && <Paper className={classes.cloneContent}>
                         <Typography variant='body2' gutterBottom>
                           {intl.formatMessage({ id: 'message.differenceBetweenHTTPSAndSSH' })} &nbsp;
-                          <ShowHelper docID='a5dda647043d0cb1c4047dd1de84ca57' />
+                          <ShowHelper doc='/common/clone_method.md' />
                         </Typography>
                         <TextField
                           fullWidth
@@ -229,7 +229,7 @@ class RepositoryDashboard extends Component {
                       { this.state.popoverTab === 1 && <Paper className={classes.cloneContent}>
                         <Typography variant='body2' gutterBottom>
                           {intl.formatMessage({ id: 'message.generateAndSetSSHKey' })} &nbsp;
-                          <ShowHelper docID='211cfb16bc8460bc44068f3b34ee2a63' />
+                          <ShowHelper doc='/common/ssh_key.md' />
                         </Typography>
                         <TextField
                           fullWidth

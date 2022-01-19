@@ -8,81 +8,48 @@ import {
   psLog,
   psMembers,
   psMemberAlt,
-  psContent,
   psFile,
   psSetting,
-  psTag
+  psTag,
+  psEmail,
+  psKey,
+  psBell
 } from '@pgyer/icons'
 import FilterGenerator from 'APPSRC/helpers/FilterGenerator'
 
 function makeDrawerConfig () {
   return [
     {
-      path: '/repositories',
-      name: 'menu.repository_pl',
-      icon: psRepository,
-      activePattern: [
-        /^\/repositories\/?.*$/i
-      ]
-    },
-    {
-      path: '/groups',
-      name: 'menu.group_pl',
-      icon: psRepositoryGroup,
-      activePattern: [
-        /^\/groups\/?.*$/i
-      ]
-    },
-    {
-      path: '/mergerequests',
-      name: 'menu.mergeRequest_pl',
-      icon: psMerge,
-      activePattern: [
-        /^\/mergerequests\/?.*$/i
-      ]
-    },
-    {
-      path: '/settings',
-      name: 'menu.setting_pl',
-      icon: psSetting,
+      path: '/settings/profile',
+      name: 'menu.profile',
+      icon: psMemberAlt,
       activePattern: [
         /^\/settings$/i,
-        /^\/settings\/(profile|email|sshkey|notification)$/i
-      ],
-      children: [
-        {
-          path: '/settings/profile',
-          name: 'menu.profile',
-          icon: psMemberAlt,
-          activePattern: [
-            /^\/settings$/i,
-            /^\/settings\/profile/i
-          ]
-        },
-        {
-          path: '/settings/email',
-          name: 'menu.mail',
-          icon: psMemberAlt,
-          activePattern: [
-            /^\/settings\/email/i
-          ]
-        },
-        {
-          path: '/settings/sshkey',
-          name: 'menu.SSHKey_pl',
-          icon: psContent,
-          activePattern: [
-            /^\/settings\/sshkey/i
-          ]
-        },
-        {
-          path: '/settings/notification',
-          name: 'menu.notification',
-          icon: psContent,
-          activePattern: [
-            /^\/settings\/notification/i
-          ]
-        }
+        /^\/settings\/profile/i
+      ]
+    },
+    {
+      path: '/settings/email',
+      name: 'menu.mail',
+      icon: psEmail,
+      activePattern: [
+        /^\/settings\/email/i
+      ]
+    },
+    {
+      path: '/settings/sshkey',
+      name: 'menu.SSHKey_pl',
+      icon: psKey,
+      activePattern: [
+        /^\/settings\/sshkey/i
+      ]
+    },
+    {
+      path: '/settings/notification',
+      name: 'menu.notification',
+      icon: psBell,
+      activePattern: [
+        /^\/settings\/notification/i
       ]
     }
   ]

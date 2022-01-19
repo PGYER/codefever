@@ -1,0 +1,14 @@
+INSERT IGNORE INTO `cc_users` (`u_id`, `u_key`, `u_email`, `u_password`, `u_name`, `u_avatar`, `u_tel`, `u_calling_code`, `u_team`, `u_role`, `u_location`, `u_notification_status`, `u_register_ip`, `u_2fa`, `u_admin`, `u_created`, `u_updated`, `u_status`) VALUES(1, '00000000000000000000000000000000', 'root@codefever.cn', '14e1b600b1fd579f47433b88e8d85291', 'codefever', '', '', 86, NULL, NULL, NULL, 0, '0.0.0.0', NULL, 1, '0001-01-01 00:00:00', '0001-01-01 00:00:00', 1);
+
+INSERT INTO `cc_users` (`u_id`, `u_key`, `u_email`, `u_password`, `u_name`, `u_avatar`, `u_tel`, `u_calling_code`, `u_team`, `u_role`, `u_location`, `u_notification_status`, `u_register_ip`, `u_2fa`, `u_admin`, `u_created`, `u_updated`, `u_status`) VALUES
+(0, '26c20714af8bc20aa85be657a5170e71', 'test2@pgyer.com', '825c4adf01f22a52f3a191af855bff5f', 'test2', 'd24d2281d6354ec58b27167fe21a6e1e', NULL, 86, NULL, NULL, NULL, 0, '0.0.0.0', NULL, 0, '2022-01-01 00:00:00', '0000-00-00 00:00:00', 4),
+(0, 'f4a9c54adef17599d4f709a1167f0fcd', 'test@pgyer.com', '14e1b600b1fd579f47433b88e8d85291', 'test', 'e0a35aac9dd051168aeaf073a54e3c11', NULL, 86, NULL, NULL, NULL, 0, '0.0.0.0', NULL, 0, '2022-01-01 00:00:00', '0000-00-00 00:00:00', 4);
+
+INSERT INTO `cc_ssh_keys` (`sk_key`, `u_key`, `sk_name`, `sk_key_type`, `sk_key_hash`, `sk_key_data`, `sk_created`, `sk_updated`, `sk_deleted`, `sk_status`) VALUES
+('f90613f05b53e9bc080f01e2a465d8e6', 'f4a9c54adef17599d4f709a1167f0fcd', 'test@pgyer.com', 'ssh-rsa', 'e69cbde8123c9e57657c1aa0067166a3', 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDHTyC4jcWdgDEeF6qeAsV0hmkb0uetkwQj3aqXIFnUgMudD8QjQ/dEFNQtYB0Fc1H3CAh3O4NTiWF7cGjj9RuSdAlB4hH96/UzwNraBrczyib1xw1H5VxuqRxdz/GBPnRJUZ84mzyJJuPBsh15lEclVKtdhNr0rNfghQkPaxcOBn3yH1JCOyCBbwtA23CGc2XmT2j8If3lkyoebmZ/fg5Kc8pNu2cZVFyAADgl7OjhXamU8FcYD3ZZ/x0WcUi28kiuAy57p5ZQS9+zqUT8zHXqz553YXreglV/Qp1jm/6g16yliuCeFTtRJ6eL59mqfkUIlXAUkE6bnRrWettoLfyBE56lRxwC5tlBvvYcP9346opb85QxXM1ixj8/CzHZwG38KnKEq6rKbKLUTum3/fRPsuU+GwgKs7/q1sZkctT9FJA1qGh0SseXlV7nWiQ8Hz+HhE/8TE8jwBXyzY1IBes2K4j7SZKP1a2qPbOp9HvxxLPNdhQOZ8F2ux/NIARrCU8=', '2022-01-01 00:00:00', '0000-00-00 00:00:00', NULL, 1);
+
+INSERT INTO `cc_groups` (`g_key`, `u_key`, `g_type`, `g_display_name`, `g_name`, `g_description`, `g_avatar`, `g_created`, `g_updated`, `g_deleted`, `g_status`) VALUES
+('e6508c1a66e86f697c96bdffb30c1ae3', 'f4a9c54adef17599d4f709a1167f0fcd', 2, 'codefever', 'codefever', '', '', '2022-01-01 00:00:00', '0000-00-00 00:00:00', NULL, 1);
+
+INSERT INTO `cc_repositories` (`r_key`, `u_key`, `g_key`, `r_fork_r_key`, `r_display_name`, `r_name`, `r_path`, `r_description`, `r_avatar`, `r_default_branch_name`, `r_created`, `r_updated`, `r_deleted`, `r_status`) VALUES
+('2f941aef39bc8a048da55dd28c678655', 'f4a9c54adef17599d4f709a1167f0fcd', 'e6508c1a66e86f697c96bdffb30c1ae3', NULL, 'codefever', 'codefever', '/7b56eed88bda864c6e5ae1540549f8ab', 'Codefever community test repository', NULL, NULL, '2022-01-01 00:00:00', '0000-00-00 00:00:00', NULL, 1);

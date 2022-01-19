@@ -20,12 +20,14 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import ListItemText from '@material-ui/core/ListItemText'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { psHome } from '@pgyer/icons'
-import GroupRepositoryMenu from 'APPSRC/components/unit/GroupRepositoryMenu'
 import Constants from 'APPSRC/config/Constants'
 
 import FilterGenerator from 'APPSRC/helpers/FilterGenerator'
 
 const styles = (theme) => ({
+  list: {
+    marginTop: theme.spacing(3)
+  },
   listItem: {
     overflow: 'hidden',
     width: theme.spacing(34),
@@ -297,10 +299,9 @@ class DrawerList extends React.Component {
           ].join(' ')}>
             {mode === 'default' && 'CodeFever'}
             {mode === 'admin' && 'CodeFever Admin'}
-            {['repository', 'group'].includes(mode) && <GroupRepositoryMenu />}
           </Typography>
         </div>
-        <List component='nav'>{listItems}</List>
+        <List className={classes.list} component='nav'>{listItems}</List>
       </React.Fragment>
     )
   }

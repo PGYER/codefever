@@ -1,18 +1,16 @@
 #!/usr/local/php/bin/php
 <?php
+$config = yaml_parse_file(dirname(__FILE__, 3) . '/env.yaml');
 
-$action = (int) getenv('PGYER_ACTION');
-
-if (!$action) {
-    $repo = getenv('PGYER_REPO');
-    echo "[CodeFever Community]: Insufficient permisions, Make sure you have permission to access to {$repo}.";
+if ($config['gateway'] && $config['gateway']['token'] && $config['gateway']['hooks']) {
+    $config = [
+        'endpoint' => $config['gateway']['hooks'],
+        'token' => $config['gateway']['token']
+    ];
+} else {
+    echo '[CodeFever Community]: Bad configuration, Contact site administrator if operation rejected!.';
     exit(255);
 }
-
-$config = [
-    'endpoint' => 'http://cc.pgyer.appxia.cn/apiv1/internal/hooks',
-    'token' => 'codefever_community_api_token'
-];
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $config['endpoint']);
@@ -54,7 +52,7 @@ if ($result) {
         echo 'Request-ID: ' . $result['request-id'] . "\n";
     }
 } else {
-    echo 'Contact service@pgyer.com if operation rejected!';
+    echo 'Contact site administrator if operation rejected!';
 }
 
 exit(255);

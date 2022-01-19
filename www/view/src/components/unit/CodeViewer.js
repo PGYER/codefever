@@ -39,6 +39,7 @@ const styles = theme => ({
     paddingTop: theme.spacing(10)
   },
   lineNumber: {
+    lineHeight: theme.spacing(2) + 'px',
     width: theme.spacing(4),
     padding: '0 ' + theme.spacing(1) + 'px',
     textAlign: 'right',
@@ -97,10 +98,12 @@ class CodeViewer extends React.Component {
     let codeLines = []
 
     if (blame && blame.length) {
+      let count = 0
       codeLines = codes.map((item, key) => {
         let blameCell = null
         const blameData = blame.filter(blameItem => blameItem.start === (key + 1))
         if (blameData && blameData[0]) {
+          count = blameData[0].length
           blameCell = <td className={classes.blame} rowSpan={blameData[0].length}>
             <CommitItem key={key}
               data={blameData[0].commit}
@@ -116,7 +119,7 @@ class CodeViewer extends React.Component {
         }
 
         return <tr key={key} className={blameCell && classes.topBorder}>
-          {(key === (codes.length - 1) && codes[key].length === 0) ? <td className={classes.blame} /> : blameCell}
+          {(key === (codes.length - 1) && codes[key].length === 0) || count-- < 1 ? <td className={classes.blame} /> : blameCell}
           <td className={classes.lineNumber}><code>{key + 1}</code></td>
           <td className={classes.code}><CodeLine code={item} htmlCode={parsedHtml[key]} /></td>
         </tr>

@@ -346,6 +346,7 @@ class Group_model extends CI_Model
         $this->db->from('groups');
 
         $keyword && $this->db->like('g_display_name', $keyword);
+        $this->db->where('g_status', COMMON_STATUS_NORMAL);
 
         if ($count) {
             return $this->db->count_all_results();

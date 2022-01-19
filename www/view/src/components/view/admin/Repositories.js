@@ -155,8 +155,14 @@ class Users extends React.Component {
 
     list.map(item => {
       final.push([
-        <Avatar src={Constants.HOSTS.PGYER_AVATAR_HOST + item.icon} className={classes.icon} />,
-        <Typography variant='body1' component='div'>{item.group.displayName} / {item.displayName}</Typography>,
+        <Grid className={classes.name}>
+          {
+            item.icon
+              ? <Avatar src={Constants.HOSTS.PGYER_AVATAR_HOST + item.icon} className={classes.icon} />
+              : <Avatar className={classes.icon}>{item.name[0].substr(0, 1).toUpperCase()}</Avatar>
+          }
+          <Typography variant='body1' component='div'>{item.group.displayName} / {item.displayName}</Typography>
+        </Grid>,
         <FormattedTime timestamp={item.created} />,
         item.status === Constants.commonStatus.normal
           ? <SquareIconButton label='label.setting' onClick={e => this.setState({ settingAnchor: e.target, settingRepository: item })} icon={psSetting} />
@@ -167,8 +173,8 @@ class Users extends React.Component {
     })
 
     return [
-      ['auto', 'auto', 'auto', 'auto'],
-      ['', 'label.repository', 'label.requestCreated', ''],
+      ['auto', 'auto', 'auto'],
+      ['label.repository', 'label.requestCreated', ''],
       ...final
     ]
   }
@@ -330,6 +336,7 @@ class Users extends React.Component {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         PaperProps={{ className: classes.menu }}
         getContentAnchorEl={null}
+        transitionDuration={0}
         open={Boolean(settingAnchor)}
         onClose={e => this.setState({ settingAnchor: null })}
       >

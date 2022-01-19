@@ -15,7 +15,7 @@ class APIAuth
     static function auth(array $authTypes)
     {
         if (in_array(self::AUTH_TYPE_GATEWAY, $authTypes)) {
-            if (Request::parse()->token === API_TOKEN_GATEWAY) {
+            if (Request::parse()->token === YAML_GATEWAY_TOKEN) {
                 Request::setAuthData([]);
                 return TRUE;
             }

@@ -1,0 +1,128 @@
+
+user  www;
+worker_processes  1;
+
+error_log  logs/error.log;
+error_log  logs/error.log  notice;
+error_log  logs/error.log  info;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    server_names_hash_max_size 512;
+    server_names_hash_bucket_size 128;
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    index index.php index.html index.htm;
+
+    log_format  access  '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" $http_x_forwarded_for';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    client_max_body_size 2000M;
+
+    keepalive_timeout  65;
+
+    gzip  on;
+
+    server {
+        listen 80;
+
+        #listen 443 ssl;
+        #ssl_certificate      <your_ssl_cert>.crt;
+        #ssl_certificate_key  <your_ssl_cert_private_key>.key;
+        #ssl_session_cache    shared:SSL:1m;
+        #ssl_session_timeout  5m;
+        #ssl_ciphers  HIGH:!aNULL:!MD5;
+        #ssl_prefer_server_ciphers  on;
+
+        server_name localhost;
+
+        root /data/www/codefever-community/www/;
+        access_log logs/codefever-access.log access;
+        error_log logs/codefever-error.log  error ;
+
+        location ~* ^\/[0-9a-z_]+\/[0-9a-z]+\.git {
+            proxy_pass http://127.0.0.1:27555;
+        }
+
+        location ^~ /static/ {
+            rewrite "(.*)\.map(.*)" "/static/not/found" last;
+            rewrite "^/static/\d{14}/(.*)$" "/static/$1" last;
+            try_files $uri /app$uri 404;
+        }
+
+        location ~* ^/(user|file|feature|doc|lang|captcha|service|api(v\d+)?)?(\/.*)?$ {
+            try_files $uri $uri/ /index.php;
+        }
+
+        location / {
+            try_files $uri /app/index.html;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  ENVIRONMENT "production";
+            include        fastcgi_params;
+            fastcgi_buffer_size 128k;
+            fastcgi_buffers 4 256k;
+            fastcgi_busy_buffers_size 256k;
+        }
+    }
+
+    server {
+        listen 80;
+
+        #listen 443 ssl;
+        #ssl_certificate      <your_ssl_cert>.crt;
+        #ssl_certificate_key  <your_ssl_cert_private_key>.key;
+        #ssl_session_cache    shared:SSL:1m;
+        #ssl_session_timeout  5m;
+        #ssl_ciphers  HIGH:!aNULL:!MD5;
+        #ssl_prefer_server_ciphers  on;
+
+        server_name localhost-dev;
+
+        root /data/www/codefever-community/www/;
+        access_log logs/codefever-dev-access.log access;
+        error_log logs/codefever-dev-error.log  error ;
+
+        location ~* ^\/[0-9a-z_]+\/[0-9a-z]+\.git {
+            proxy_pass http://127.0.0.1:27555;
+        }
+
+        location ^~ /sockjs-node {
+            proxy_pass http://127.0.0.1:3000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+
+        location ^~ /__webpack_dev_server__/ {
+            proxy_pass http://127.0.0.1:3000;
+        }
+
+        location ~ ^/static/\d+/ {
+            proxy_pass http://localhost;
+        }
+
+        location ~* ^/(user|file|feature|doc|lang|captcha|boss|service|pricing|api(v\d+)?)?(\/.*)?$ {
+            proxy_pass http://localhost;
+        }
+
+        location / {
+            proxy_pass http://127.0.0.1:3000;
+        }
+    }
+
+    include vhost/*.conf;
+}
