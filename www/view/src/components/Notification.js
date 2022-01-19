@@ -311,6 +311,7 @@ class Notification extends React.Component {
               anchorEl={menuAnchor}
               open={!!menuAnchor}
               onClose={e => this.setState({ menuAnchor: null })}
+              transitionDuration={0}
             >
               <MenuItem onClick={e => this.setNotificationRead('')}>{intl.formatMessage({ id: 'message.tagAllRead' })}</MenuItem>
               <MenuItem onClick={e => this.deleteNotification('')}>{intl.formatMessage({ id: 'message.deleteAllReaded' })}</MenuItem>

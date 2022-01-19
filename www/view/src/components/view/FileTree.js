@@ -21,6 +21,7 @@ import CommitItem from 'APPSRC/components/unit/CommitItem'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { plFile, psFolder, plSearch } from '@pgyer/icons'
 import FormattedTime from 'APPSRC/components/unit/FormattedTime'
+import RepositoryEmpty from 'APPSRC/components/unit/RepositoryEmpty'
 import RepositoryData from 'APPSRC/data_providers/RepositoryData'
 
 // helpers
@@ -36,10 +37,10 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   linkObjectName: {
-    color: theme.palette.text.main
+    color: theme.palette.text.main + ' !important'
   },
   linkCommitMessage: {
-    color: theme.palette.text.light
+    color: theme.palette.text.light + ' !important'
   },
   commit: {
     '& > li': {
@@ -350,14 +351,7 @@ class FileTree extends React.Component {
         <Grid container className={classes.loading}><CircularProgress /></Grid>
       </Grid>}
 
-      {!this.state.pending && (!this.state.objectData.object || this.state.objectData.object.length === 0) && <Grid item xs={12}>
-        <EmptyListNotice
-          imageName={'branches-empty.png'}
-          title={intl.formatMessage({ id: 'message.repository_S_empty' }, { s: intl.formatMessage({ id: 'label.file' }) })}
-          pending={this.state.pending}
-        />
-      </Grid>}
-
+      {!this.state.pending && (!this.state.objectData.object || this.state.objectData.object.length === 0) && <RepositoryEmpty />}
     </Grid>
   }
 }

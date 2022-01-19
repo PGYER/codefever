@@ -14,9 +14,6 @@ spl_autoload_register(function ($className) {
     } else if (preg_match( '/^service\\\\EventHandler\\\\(\w+)$/', $className, $matches)) {
         // load event handler
         $file = APPPATH . 'event_handlers/'.$matches[1].'.php';
-    } else if (preg_match( '/^service\\\\QueryHandler\\\\(\w+)$/', $className, $matches)) {
-        // load event handler
-        $file = APPPATH . 'query_handlers/'.$matches[1].'.php';
     } else if(preg_match( '/^service/', $className)) {
         // load library file
         $file = APPPATH . 'libraries/' . str_replace('\\', '/', $className);

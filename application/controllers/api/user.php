@@ -108,15 +108,21 @@ class User extends Base
         $userInfo = Request::parse()->authData['userData'];
         $data = Request::parse()->parsed;
         $uKey = $userInfo['u_key'];
-        $field = $data['field'];
-        $value = $data['value'];
 
-        if (in_array($field, ['name', 'email']) && !$value) {
+        $name = $data['name'];
+        $email = $data['email'];
+        $team = $data['team'];
+        $role = $data['role'];
+
+        if (!$name || !$email) {
             Response::reject(0x0201);
         }
 
         $updateData = [];
-        $updateData['u_' . $field] = $value;
+        $updateData['u_name'] = $name;
+        $updateData['u_email'] = $email;
+        $updateData['u_team'] = $team;
+        $updateData['u_role'] = $role;
         $updateData['u_updated'] = date("Y-m-d H:i:s");
         $this->db->where('u_key', $uKey);
         $this->db->update('users', $updateData);

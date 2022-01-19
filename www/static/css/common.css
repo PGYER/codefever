@@ -25,6 +25,7 @@ div {
 /* common */
 .bg-F5F8FB { background-color: #f5f8fb; }
 .bg-F3F5F6 { background-color: #F3F5F6; }
+.bg-EFF3F8 { background-color: #EFF3F8; }
 
 .color-000 { color: #000; };
 .color-FFFFFF { color: white; }
@@ -48,6 +49,7 @@ div {
 }
 
 .ml-10 { margin-left: 10px; }
+.ml-16 { margin-left: 16px; }
 .ml-20 { margin-left: 20px; }
 .ml-30 { margin-left: 30px; }
 .ml-40 { margin-left: 40px; }

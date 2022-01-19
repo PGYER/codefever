@@ -19,6 +19,7 @@ const data = {
   url: 'URL',
   slug: 'Slug',
   avatar: 'Avatar',
+  icon: 'Icon',
   joinedAt: 'Joined In',
   unknown: 'Unknown',
   all: 'All',
@@ -110,7 +111,8 @@ const data = {
   doc: 'DOC',
   adminArea: 'Admin Area',
 
-  edit: 'Edit'
+  edit: 'Edit',
+  confirm: 'Confirm'
 }
 
 export default { ...data, __namespace__: 'phrase' }

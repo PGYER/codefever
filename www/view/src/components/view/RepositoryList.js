@@ -29,6 +29,7 @@ class RepositoryList extends React.Component {
   render () {
     const { currentUserInfo, currentGroupKey, currentGroupConfig, repositoryList, repositoryListPending, match, intl } = this.props
 
+    repositoryList.sort((item1, item2) => item2.updated - item1.updated)
     let finalList = repositoryList.filter(FilterGenerator.withPermission(UAC.PermissionCode.REPO_READ))
     const tabs = [
       intl.formatMessage({ id: 'label.all' }),

@@ -18,16 +18,15 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { plMerge, plCheck, psConfirm, plAddAlt, plTrash } from '@pgyer/icons'
+import { plMerge, plCheck, plMerged, plForbid, plConfirm, plAddAlt, plTrash } from '@pgyer/icons'
 import MergeRequestDiff from 'APPSRC/components/unit/MergeRequestDiff'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
 import RepositoryData from 'APPSRC/data_providers/RepositoryData'
 import FormattedTime from 'APPSRC/components/unit/FormattedTime'
 import InlineMarker from 'APPSRC/components/unit/InlineMarker'
 import ActivityItem from 'APPSRC/components/unit/ActivityItem'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 import CommitItem from 'APPSRC/components/unit/CommitItem'
 import TitleList from 'APPSRC/components/unit/TitleList'
 import TabHeader from 'APPSRC/components/unit/TabHeader'
@@ -823,8 +822,9 @@ class MergeRequestDetail extends React.Component {
           <Grid item xs={6}>
             <Typography variant='h6' component='div'>
               {mergeRequestInfo.title}&nbsp;&nbsp;&nbsp;&nbsp;
-              {mergeRequestInfo.status === Constants.mergeRequestStatus.merged && <React.Fragment><InlineMarker color='success' icon={psConfirm} text={intl.formatMessage({ id: 'message.merged' })} />&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}
-              {mergeRequestInfo.status === Constants.mergeRequestStatus.closed && <React.Fragment><InlineMarker color='error' icon={faTimesCircle} text={intl.formatMessage({ id: 'message.closed' })} />&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}
+              {mergeRequestInfo.status === Constants.mergeRequestStatus.open && <React.Fragment><InlineMarker color='success' background={false} icon={plConfirm} text={intl.formatMessage({ id: 'message.opened' })} />&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}
+              {mergeRequestInfo.status === Constants.mergeRequestStatus.merged && <React.Fragment><InlineMarker color='info' background={false} icon={plMerged} text={intl.formatMessage({ id: 'message.merged' })} />&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}
+              {mergeRequestInfo.status === Constants.mergeRequestStatus.closed && <React.Fragment><InlineMarker color='warning' background={false} icon={plForbid} text={intl.formatMessage({ id: 'message.closed' })} />&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}
             </Typography>
             {mergeRequestInfo.description && <Typography variant='body1' component='div' className={classes.description}>{mergeRequestInfo.description}</Typography>}
           </Grid>
@@ -877,7 +877,7 @@ class MergeRequestDetail extends React.Component {
                 hasMergeConflict && <Grid item xs={12}>
                   <Typography variant='h6' component='div' gutterBottom>
                     <Typography component='span'>{intl.formatMessage({ id: 'message.mergeConflictTitle' })}</Typography> &nbsp;
-                    <ShowHelper docID='ee0a3dc6d34828a527e2ca7ac1df3892' type='icon' />
+                    <ShowHelper doc='/git/merge_branch.md' type='icon' />
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
                     {intl.formatMessage({ id: 'message.mergeConflictTip1' })}
@@ -978,6 +978,7 @@ class MergeRequestDetail extends React.Component {
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     getContentAnchorEl={null}
+                    transitionDuration={0}
                     onClose={e => this.setState({ reviewersMenu: null })}
                   >
                     <MenuItem disabled className={classes.reviewersMenuItem}>

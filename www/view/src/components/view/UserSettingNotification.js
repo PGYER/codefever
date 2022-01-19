@@ -93,7 +93,8 @@ const styles = (theme) => ({
   header: {
     lineHeight: theme.spacing(5) + 'px',
     marginBottom: theme.spacing(4),
-    borderBottom: '1px solid ' + theme.palette.border
+    borderBottom: '1px solid ' + theme.palette.border,
+    fontSize: '18px'
   },
   content: {
     paddingBottom: theme.spacing(4),
@@ -259,7 +260,6 @@ class UserSettingNotification extends React.Component {
     const { dispatchEvent, intl } = this.props
     this.setState({ pending: false })
     if (!data.code) {
-      dispatchEvent(EventGenerator.NewNotification(intl.formatMessage({ id: open ? 'message.opened' : 'message.closed' }), 0))
       isUser ? this.reloadUserInfo() : this.getData()
     } else {
       dispatchEvent(EventGenerator.NewNotification(intl.formatMessage({ id: 'message.error.updateFail' }), 2))
@@ -364,7 +364,7 @@ class UserSettingNotification extends React.Component {
         ? <React.Fragment>
           {currentUserInfo.id && <React.Fragment>
             <Grid container className={classes.content}>
-              <Grid item xs={10}>
+              <Grid item xs={5}>
                 <Typography variant='subtitle1' component='div' className={classes.subtitle}>{intl.formatMessage({ id: 'message.mergeRequestNotification' })}</Typography>
                 <Typography variant='body2' component='span' className={classes.desc}>{intl.formatMessage({ id: 'message.mergeRequestNotificationDesc' })}</Typography>
               </Grid>
@@ -376,7 +376,7 @@ class UserSettingNotification extends React.Component {
               </Grid>
             </Grid>
             <Grid container className={classes.content}>
-              <Grid item xs={10}>
+              <Grid item xs={5}>
                 <Typography variant='subtitle1' component='div' className={classes.subtitle}>{intl.formatMessage({ id: 'message.emailNotification' })}</Typography>
                 <Typography variant='body2' component='span' className={classes.desc}>{intl.formatMessage({ id: 'message.emailNotificationDesc' })}</Typography>
               </Grid>
@@ -389,7 +389,9 @@ class UserSettingNotification extends React.Component {
             </Grid>
           </React.Fragment>
           }
-          <Typography variant='subtitle1' component='div' className={classes.title}>{intl.formatMessage({ id: 'label.repository' })}</Typography>
+          <Grid item xs={12}>
+            <Typography variant='subtitle1' component='div' className={classes.title}>{intl.formatMessage({ id: 'label.repository' })}</Typography>
+          </Grid>
           {groupList.length > 0 && repositoryList.length > 0 && groupList.map((item, index) => {
             const final = [
               ['auto', 'auto', '50px'],
@@ -399,10 +401,10 @@ class UserSettingNotification extends React.Component {
               final.push(this.getTableRow(repo, classes.span))
               return true
             })
-            return <Grid item key={index} xs={12} className={[classes.title, groupFold[item.id] || final.length === 2 ? classes.tableFold : ''].join(' ')}><TableList data={final} /></Grid>
+            return <Grid item key={index} xs={7} className={[classes.title, groupFold[item.id] || final.length === 2 ? classes.tableFold : ''].join(' ')}><TableList data={final} /></Grid>
           })
           }
-          {otherRepository && <Grid item xs={12} className={[classes.title, classes.otherRepository].join(' ')}><TableList data={this.getRepositoryTable()} /></Grid>}
+          {otherRepository && <Grid item xs={7} className={[classes.title, classes.otherRepository].join(' ')}><TableList data={this.getRepositoryTable()} /></Grid>}
         </React.Fragment>
         : <Grid container className={classes.loading}>
           <CircularProgress />

@@ -48,6 +48,8 @@ const data = {
   fileContentOversize: 'File Size Exceed limitation, Check It Out Localy',
   fileTypeNotSupport: 'Binary File Can Not Shown',
   diffFileToMany: ' The maximum number of files allowed to be displayed is exceeded, please check locally',
+  createNewRepository: 'create a new repository on the command line',
+  pushRepository: 'push an existing repository from the command line',
 
   _S_empty: 'Please Input {s}',
   repository_S_empty: 'No {s} In Repository',

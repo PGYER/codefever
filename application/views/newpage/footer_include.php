@@ -5,6 +5,7 @@
 <script src="/static/<?php echo RELEASENUMBER;?>/script/scrollAnimation.js" type="text/javascript"></script>
 <script src="/static/vendor/intltel/js/intlTelInput.js"></script>
 <script src="/static/vendor/toastr/toastr.js" type="text/javascript"></script>
+<script src="/static/<?php echo RELEASENUMBER;?>/script/marked.min.js" type="text/javascript"></script>
 
 <script>
   function pregEmail(email) {

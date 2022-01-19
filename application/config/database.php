@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = YAML_MYSQL_HOST;
+$db['default']['hostname'] = YAML_MYSQL_HOST . ':' . YAML_MYSQL_PORT;
 $db['default']['port'] = YAML_MYSQL_PORT;
 $db['default']['username'] = YAML_MYSQL_USERNAME;
 $db['default']['password'] = YAML_MYSQL_PASSWORD;

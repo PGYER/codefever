@@ -58,13 +58,17 @@ class Internal extends Base
 
                     // search member role in repository and group
                     $roleID = $this->service->getRepositoryRole($repositoryData['r_key'], $data['userID']);
-                    $action = $roleID && UserAccessController::checkRepositoryAction($roleID, $data['action']);
 
-                    Response::output([
-                        'uid' => implode('|', [$data['userID'], $repositoryData['r_key']]),
-                        'path' => $this->_storagePath . $repositoryData['r_path'],
-                        'action' => $action ? '1' : '0',
-                    ]);
+                    if ($roleID) {
+                        if (UserAccessController::checkRepositoryAction($roleID, $data['action'])) {
+                            Response::output([
+                                'uid' => implode('|', [$data['userID'], $repositoryData['r_key']]),
+                                'path' => $this->_storagePath . $repositoryData['r_path'],
+                            ]);
+                        }
+                    }
+                    // member not found
+                    Response::reject(0x0106);
                 }
             }
             // group or repository not found

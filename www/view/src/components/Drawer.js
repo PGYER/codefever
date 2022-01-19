@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { plMenuCollapse } from '@pgyer/icons'
 
 // component
 import Drawer from '@material-ui/core/Drawer'
 import DrawerList from 'APPSRC/components/DrawerList'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { plMenuCollapse } from '@pgyer/icons'
 
 import DrawerConfig from 'APPSRC/config/DrawerConfig.js'
 
@@ -35,7 +35,7 @@ const styles = theme => ({
   },
   drawerExpandControl: {
     position: 'absolute',
-    top: '19px',
+    top: theme.spacing(12),
     right: '-12px',
     fontSize: '14px',
     color: '#64728C',
@@ -56,41 +56,47 @@ const styles = theme => ({
 })
 
 class Side extends React.Component {
-  render () {
-    const { classes, expandStatus, toggleDrawer, currentGroupConfig, currentRepositoryConfig } = this.props
+  drawer (drawerConfig, mode) {
+    const { classes, expandStatus, toggleDrawer } = this.props
 
     return <div className={classes.drawerContainer}>
-      <div className={classes.drawerExpandControl} onClick={toggleDrawer}>
-        <FontAwesomeIcon icon={plMenuCollapse} className={expandStatus ? '' : classes.transform} />
-      </div>
-      <Drawer
-        open
-        variant='permanent'
-        classes={{ paper: classes.drawerPaper }}
-        className={[classes.container, expandStatus ? classes.containerExpanded : classes.containerCollapsed].join(' ')}
-      >
-        <Switch>
-          <Route path='/(settings|mergerequests)'>
-            <DrawerList drawerConfig={DrawerConfig.makeDrawerConfig()} mode='default' />
-          </Route>
-          <Route path='/admin'>
-            <DrawerList drawerConfig={DrawerConfig.makeAdminDrawerConfig()} mode='admin' />
-          </Route>
-          <Route path='/(repositories|groups)/(new|fork|forklist)'>
-            <DrawerList drawerConfig={DrawerConfig.makeDrawerConfig()} mode='default' />
-          </Route>
-          <Route path='/groups/:groupName([A-Za-z0-9_]{5,})'>
-            <DrawerList drawerConfig={DrawerConfig.makeGroupDrawerConfig(currentGroupConfig)} mode='group' />
-          </Route>
-          <Route path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)'>
-            <DrawerList drawerConfig={DrawerConfig.makeRepositoryDrawerConfig(currentRepositoryConfig)} mode='repository' />
-          </Route>
-          <Route>
-            <DrawerList drawerConfig={DrawerConfig.makeDrawerConfig()} mode='default' />
-          </Route>
-        </Switch>
-      </Drawer>
-    </div>
+            <div
+              className={classes.drawerExpandControl}
+              onClick={toggleDrawer}
+            >
+              <FontAwesomeIcon icon={plMenuCollapse} className={expandStatus ? '' : classes.transform} />
+            </div>
+            <Drawer
+              open
+              variant='permanent'
+              classes={{ paper: classes.drawerPaper }}
+              className={[classes.container, expandStatus ? classes.containerExpanded : classes.containerCollapsed].join(' ')}
+            >
+              <DrawerList drawerConfig={drawerConfig} mode={mode} />
+            </Drawer>
+          </div>
+  }
+
+  render () {
+    const { currentGroupConfig, currentRepositoryConfig } = this.props
+
+    return <Switch>
+      <Route path='/settings'>
+        {this.drawer(DrawerConfig.makeDrawerConfig(), 'default')}
+      </Route>
+      <Route path='/mergerequests' />
+      <Route path='/repositories' />
+      <Route path='/groups/new' />
+      <Route path='/admin'>
+        {this.drawer(DrawerConfig.makeAdminDrawerConfig(), 'admin')}
+      </Route>
+      <Route path='/groups/:groupName([A-Za-z0-9_]{5,})'>
+        {this.drawer(DrawerConfig.makeGroupDrawerConfig(currentGroupConfig), 'group')}
+      </Route>
+      <Route path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)'>
+        {this.drawer(DrawerConfig.makeRepositoryDrawerConfig(currentRepositoryConfig), 'repository')}
+      </Route>
+    </Switch>
   }
 }
 
@@ -98,8 +104,8 @@ Side.propTypes = {
   expandStatus: PropTypes.bool.isRequired,
   currentGroupConfig: PropTypes.object.isRequired,
   currentRepositoryConfig: PropTypes.object.isRequired,
-  toggleDrawer: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  toggleDrawer: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

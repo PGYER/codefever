@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { plTrash, plCheck, plEdit, plClose } from '@pgyer/icons'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 import TableList from 'APPSRC/components/unit/TableList'
 import UserData from 'APPSRC/data_providers/UserData'
 
@@ -34,7 +34,8 @@ const styles = (theme) => ({
   header: {
     lineHeight: theme.spacing(5) + 'px',
     marginBottom: theme.spacing(4),
-    borderBottom: '1px solid ' + theme.palette.border
+    borderBottom: '1px solid ' + theme.palette.border,
+    fontSize: '18px'
   },
   title: {
     lineHeight: theme.spacing(3) + 'px',
@@ -443,17 +444,17 @@ class UserSettingEmail extends React.Component {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <Typography variant='subtitle1' component='div' className={classes.title}>{intl.formatMessage({ id: 'message.myEmail' })}</Typography>
           <Typography variant='body2' component='div'>
             {intl.formatMessage({ id: 'message.myEmailDescription' })} &nbsp;
-            <ShowHelper type='icon' docID='2411cf176aa198cf701a5d422d70a58c' />
+            <ShowHelper type='icon' doc='/common/multiple_email.md' />
           </Typography>
         </Grid>
-        <Grid item xs={4} align='right'>
+        <Grid item xs={2} align='right'>
           <Button variant='contained' color='primary' className={classes.create} disabled={pending} onClick={e => this.createCommitEmailForm()}>{intl.formatMessage({ id: 'message.addEmail' })}</Button>
         </Grid>
-        <Grid item xs={12} className={classes.table}>
+        <Grid item xs={8} className={classes.table}>
           { emails !== null
             ? <TableList data={this.getTableData()} />
             : <Grid container className={classes.loading}>
