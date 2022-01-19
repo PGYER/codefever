@@ -94,10 +94,7 @@ class UserSettingSSHKey extends React.Component {
       {
         name: 'key',
         exceptionCode: 0x040D,
-        errorMessage: this.props.intl.formatMessage(
-          { id: 'message.error._S_duplicate' },
-          { s: this.props.intl.formatMessage({ id: 'label.SSHKey' }) }
-        )
+        errorMessage: this.props.intl.formatMessage({ id: 'message.error.sshKeyDuplicate' })
       }
     ])
   }

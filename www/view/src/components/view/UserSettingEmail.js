@@ -444,17 +444,17 @@ class UserSettingEmail extends React.Component {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <Typography variant='subtitle1' component='div' className={classes.title}>{intl.formatMessage({ id: 'message.myEmail' })}</Typography>
           <Typography variant='body2' component='div'>
             {intl.formatMessage({ id: 'message.myEmailDescription' })} &nbsp;
             <ShowHelper type='icon' doc='/common/multiEmail.md' />
           </Typography>
         </Grid>
-        <Grid item xs={4} align='right'>
+        <Grid item xs={2} align='right'>
           <Button variant='contained' color='primary' className={classes.create} disabled={pending} onClick={e => this.createCommitEmailForm()}>{intl.formatMessage({ id: 'message.addEmail' })}</Button>
         </Grid>
-        <Grid item xs={12} className={classes.table}>
+        <Grid item xs={8} className={classes.table}>
           { emails !== null
             ? <TableList data={this.getTableData()} />
             : <Grid container className={classes.loading}>

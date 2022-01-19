@@ -39,6 +39,7 @@ const styles = theme => ({
     paddingTop: theme.spacing(10)
   },
   lineNumber: {
+    lineHeight: theme.spacing(2) + 'px',
     width: theme.spacing(4),
     padding: '0 ' + theme.spacing(1) + 'px',
     textAlign: 'right',

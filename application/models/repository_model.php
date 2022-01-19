@@ -915,7 +915,8 @@ class Repository_model extends CI_Model
             'r_display_name' => $displayName,
             'r_name' => $name,
             'r_path' => '/' . UUID::getKey(),
-            'r_description' => $description
+            'r_description' => $description,
+            'r_updated' => date('Y-m-d H:i:s'),
         ];
 
         $result = $this->db->insert('repositories', $insertData);
@@ -2067,6 +2068,7 @@ class Repository_model extends CI_Model
         $this->db->from('repositories');
 
         $keyword && $this->db->like('r_display_name', $keyword);
+        $this->db->where('r_status', COMMON_STATUS_NORMAL);
 
         if ($count) {
             return $this->db->count_all_results();

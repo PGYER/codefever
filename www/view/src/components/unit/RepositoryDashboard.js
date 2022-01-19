@@ -131,7 +131,7 @@ class RepositoryDashboard extends Component {
                       : '' }
                   </Typography>
                   <Typography variant='caption' component='div' className={classes.subtext}>
-                    {intl.formatMessage({ id: 'label.repositoryID' }) }: {repositoryConfig.repository.id}
+                    {repositoryConfig.repository.description}
                   </Typography>
                 </Grid>
               </Grid>

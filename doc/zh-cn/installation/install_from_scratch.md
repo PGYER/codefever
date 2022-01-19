@@ -19,6 +19,8 @@
 
 整个安装过程需要使用 `root` 操作系统用户来完成。
 
+> `步骤1` - `步骤8` 均为软件环境安装步骤。如果你的操作已经具备当前步骤的软件或环境，此步骤可以跳过。
+
 ### 1. 准备操作系统环境
 
 选择合适的 `Linux` 发行版本，推荐使用 `CentOS 7.x`。
@@ -154,7 +156,7 @@ corepack enable
 		
 ### 8. 安装 MySQL/MariaDB (无需编译, 镜像源安装)
 
-MySQL 不需要单独安装，直接使用系统自带软件理工具安装软件包即可。需要安装于 `MySQL 5.7` 以上的相当版本。
+MySQL 不需要单独安装，直接使用系统自带软件工具安装软件包即可。需要安装于 `MySQL 5.7` 以上的相当版本。
 
 去官网按照指导使用镜像源安装二进制版本 (https://mariadb.org/download/?t=repo-config)，如果你使用使用云数据库，你可以跳过此步骤。
 
@@ -162,15 +164,21 @@ MySQL 不需要单独安装，直接使用系统自带软件理工具安装软�
 		
 *当设置 `root` 密码为 `123456` 时，不需要在下一步中修改 `env.yaml` 中的数据库设置。
 
+如果你使用 `MySQL 5.7` 版本数据，需要修改 `SQL MODE` 变量，否则创建数据库时会报错，如果使用 `MariaDB` 可以忽略此选项。
+
+```SQL		
+set global sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+```
+
 ### 9. 下载源码并安装
 
 去 `Github` 上下载源码并安装 `/data/www/codefever-comminuty` 目录下
 
 ```shell
-		mkdir /data/www
-		cd /data/www
-		git clone https://github.com/PGYER/codefever.git codefever-community
-		cd codefever-community
+	mkdir /data/www
+	cd /data/www
+	git clone https://github.com/PGYER/codefever.git codefever-community
+	cd codefever-community
 ```
 
 * 如果 `Github` 的 `HTTP` 服务访问速度较慢，可以尝试使用 `SSH` 服务（需要提前设置 `SSH Key`）

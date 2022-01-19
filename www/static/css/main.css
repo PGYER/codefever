@@ -212,6 +212,7 @@ section {
 
 /* doc */
 .doc-left {
+    padding-bottom: 32px;
     border-right: 1px solid #DEE2EC;
 }
 .doc-left,

@@ -1,7 +1,16 @@
-[安装](/doc/cn/installation)
 
-[常见问题](/doc/cn/common)
+[开始](start)
 
-[Git 基本操作](/doc/cn/git)
+[安装](installation)
 
-[用户手册](/doc/cn/manual)
+[仓库](repository)
+
+[仓库组](repository_group)
+
+[管理员设置](admin)
+
+[Git](git)
+
+[常见问题](common)
+
+[开源贡献](contribute)

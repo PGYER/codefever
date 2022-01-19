@@ -45,6 +45,9 @@ function makeTheme (originTheme) {
         },
         elevation2: {
           boxShadow: '0px 8px 16px 0px rgb(63 70 62 / 20%)'
+        },
+        elevation8: {
+          boxShadow: '0 10px 40px rgb(14 32 66 / 15%), 0 1px 2px rgb(14 32 66 / 5%)'
         }
       }
     }

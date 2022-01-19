@@ -42,17 +42,23 @@ const styles = theme => ({
 class RepositoryEmpty extends React.Component {
   render () {
     const { currentRepositoryConfig, currentUserInfo, classes, intl } = this.props
+
+    if (!currentRepositoryConfig.repository) {
+      return null
+    }
+
+    const remoteCode = 'git remote add origin ' + currentUserInfo.host + '/' + currentRepositoryConfig.group.name + '/' + currentRepositoryConfig.repository.name + '.git'
     const createCode = [
       'echo "# ' + currentRepositoryConfig.repository.name + '" >> README.md',
       'git init',
       'git add README.md',
       'git commit -m "first commit"',
       'git branch -M main',
-      'git remote add origin ' + currentUserInfo.host + currentRepositoryConfig.group.name + '/' + currentRepositoryConfig.repository.name + '.git',
+      remoteCode,
       'git push -u origin main'
     ]
     const pushCode = [
-      'git remote add origin ' + currentUserInfo.host + currentRepositoryConfig.group.name + '/' + currentRepositoryConfig.repository.name + '.git',
+      remoteCode,
       'git branch -M main',
       'git push -u origin main'
     ]

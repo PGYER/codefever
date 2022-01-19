@@ -31,8 +31,7 @@ const styles = theme => ({
   menu: {
     width: theme.spacing(30),
     marginTop: theme.spacing(1),
-    padding: 0,
-    boxShadow: '0 10px 40px rgb(14 32 66 / 15%), 0 1px 2px rgb(14 32 66 / 5%)'
+    padding: 0
   },
   list: {
     '& > li': {

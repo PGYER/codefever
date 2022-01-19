@@ -45,7 +45,8 @@ const data = {
 
   inputNewEmail: 'Input New Email',
   bindEmailFirst: 'An Login Email Is Required When Bind Account Of Other Platform',
-  wechatHasbound: 'This Account Has Been Used, Please Select Another Account And Retry'
+  wechatHasbound: 'This Account Has Been Used, Please Select Another Account And Retry',
+  sshKeyDuplicate: 'This SSH Key has already been added, or in another user'
 }
 
 export default { ...data, __namespace__: 'message.error' }

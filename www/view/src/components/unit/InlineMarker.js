@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const styles = (theme) => ({
   root: {
-    padding: '0 ' + theme.spacing(0.5) + 'px',
+    padding: theme.spacing(0.5) + 'px',
     lineHeight: 1.5,
     fontSize: theme.spacing(1.5) + 'px',
     fontWeight: 'normal',
@@ -46,7 +46,7 @@ class InlineMarker extends React.Component {
         <div className={classes.icon}><FontAwesomeIcon icon={icon} /></div>
         {text}
       </span>
-      : <span className={[classes.root, 'text-overflow'].join(' ')} style={{ backgroundColor: bg ? palette.lighter : '', color: palette.main }}>
+      : <span className={classes.root} style={{ backgroundColor: bg ? palette.lighter : '', color: palette.main }}>
         {text}
       </span>
   }

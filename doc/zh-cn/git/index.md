@@ -1,13 +1,15 @@
-[克隆仓库到本地](/doc/cn/git/clone.md)
+[克隆仓库到本地](clone.md)
 
-[创建第一个分支](/doc/cn/git/createBranch.md)
+[创建第一个分支](create_branch.md)
 
-[推送一个新分支](/doc/cn/git/pushBranch.md)
+[推送一个新分支](push_branch.md)
 
-[还原提交的改动](/doc/cn/git/revert.md)
+[还原提交的改动](revert.md)
 
-[回退文件到指定版本](/doc/cn/git/checkout.md)
+[回退文件到指定版本](checkout.md)
 
-[远程仓库源管理](/doc/cn/git/remote.md)
+[远程仓库源管理](remote.md)
 
-[本地的分支合并](/doc/cn/git/mergeBranch.md)
+[本地的分支合并](merge_branch.md)
+
+[Git 常用命令参考](git_command_reference.md)

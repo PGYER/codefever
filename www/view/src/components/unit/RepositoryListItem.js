@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { plFork, plMember, plMerge, plSetting } from '@pgyer/icons'
 import { makeLink } from 'APPSRC/helpers/VaribleHelper'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
+import FormattedTime from 'APPSRC/components/unit/FormattedTime'
 import InlineMarker from 'APPSRC/components/unit/InlineMarker'
 import Constants from 'APPSRC/config/Constants'
 import UAC from 'APPSRC/config/UAC'
@@ -45,6 +46,11 @@ const styles = theme => ({
     height: theme.spacing(4),
     marginRight: '-' + theme.spacing(1) + 'px',
     border: '1px solid ' + theme.palette.border
+  },
+  counts: {
+    '& > div': {
+      width: theme.spacing(6)
+    }
   }
 })
 
@@ -68,7 +74,7 @@ class RepositoryCard extends Component {
             }
           </Grid>
           <Grid item xs={8}>
-            <Typography variant='body1' component='div' className='text-overflow' style={{ lineHeight: '22px', height: '22px' }}>
+            <Typography variant='body1' component='div' style={{ lineHeight: '22px', height: '22px', marginTop: (repositoryInfo.description ? 0 : 9) + 'px' }}>
               { repositoryInfo.group.displayName + '/' }
               <Typography variant='subtitle1' component='span'>
                 { repositoryInfo.displayName }
@@ -76,13 +82,15 @@ class RepositoryCard extends Component {
                 <InlineMarker color={repositoryInfo.role === UAC.Role.OWNER ? 'containedInfo' : 'info'} text={intl.formatMessage({ id: 'label.roleID_' + repositoryInfo.role })} />
               </Typography>
             </Typography>
-            <Typography variant='caption' component='div' className='text-overflow' style={{ lineHeight: '20px', height: '18px' }}>
-              { repositoryInfo.description }
-            </Typography>
+            {
+              repositoryInfo.description && <Typography variant='caption' component='div' className='text-overflow' style={{ lineHeight: '20px', height: '18px' }}>
+                { repositoryInfo.description }
+              </Typography>
+            }
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={5} md={3} container alignItems='center' justifyContent='space-around'>
+      <Grid item xs={5} md={3} container alignItems='center' className={classes.counts}>
         <Grid item>
           <Typography variant='body2' component='span' style={{ lineHeight: 1 }}>
             <FontAwesomeIcon icon={plFork} />&nbsp;&nbsp;
@@ -101,19 +109,12 @@ class RepositoryCard extends Component {
             {repositoryInfo.members.length}
           </Typography>
         </Grid>
-        <Grid item />
       </Grid>
       <Hidden mdDown>
         <Grid item md={3} container alignItems='center'>
-          { repositoryInfo.members.map((item, key) => {
-            return key > 7
-              ? false
-              : <Grid key={key} item>
-                <Avatar src={Constants.HOSTS.PGYER_AVATAR_HOST + item.icon} className={classes.avatar}>
-                  { item.name && item.name[0].toUpperCase() }
-                </Avatar>
-              </Grid>
-          }) }
+          <Typography variant='body2' component='span'>
+            {intl.formatMessage({ id: 'label.updatedIn' })}: <FormattedTime timestamp={repositoryInfo.updated} />
+          </Typography>
         </Grid>
       </Hidden>
       <Grid item xs={1} style={{ alignSelf: 'center' }}>
