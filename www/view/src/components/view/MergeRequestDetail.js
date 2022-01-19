@@ -877,7 +877,7 @@ class MergeRequestDetail extends React.Component {
                 hasMergeConflict && <Grid item xs={12}>
                   <Typography variant='h6' component='div' gutterBottom>
                     <Typography component='span'>{intl.formatMessage({ id: 'message.mergeConflictTitle' })}</Typography> &nbsp;
-                    <ShowHelper doc='/git/mergeBranch.md' type='icon' />
+                    <ShowHelper doc='/git/merge_branch.md' type='icon' />
                   </Typography>
                   <Typography variant='body2' component='div' gutterBottom>
                     {intl.formatMessage({ id: 'message.mergeConflictTip1' })}
@@ -978,6 +978,7 @@ class MergeRequestDetail extends React.Component {
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     getContentAnchorEl={null}
+                    transitionDuration={0}
                     onClose={e => this.setState({ reviewersMenu: null })}
                   >
                     <MenuItem disabled className={classes.reviewersMenuItem}>

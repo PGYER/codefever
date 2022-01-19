@@ -53,14 +53,18 @@ const styles = (theme) => ({
     fontSize: '12px'
   },
   btn: {
-    marginLeft: theme.spacing(3)
+    marginLeft: theme.spacing(1)
   },
   border: {
     borderBottom: '1px solid ' + theme.palette.border,
     marginBottom: theme.spacing(3)
   },
   icon: {
-    color: theme.palette.text.light
+    color: theme.palette.text.light,
+    '& svg': {
+      width: '16px !important',
+      height: '16px !important'
+    }
   },
   ok: {
     '& svg': {
@@ -68,7 +72,7 @@ const styles = (theme) => ({
     }
   },
   cancel: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(1),
     '& svg': {
       width: '14px !important',
       height: '14px !important',
@@ -188,7 +192,7 @@ class RepositorySettingBranch extends React.Component {
     })
 
     return [
-      ['30%', '200px', '200px', 'auto'],
+      ['150px', '200px', '200px', '150px'],
       ['label.branchRule', 'label.allowPush', 'label.allowMerge', 'label.operating'],
       ...final
     ]
@@ -494,7 +498,7 @@ class RepositorySettingBranch extends React.Component {
           }
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={7}>
         <Grid container>
           <Grid item xs={8}>
             <Typography variant='subtitle1' component='div' className={classes.title}>{intl.formatMessage({ id: 'label.protectedBranch' })}</Typography>

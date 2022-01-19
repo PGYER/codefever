@@ -10,13 +10,17 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
+import Avatar from '@material-ui/core/Avatar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import { plCheck } from '@pgyer/icons'
 import FilterGenerator from 'APPSRC/helpers/FilterGenerator'
 import UAC from 'APPSRC/config/UAC'
 import { injectIntl } from 'react-intl'
+import Constants from 'APPSRC/config/Constants'
 
 // style
 const styles = theme => ({
@@ -43,27 +47,18 @@ const styles = theme => ({
       top: '10px'
     }
   },
-  icon: {
-    fontSize: theme.spacing(2) + 'px'
-  },
   listIcon: {
-    minWidth: theme.spacing(3),
+    width: theme.spacing(3),
     height: theme.spacing(3),
-    borderRadius: theme.spacing(0.5) + 'px',
-    display: 'inline-block',
-    marginRight: theme.spacing(1),
-    textAlign: 'center',
-    lineHeight: theme.spacing(3) + 'px',
-    backgroundColor: theme.palette.text.main,
-    color: '#fff'
-  },
-  activeListIcon: {
-    backgroundColor: theme.palette.primary.main
+    fontSize: theme.spacing(2) + 'px'
   },
   title: {
     color: theme.palette.text.lighter,
     fontSize: theme.spacing(1.5) + 'px',
     padding: theme.spacing(1) + 'px ' + theme.spacing(2) + 'px'
+  },
+  checked: {
+    color: theme.palette.primary.main
   }
 })
 
@@ -120,10 +115,14 @@ class GroupRepositoryMenu extends Component {
       .filter(FilterGenerator.withPermission(UAC.PermissionCode.REPO_READ))
       .map((item, key) => (
         <MenuItem key={'r' + key} onClick={(ev) => { this.getToRepository(item) }} >
-          <ListItemIcon className={[classes.listIcon, item.id === currentRepositoryKey ? classes.activeListIcon : ''].join(' ')}>
-            C
+          <ListItemIcon>
+            { item.icon
+              ? <Avatar variant='square' className={classes.listIcon} src={Constants.HOSTS.STATIC_AVATAR_PREFIX + item.icon} />
+              : <Avatar variant='square' className={classes.listIcon}>{item.name.substr(0, 1).toUpperCase()}</Avatar>
+            }
           </ListItemIcon>
           <ListItemText disableTypography primary={item.group.displayName + '/' + item.displayName} />
+          {item.id === currentRepositoryKey && <FontAwesomeIcon icon={plCheck} className={classes.checked} />}
         </MenuItem>)
       )
 
@@ -131,10 +130,14 @@ class GroupRepositoryMenu extends Component {
       .filter(FilterGenerator.withPermission(UAC.PermissionCode.REPO_READ))
       .map((item, key) => (
         <MenuItem key={'g' + key} onClick={(ev) => { this.getToGroup(item) }} >
-          <ListItemIcon className={[classes.listIcon, item.id === currentGroupKey ? classes.activeListIcon : ''].join(' ')}>
-            C
+          <ListItemIcon>
+            { item.icon
+              ? <Avatar variant='square' className={classes.listIcon} src={Constants.HOSTS.STATIC_AVATAR_PREFIX + item.icon} />
+              : <Avatar variant='square' className={classes.listIcon}>{item.name.substr(0, 1).toUpperCase()}</Avatar>
+            }
           </ListItemIcon>
           <ListItemText disableTypography primary={item.displayName} />
+          {item.id === currentGroupKey && !currentRepositoryKey && <FontAwesomeIcon icon={plCheck} className={classes.checked} />}
         </MenuItem>)
       )
 
@@ -191,12 +194,15 @@ class GroupRepositoryMenu extends Component {
           onClose={(ev) => { this.setState({ anchorElement: null }) }}
           PaperProps={{ className: classes.menu }}
           getContentAnchorEl={null}
+          transitionDuration={0}
           onMouseEnter={() => { this.setState({ enterMenu: true }) }}
           onMouseLeave={() => this.initAnchor()}
         >
           <Grid className={classes.title}>
-            { type === 'repository' && intl.formatMessage({ id: 'label.repository' })}
-            { type === 'group' && intl.formatMessage({ id: 'label.group' })}
+            <Typography variant='caption' component='div'>
+              { type === 'repository' && intl.formatMessage({ id: 'label.repository' })}
+              { type === 'group' && intl.formatMessage({ id: 'label.group' })}
+            </Typography>
           </Grid>
           { type === 'repository' && repositoryItems }
           { type === 'group' && GroupItems }

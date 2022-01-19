@@ -180,6 +180,7 @@ class RefList extends React.Component {
                 <SquareIconButton label='label.more' onClick={e => this.openRefItemMenu(refTitle + index, e)} icon={psMore} />
                 <Menu
                   anchorEl={this.state.anchor[refTitle + index]}
+                  transitionDuration={0}
                   open={!!this.state.anchor[refTitle + index]}
                   onClose={e => this.closeRefItemMenu(refTitle + index)}
                 >

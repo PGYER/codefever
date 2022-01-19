@@ -227,9 +227,8 @@ class GroupSettingGeneral extends React.Component {
             <Grid item xs={7}>
               <AvatarUploader
                 name='avatar'
-                variant='rounded'
                 appendData={{ group: currentGroupConfig.group.id }}
-                src={Constants.HOSTS.STATIC_AVATAR_PREFIX + currentGroupConfig.group.icon}
+                src={currentGroupConfig.group.icon ? (Constants.HOSTS.STATIC_AVATAR_PREFIX + currentGroupConfig.group.icon) : currentGroupConfig.group.name.substr(0, 1).toUpperCase()}
                 onUpdate={data => this.avatarUploaded(data)}
                 dataProvider={GroupData.uploadAvatar}
               />

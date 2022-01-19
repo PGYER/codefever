@@ -20,7 +20,7 @@ import UserOption from 'APPSRC/components/unit/UserOption'
 import withScrollTrigger from 'APPSRC/helpers/withScrollTrigger'
 import LanguageSelect from 'APPSRC/components/unit/LanguageSelect'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
-import { psAddAlt, plMerge, plSetting, plBell, plHelp, plRepair } from '@pgyer/icons'
+import { psAddAlt, plMerge, plBell, plHelp, plRepair } from '@pgyer/icons'
 import GroupRepositoryMenu from 'APPSRC/components/unit/GroupRepositoryMenu'
 
 // style
@@ -74,7 +74,8 @@ class Header extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      newMenuAnchor: null
+      newMenuAnchor: null,
+      helpMenuAnchor: null
     }
   }
 
@@ -99,9 +100,6 @@ class Header extends React.Component {
               <SquareIconButton label='label.mergeRequest' onClick={() => {
                 history.push('/mergerequests')
               }} icon={plMerge} className={classes.optionItem} />
-              <SquareIconButton label='label.setting' onClick={() => {
-                history.push('/settings')
-              }} icon={plSetting} className={classes.optionItem} />
             </Grid>
             <Grid item className={classes.options}>
               <SquareIconButton label='label.create' color='primary' onClick={e => this.setState({ newMenuAnchor: e.currentTarget })} icon={psAddAlt} className={classes.optionItem} />
@@ -112,6 +110,7 @@ class Header extends React.Component {
                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                 PaperProps={{ className: classes.menu }}
                 getContentAnchorEl={null}
+                transitionDuration={0}
                 open={Boolean(this.state.newMenuAnchor)}
                 onClose={e => this.setState({ newMenuAnchor: null })}
               >
@@ -136,7 +135,50 @@ class Header extends React.Component {
               </Menu>
               <SquareIconButton label='label.notification' icon={plBell} badge={currentUserInfo.unReadNotification} className={classes.optionItem} onClick={e => notificationOpenStatusToggle()} />
               <LanguageSelect className={classes.optionItem} />
-              <SquareIconButton label='label.doc' onClick={e => window.open('/doc/' + (currentLanguage === 'en-us' ? 'en' : 'cn'), '_blank')} icon={plHelp} className={classes.optionItem} />
+              <SquareIconButton label='label.help' onClick={e => this.setState({ helpMenuAnchor: e.currentTarget })} icon={plHelp} className={classes.optionItem} />
+              <Menu
+                id='help-menu'
+                anchorEl={this.state.helpMenuAnchor}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                PaperProps={{ className: classes.menu }}
+                getContentAnchorEl={null}
+                transitionDuration={0}
+                open={Boolean(this.state.helpMenuAnchor)}
+                onClose={e => this.setState({ helpMenuAnchor: null })}
+              >
+                <MenuItem onClick={() => {
+                  this.setState({ helpMenuAnchor: null })
+                  window.open('/doc/' + (currentLanguage === 'en-us' ? 'en' : 'cn'), '_blank')
+                }}>
+                  <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.help' })} />
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  this.setState({ helpMenuAnchor: null })
+                  window.open('https://codefever.pgyer.com/', '_blank')
+                }}>
+                  <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.support' })} />
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  this.setState({ helpMenuAnchor: null })
+                  window.open('https://github.com/', '_blank')
+                }}>
+                  <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.feedback' })} />
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={() => {
+                  this.setState({ helpMenuAnchor: null })
+                  window.open('https://github.com/', '_blank')
+                }}>
+                  <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.contribute' })} />
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  this.setState({ helpMenuAnchor: null })
+                  window.open('https://codefever.pgyer.com/', '_blank')
+                }}>
+                  <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.about' })} />
+                </MenuItem>
+              </Menu>
               {currentUserInfo.admin && <SquareIconButton label='label.adminArea' onClick={() => { history.push('/admin') }} icon={plRepair} className={classes.optionItem} />}
               <UserOption className={classes.optionItem} />
             </Grid>

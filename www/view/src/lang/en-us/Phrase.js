@@ -19,6 +19,7 @@ const data = {
   url: 'URL',
   slug: 'Slug',
   avatar: 'Avatar',
+  icon: 'Icon',
   joinedAt: 'Joined In',
   unknown: 'Unknown',
   all: 'All',

@@ -65,6 +65,7 @@ class LanguageSelect extends Component {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           PaperProps={{ className: classes.menu }}
           getContentAnchorEl={null}
+          transitionDuration={0}
           open={Boolean(anchorEl)}
           onClose={this.handleUserMenuClose}
         >

@@ -4,7 +4,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no minimal-ui">
-    <meta name="description" content="CodeFever - 轻量级版本控制系统">
+    <meta name="description" content="CodeFever Community">
     <meta name="keywords" content="CodeFever,subversion,git,svn,仓库,项目仓库,代码仓库,版本控制,版本控制系统,版本控制工具,轻量级版本控制系统" />
     <link rel="dns-prefetch" href="<?php echo YAML_HOST;?>">
 

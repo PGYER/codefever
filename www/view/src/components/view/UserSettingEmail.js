@@ -448,7 +448,7 @@ class UserSettingEmail extends React.Component {
           <Typography variant='subtitle1' component='div' className={classes.title}>{intl.formatMessage({ id: 'message.myEmail' })}</Typography>
           <Typography variant='body2' component='div'>
             {intl.formatMessage({ id: 'message.myEmailDescription' })} &nbsp;
-            <ShowHelper type='icon' doc='/common/multiEmail.md' />
+            <ShowHelper type='icon' doc='/common/multiple_email.md' />
           </Typography>
         </Grid>
         <Grid item xs={2} align='right'>

@@ -47,8 +47,8 @@ const data = {
   forkFrom_S: [Term.fork, '自: {s}'].join(phraseSeperator),
   updateFrom_S1_To_S2: ['从 {s1} 更新为 {s2}'].join(phraseSeperator),
 
-  repositoryAvatar: [Term.repository, Phrase.avatar].join(phraseSeperator),
-  groupAvatar: [Term.group, Phrase.avatar].join(phraseSeperator),
+  repositoryAvatar: [Term.repository, Phrase.icon].join(phraseSeperator),
+  groupAvatar: [Term.group, Phrase.icon].join(phraseSeperator),
   basicInfo: '基本信息',
   newPasswordConfirm: [Phrase.confirm, Phrase.newPassword].join(phraseSeperator),
   security: '安全性',
@@ -166,6 +166,11 @@ const data = {
   senderAddress: '发件人地址',
   register: '注册',
   allowRegister: '开放注册',
+
+  support: '技术支持',
+  feedback: '提交反馈',
+  contribute: '为 CodeFever Community 贡献代码',
+  about: '关于 CodeFever Community',
 
   _N_repository: '{n} {n, plural, =0 {' + Term.repository + '}\n=1 {' + Term.repository + '}\nother {' + Term.repository_pl + '}}',
   _N_commit: '{n} {n, plural, =0 {' + Term.commit + '}\n=1 {' + Term.commit + '}\nother {' + Term.commit_pl + '}}',

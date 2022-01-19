@@ -19,6 +19,7 @@ const data = {
   url: 'URL',
   slug: '标识串',
   avatar: '头像',
+  icon: '图标',
   joinedAt: '加入时间',
   unknown: '未知',
   all: '所有',

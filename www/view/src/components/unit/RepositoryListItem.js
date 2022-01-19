@@ -41,6 +41,11 @@ const styles = theme => ({
     width: theme.spacing(5),
     height: theme.spacing(5)
   },
+  baseInfo: {
+    display: 'flex',
+    flexFlow: 'column wrap',
+    justifyContent: 'center'
+  },
   avatar: {
     width: theme.spacing(4),
     height: theme.spacing(4),
@@ -73,8 +78,8 @@ class RepositoryCard extends Component {
               : <Avatar variant='square' className={classes.icon}>{repositoryInfo.name.substr(0, 1).toUpperCase()}</Avatar>
             }
           </Grid>
-          <Grid item xs={8}>
-            <Typography variant='body1' component='div' style={{ lineHeight: '22px', height: '22px', marginTop: (repositoryInfo.description ? 0 : 9) + 'px' }}>
+          <Grid item xs={8} className={classes.baseInfo}>
+            <Typography variant='body1' component='div' style={{ lineHeight: '22px', height: '22px' }}>
               { repositoryInfo.group.displayName + '/' }
               <Typography variant='subtitle1' component='span'>
                 { repositoryInfo.displayName }
@@ -82,11 +87,9 @@ class RepositoryCard extends Component {
                 <InlineMarker color={repositoryInfo.role === UAC.Role.OWNER ? 'containedInfo' : 'info'} text={intl.formatMessage({ id: 'label.roleID_' + repositoryInfo.role })} />
               </Typography>
             </Typography>
-            {
-              repositoryInfo.description && <Typography variant='caption' component='div' className='text-overflow' style={{ lineHeight: '20px', height: '18px' }}>
-                { repositoryInfo.description }
-              </Typography>
-            }
+            {repositoryInfo.description && <Typography variant='caption' component='div' className='text-overflow' style={{ lineHeight: '20px', height: '18px' }}>
+              { repositoryInfo.description }
+            </Typography>}
           </Grid>
         </Grid>
       </Grid>

@@ -503,7 +503,7 @@ class UserSettingGeneral extends React.Component {
             <Grid item xs={10}>
               <AvatarUploader
                 name='avatar'
-                variant='circular'
+                type='avatar'
                 appendData={{}}
                 src={Constants.HOSTS.PGYER_AVATAR_HOST + currentUserInfo.icon}
                 onUpdate={data => this.avatarUploaded(data)}

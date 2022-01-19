@@ -97,7 +97,7 @@ class CommitItem extends Component {
                     &nbsp;
                     <ShowHelper
                       type='icon'
-                      doc='/common/multiEmail.md'
+                      doc='/common/multiple_email.md'
                       tooltip={intl.formatMessage({ id: 'message.itsMyEmail' })}
                     />
                   </React.Fragment> }

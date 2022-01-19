@@ -6,6 +6,7 @@ function makeTheme (originTheme) {
   // export overwrite properties
   baseTheme.typography.fontFamily = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
   baseTheme.palette.primary.main = '#3455db'
+  baseTheme.typography.caption.fontSize = 14
   return {
     ...baseTheme,
     overrides: {
@@ -48,6 +49,15 @@ function makeTheme (originTheme) {
         },
         elevation8: {
           boxShadow: '0 10px 40px rgb(14 32 66 / 15%), 0 1px 2px rgb(14 32 66 / 5%)'
+        }
+      },
+      MuiTab: {
+        ...baseTheme.overrides.MuiTab,
+        root: {
+          ...baseTheme.overrides.MuiTab.root,
+          '&$selected': {
+            fontWeight: 600
+          }
         }
       }
     }

@@ -78,14 +78,17 @@ class AvatarUploader extends React.Component {
     const data = { ...appendData }
     data[name + '_BINARY'] = file
 
+    if (!file) {
+      return false
+    }
+
     dataProvider(data)
       .then(NetworkHelper.withEventdispatcher(this.props.dispatchEvent)(NetworkHelper.getJSONData))
       .then(this.props.onUpdate)
   }
 
   render () {
-    const { classes, src, variant } = this.props
-
+    const { classes, src, type } = this.props
     return (
       <React.Fragment>
         <label
@@ -102,13 +105,21 @@ class AvatarUploader extends React.Component {
             })
           }}
         >
-          <Avatar
-            variant={variant}
-            src={src}
-            className={classNames(variant === 'circular' ? classes.circleUserInfoAvatar : classes.userInfoAvatar)}
-          />
+          {type === 'avatar'
+            ? <Avatar
+              variant='circular'
+              src={src}
+              className={classNames(classes.circleUserInfoAvatar)}
+            />
+            : <Avatar
+              variant='rounded'
+              src={src.length > 1 ? src : ''}
+              className={classNames(classes.userInfoAvatar)}
+            >
+              {src.length === 1 ? src : ''}
+            </Avatar>}
           {this.state.showImgIcon &&
-            <Grid className={[classes.iconBox, variant === 'circular' ? classes.iconBoxCircle : classes.iconBoxRounded].join(' ')}>
+            <Grid className={[classes.iconBox, type === 'avatar' ? classes.iconBoxCircle : classes.iconBoxRounded].join(' ')}>
               <FontAwesomeIcon icon={faPlus} className={classes.editIcon} />
             </Grid>
           }
@@ -133,7 +144,7 @@ AvatarUploader.propTypes = {
   onUpdate: PropTypes.func.isRequired,
   dataProvider: PropTypes.func.isRequired,
   appendData: PropTypes.object.isRequired,
-  variant: PropTypes.string.isRequired
+  type: PropTypes.string
 }
 
 const mapStateToProps = (state, ownProps) => {

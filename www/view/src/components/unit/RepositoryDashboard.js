@@ -198,7 +198,7 @@ class RepositoryDashboard extends Component {
                       { this.state.popoverTab === 0 && <Paper className={classes.cloneContent}>
                         <Typography variant='body2' gutterBottom>
                           {intl.formatMessage({ id: 'message.differenceBetweenHTTPSAndSSH' })} &nbsp;
-                          <ShowHelper doc='/common/cloneMethod.md' />
+                          <ShowHelper doc='/common/clone_method.md' />
                         </Typography>
                         <TextField
                           fullWidth
@@ -229,7 +229,7 @@ class RepositoryDashboard extends Component {
                       { this.state.popoverTab === 1 && <Paper className={classes.cloneContent}>
                         <Typography variant='body2' gutterBottom>
                           {intl.formatMessage({ id: 'message.generateAndSetSSHKey' })} &nbsp;
-                          <ShowHelper doc='/common/sshKey.md' />
+                          <ShowHelper doc='/common/ssh_key.md' />
                         </Typography>
                         <TextField
                           fullWidth
