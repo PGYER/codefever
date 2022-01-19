@@ -24,7 +24,7 @@ import InlineMarker from 'APPSRC/components/unit/InlineMarker'
 // helpers
 import { makeLink, getUserInfo, getDefaultBranch } from 'APPSRC/helpers/VaribleHelper'
 import EmptyListNotice from 'APPSRC/components/unit/EmptyListNotice'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 
 // style
 const styles = theme => ({
@@ -180,6 +180,7 @@ class RefList extends React.Component {
                 <SquareIconButton label='label.more' onClick={e => this.openRefItemMenu(refTitle + index, e)} icon={psMore} />
                 <Menu
                   anchorEl={this.state.anchor[refTitle + index]}
+                  transitionDuration={0}
                   open={!!this.state.anchor[refTitle + index]}
                   onClose={e => this.closeRefItemMenu(refTitle + index)}
                 >
@@ -259,7 +260,7 @@ class RefList extends React.Component {
               </Button>
               : <ShowHelper
                 type='button'
-                docID='b0f4a4af6bf1407537f0ae71e167c395'
+                doc='/git/create_branch.md'
                 title={intl.formatMessage({ id: 'label.newBranch' })}
               />
             }

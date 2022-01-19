@@ -169,6 +169,7 @@ class ObjectViewer extends React.Component {
           <SquareIconButton label='label.copy' icon={plCopy} onClick={e => this.setState({ copyAnchor: e.target })} className={classes.icon2} />
           <Menu
             anchorEl={this.state.copyAnchor}
+            transitionDuration={0}
             open={!!this.state.copyAnchor}
             onClose={e => this.setState({ copyAnchor: null })}
           >

@@ -11,10 +11,6 @@ class Home extends Base
 
     public function index()
     {
-        if (REQUEST_PROTOCOL != 'https' && ENVIRONMENT == 'production') {
-            return header('Location: ' . YAML_HOST);
-        }
-
         if ($this->getLoggedKey()) {
             return header('Location: /repositories');
         }

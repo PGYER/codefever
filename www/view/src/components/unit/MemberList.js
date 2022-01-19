@@ -17,7 +17,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import FilterGenerator from 'APPSRC/helpers/FilterGenerator'
 import MemberItem from 'APPSRC/components/unit/MemberItem'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 import UAC from 'APPSRC/config/UAC'
 
 // helpers
@@ -86,7 +86,7 @@ class MemberList extends React.Component {
               <TableRow className={classes.textMain}>
                 <TableCell width='40%'>{ groupMember ? intl.formatMessage({ id: 'label.groupMember' }) : intl.formatMessage({ id: 'label.repositoryMember' })}</TableCell>
                 <TableCell width='40%'>{intl.formatMessage({ id: 'label.email' })}</TableCell>
-                <TableCell width='20%' align='right'>{intl.formatMessage({ id: 'label.role' })} <ShowHelper docID='2a0c1647fd8b3304ffdc5021462b289b' type='icon' /></TableCell>
+                <TableCell width='20%' align='right'>{intl.formatMessage({ id: 'label.role' })} <ShowHelper doc='/common/role.md' type='icon' /></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

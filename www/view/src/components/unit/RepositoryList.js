@@ -85,6 +85,7 @@ class RepositoryList extends Component {
         { this.props.repositoryList.length > 0 && <Menu
           id='user-menu'
           anchorEl={this.state.anchorElement}
+          transitionDuration={0}
           open={Boolean(this.state.anchorElement)}
           onClose={(ev) => { this.setState({ anchorElement: null }) }}
         >

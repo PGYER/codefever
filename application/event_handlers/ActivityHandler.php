@@ -56,6 +56,8 @@ class ActivityHandler extends EventHandler
 
     function capture(Event $event)
     {
+        $this->CI->load->model('Repository_model', 'repositoryModel');
+
         // filter event type
         $eventType = $event->type;
         if(in_array($eventType, $this->ListenedEventList)) {
@@ -136,7 +138,6 @@ class ActivityHandler extends EventHandler
             $insertData['u_key'] = $event->user;
             $insertData['a_relative_r_key'] = $event->data->rKey;
 
-            $this->CI->load->model('Repository_model', 'repositoryModel');
             $repositoryData = $this->CI->repositoryModel->get($insertData['a_relative_r_key']);
 
             $insertData['a_relative_g_key'] = $repositoryData['g_key'];
@@ -160,6 +161,7 @@ class ActivityHandler extends EventHandler
             ]);
 
             $this->CI->db->insert('activities', $insertData);
+            $this->CI->repositoryModel->update($insertData['a_relative_r_key'], ['r_updated' => date('Y-m-d H:i:s')]);
 
             return TRUE;
         }
@@ -309,6 +311,7 @@ class ActivityHandler extends EventHandler
         }
 
         $this->CI->db->insert('activities', $insertData);
+        $this->CI->repositoryModel->update($event->data->rKey, ['r_updated' => date('Y-m-d H:i:s')]);
 
         return TRUE;
     }

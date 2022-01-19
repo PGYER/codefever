@@ -19,6 +19,7 @@ const data = {
   url: 'URL',
   slug: '标识串',
   avatar: '头像',
+  icon: '图标',
   joinedAt: '加入时间',
   unknown: '未知',
   all: '所有',
@@ -110,7 +111,8 @@ const data = {
   doc: '文档',
   adminArea: '管理后台',
 
-  edit: '编辑'
+  edit: '编辑',
+  confirm: '确认'
 }
 
 export default { ...data, __namespace__: 'phrase' }

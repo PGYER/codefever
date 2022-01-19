@@ -19,12 +19,7 @@ define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0777);
 
 if (ENVIRONMENT == 'development') {
-    // Api-Key
-    define('API_TOKEN_GATEWAY', 'codefever_community_api_token');
 } else if (ENVIRONMENT == 'testing') {
-    // Api-Key
-    define('API_TOKEN_GATEWAY', 'c106071b24e81263b2a43280bc477e0f');
-
     // unit test: user test, group codefever, repository codefever
     define('TESTING_USER_KEY', 'f4a9c54adef17599d4f709a1167f0fcd');
     define('TESTING_GROUP_KEY', 'e6508c1a66e86f697c96bdffb30c1ae3');
@@ -49,8 +44,6 @@ if (ENVIRONMENT == 'development') {
     define('TESTING_COMMON_PAGE', 1);
     define('TESTING_COMMON_PERPAGE', 10);
 } else {
-    // Api-Key
-    define('API_TOKEN_GATEWAY', 'cca45617074ca8b04c41a316a453e1ff');
 }
 
 /*
@@ -138,7 +131,7 @@ define('PRESERVE_URI', [
     '/^(api|apiv\d+|apis)$/i',
     '/^(userInfo|userInfos)$/i',
     '/^(pay|payment|transaction|order|coupon|invoice)$/i',
-    '/^(group|groups|repository|repositories|setting|settings|mergerequest|mergerequests)$/i',
+    '/^(group|groups|repository|repositories|setting|settings|mergerequest|mergerequests|admin)$/i',
 ]);
 
 // Git Command type

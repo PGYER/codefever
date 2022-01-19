@@ -106,12 +106,13 @@ class UserOption extends Component {
           PaperProps={{ className: classes.menu }}
           MenuListProps={{ className: classes.list }}
           getContentAnchorEl={null}
+          transitionDuration={0}
         >
           <MenuItem disabled className={classes.name}>
             <Typography variant='h6' component='div'>
               { currentUserInfo.name }
             </Typography>
-            <Typography variant='caption' component='div'>
+            <Typography variant='body2' component='div'>
               { currentUserInfo.email }
             </Typography>
           </MenuItem>

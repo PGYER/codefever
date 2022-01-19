@@ -47,9 +47,10 @@ const data = {
   forkFrom_S: [Term.fork, 'From: {s}'].join(phraseSeperator),
   updateFrom_S1_To_S2: ['Update From {s1} To {s2}'].join(phraseSeperator),
 
-  repositoryAvatar: [Term.repository, Phrase.avatar].join(phraseSeperator),
-  groupAvatar: [Term.group, Phrase.avatar].join(phraseSeperator),
+  repositoryAvatar: [Term.repository, Phrase.icon].join(phraseSeperator),
+  groupAvatar: [Term.group, Phrase.icon].join(phraseSeperator),
   basicInfo: 'Basic Info',
+  newPasswordConfirm: [Phrase.confirm, Phrase.newPassword].join(phraseSeperator),
   security: 'Security',
   setupNewMFADevice: 'Setup New MFA Device',
   changeMFADevice: 'Change MFA Device',
@@ -165,6 +166,11 @@ const data = {
   senderAddress: 'Sender Email Address',
   register: 'Register',
   allowRegister: 'Allow Register',
+
+  support: 'Technical Support',
+  feedback: 'Submit Feedback',
+  contribute: 'Contribute to CodeFever Community',
+  about: 'About CodeFever Community',
 
   _N_repository: '{n} {n, plural, =0 {' + Term.repository + '}\n=1 {' + Term.repository + '}\nother {' + Term.repository_pl + '}}',
   _N_commit: '{n} {n, plural, =0 {' + Term.commit + '}\n=1 {' + Term.commit + '}\nother {' + Term.commit_pl + '}}',

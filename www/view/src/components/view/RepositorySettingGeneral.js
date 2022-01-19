@@ -24,7 +24,8 @@ const styles = (theme) => ({
   header: {
     lineHeight: theme.spacing(5) + 'px',
     marginBottom: theme.spacing(4),
-    borderBottom: '1px solid ' + theme.palette.border
+    borderBottom: '1px solid ' + theme.palette.border,
+    fontSize: '18px'
   },
   paper: {
     padding: theme.spacing(2)
@@ -217,9 +218,8 @@ class RepositorySettingGeneral extends React.Component {
           <Grid item xs={7}>
             <AvatarUploader
               name='avatar'
-              variant='rounded'
               appendData={{ repository: currentRepositoryConfig.repository.id }}
-              src={Constants.HOSTS.STATIC_AVATAR_PREFIX + currentRepositoryConfig.repository.icon}
+              src={currentRepositoryConfig.repository.icon ? (Constants.HOSTS.STATIC_AVATAR_PREFIX + currentRepositoryConfig.repository.icon) : currentRepositoryConfig.repository.name.substr(0, 1).toUpperCase()}
               onUpdate={data => this.avatarUploaded(data)}
               dataProvider={RepositoryData.uploadAvatar}
             />

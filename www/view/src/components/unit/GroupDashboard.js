@@ -87,7 +87,7 @@ class GroupDashboard extends Component {
                     {groupConfig.group.displayName} &nbsp;&nbsp;
                   </Typography>
                   <Typography variant='caption' component='div' className={classes.subtext}>
-                    {intl.formatMessage({ id: 'label.groupID' }) }: {groupConfig.group.id}
+                    {groupConfig.group.description}
                   </Typography>
                 </Grid>
               </Grid>

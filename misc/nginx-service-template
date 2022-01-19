@@ -1,0 +1,108 @@
+#! /bin/bash 
+# chkconfig: 2345 55 25
+# Description: Startup script for nginx webserver on Debian. Place in /etc/init.d and
+# run 'update-rc.d -f nginx defaults', or use the appropriate command on your
+# distro. For CentOS/Redhat run: 'chkconfig --add nginx'
+
+### BEGIN INIT INFO
+# Provides:          nginx
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the nginx web server
+# Description:       starts nginx using start-stop-daemon
+### END INIT INFO
+
+# Author:   ezhttp
+# website:  http://lnmp.org
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="nginx daemon"
+nginx_location=/usr/local/nginx
+DAEMON=$nginx_location/sbin/nginx
+CONFIGFILE=$nginx_location/conf/nginx.conf
+PIDFILE=$nginx_location/logs/nginx.pid
+SCRIPTNAME=/etc/init.d/nginx
+
+set -e
+[ -x "$DAEMON" ] || exit 0
+
+acqNginxPid(){
+  local pid
+  if [ -f $PIDFILE ] ; then
+         pid=`cat $PIDFILE`
+  fi
+
+  if [[ -d /proc/${pid} ]]; then 
+    echo ${pid}
+  fi  
+}
+
+do_start() {
+ local pid=`acqNginxPid`
+ if [[ ".${pid}" == "." ]] ; then
+    $DAEMON -c $CONFIGFILE 
+ else
+    echo -n "nginx already running"
+ fi
+}
+
+do_stop() {
+ local pid=`acqNginxPid`
+ if [ ".${pid}" != "." ] ; then
+    kill -INT ${pid}
+    for i in {1..10};do
+        echo "waiting nginx stop..."
+        sleep 1
+        if [[ ! -d /proc/${pid} ]]; then
+            echo "nginx stopped done."
+            return 0
+        fi
+    done
+    echo "nginx stopped failed."
+    exit 1
+ else
+    echo -n "nginx not running"
+ fi
+}
+
+do_reload() {
+ local pid=`acqNginxPid`
+ if [ ".${pid}" != "." ] ; then
+    kill -HUP ${pid}
+ else
+    echo -n "nginx can't reload"
+ fi
+}
+
+case "$1" in
+ start)
+ echo -n "Starting $DESC: $NAME"
+ do_start
+ echo "."
+ ;;
+ stop)
+ echo -n "Stopping $DESC: $NAME"
+ do_stop
+ echo "."
+ ;;
+ reload|graceful)
+ echo -n "Reloading $DESC configuration..."
+ do_reload
+ echo "."
+ ;;
+ restart)
+ echo -n "Restarting $DESC: $NAME"
+ do_stop
+ do_start
+ echo "."
+ ;;
+ *)
+ echo "Usage: $SCRIPTNAME {start|stop|reload|restart}" >&2
+ exit 3
+ ;;
+esac
+
+exit 0
+

@@ -45,7 +45,8 @@ const data = {
 
   inputNewEmail: '请输入新的邮箱',
   bindEmailFirst: '你需要绑定邮箱才可以绑定第三方平台',
-  wechatHasbound: '该微信号已经被绑定，请扫码登录后解绑重试'
+  wechatHasbound: '该微信号已经被绑定，请扫码登录后解绑重试',
+  sshKeyDuplicate: '此 SSH Key 已经添加, 或在其他用户中'
 }
 
 export default { ...data, __namespace__: 'message.error' }

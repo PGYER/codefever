@@ -48,6 +48,8 @@ const data = {
   fileContentOversize: '文件大小超过允许展示的最大限度, 请在本地查看',
   fileTypeNotSupport: '暂不支持二进制文件的展示',
   diffFileToMany: '超过允许展示的最大文件数量, 请在本地查看',
+  createNewRepository: '在命令行创建一个新仓库',
+  pushRepository: '在命令行 push 一个已存在的仓库',
 
   _S_empty: '请输入{s}',
   repository_S_empty: '仓库内还没有{s}',

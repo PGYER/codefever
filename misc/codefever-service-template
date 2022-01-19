@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# chkconfig: 2345 50 20
+
+BASE=/data/www/codefever-community
+PHP=/usr/local/php/bin/php
+
+SRC=$BASE/misc/modify_authorized_keys.php
+SCRIPTNAME=$BASE/misc/modify_authorized_keys
+DESC="modify_authorized_keys_shell_running"
+PID=`ps -ef | grep -v awk | awk '/'$DESC'/{print $2}'`
+
+HTTP_GATEWAY=$BASE/http-gateway/main
+HTTP_GATEWAY_PID=`ps -ef | grep -v awk | awk '/'http-gateway'/{print $2}'`
+GIT_USER=`cat $BASE/env.yaml | grep git: | tail -n 1 | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+
+start()
+{
+   if [[ -z "$PID" ]] ;then
+      echo "Starting service: SSH authorized key sync ..."
+      nohup $PHP $SRC $DESC > /dev/null 2>&1 &
+   fi
+   echo "Service started: SSH authorized key sync"
+
+   if [[ -z "$HTTP_GATEWAY_PID" ]] ;then
+      echo "Starting service: SSH authorized key sync ..."
+      nohup sudo -u $GIT_USER $HTTP_GATEWAY > /dev/null 2>&1 &
+   fi
+   echo "Service started: HTTP gateway"
+   exit 0;
+}
+
+stop()
+{
+   echo "Shutting down service: SSH authorized key sync ..."
+   for var in $PID
+   do
+      result=`kill -KILL $var 2>&1`
+
+      if [[ -n "$result" ]] ;then
+         echo $result
+      fi
+   done
+   echo "Service stopped: SSH authorized key sync"
+
+   echo "Shutting down service: HTTP gateway ..."
+   for var in $HTTP_GATEWAY_PID
+   do
+      result=`kill -KILL $var 2>&1`
+
+      if [[ -n "$result" ]] ;then
+         echo $result
+      fi
+   done
+   echo "Service stopped: HTTP gateway"
+   exit 0
+}
+
+case "$1" in
+   start)
+      start
+   ;;
+
+   stop)
+      stop
+   ;;
+
+   restart)
+      stop
+      start
+   ;;
+
+   status)
+      if [[ -n "$PID" ]] ;then
+         echo "SSH authorized key sync: Running ..."
+      else
+         echo "SSH authorized key sync: Stopped ..."
+      fi
+
+      if [[ -n "$HTTP_GATEWAY_PID" ]] ;then
+         echo "HTTP gateway: Running ..."
+      else
+         echo "HTTP gateway: Stopped ..."
+      fi
+      exit 0
+   ;;
+
+   *)
+      echo "Usage: start|stop|restart|status"
+   ;;
+esac
+
+exit 0

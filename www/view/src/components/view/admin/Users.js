@@ -439,6 +439,7 @@ class Users extends React.Component {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             PaperProps={{ className: classes.menu }}
             getContentAnchorEl={null}
+            transitionDuration={0}
             open={Boolean(settingAnchor)}
             onClose={e => this.setState({ settingAnchor: null })}
           >

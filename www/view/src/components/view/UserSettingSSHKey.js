@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import ShowHelper from '@pgyer/essential-component/ShowHelper'
+import ShowHelper from 'APPSRC/components/unit/ShowHelper'
 import SSHKeyItem from 'APPSRC/components/unit/SSHKeyItem'
 import TableList from 'APPSRC/components/unit/TableList'
 import UserData from 'APPSRC/data_providers/UserData'
@@ -24,9 +24,10 @@ import EventGenerator from 'APPSRC/helpers/EventGenerator'
 import ValidatorGenerator from 'APPSRC/helpers/ValidatorGenerator'
 
 const styles = (theme) => ({
-  title: {
+  header: {
     lineHeight: theme.spacing(5) + 'px',
-    borderBottom: '1px solid ' + theme.palette.border
+    borderBottom: '1px solid ' + theme.palette.border,
+    fontSize: '18px'
   },
   paper: {
     padding: theme.spacing(2)
@@ -93,10 +94,7 @@ class UserSettingSSHKey extends React.Component {
       {
         name: 'key',
         exceptionCode: 0x040D,
-        errorMessage: this.props.intl.formatMessage(
-          { id: 'message.error._S_duplicate' },
-          { s: this.props.intl.formatMessage({ id: 'label.SSHKey' }) }
-        )
+        errorMessage: this.props.intl.formatMessage({ id: 'message.error.sshKeyDuplicate' })
       }
     ])
   }
@@ -169,7 +167,7 @@ class UserSettingSSHKey extends React.Component {
 
     return (<Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant='h6' component='div' className={classes.title}>
+        <Typography variant='h6' component='div' className={classes.header}>
           { intl.formatMessage({ id: 'label.SSHKey_pl' }) }
         </Typography>
       </Grid>
@@ -182,7 +180,7 @@ class UserSettingSSHKey extends React.Component {
                   <Grid item xs={12}>
                     <Typography variant='subtitle1' component='div' gutterBottom>
                       { intl.formatMessage({ id: 'label.addSSHKey' }) } &nbsp;
-                      <ShowHelper type='icon' docID='211cfb16bc8460bc44068f3b34ee2a63' />
+                      <ShowHelper type='icon' doc='/common/ssh_key.md' />
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
