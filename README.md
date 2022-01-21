@@ -1,10 +1,72 @@
-# 欢迎使用 CodeFever Community 版本
+<div align="center">
+  <br /><br />
+  <a href="https://codefever.cn">
+    <img
+      src="https://assets.pgyer.com/image/view/admin_images/c73a429ef2f134f337ef690dfba4d47f"
+      alt="Logo"
+      height="32"
+    />
+  </a>
+  <br />
+  <p>
+    <h3>
+      <b>
+        CodeFever Community
+      </b>
+    </h3>
+  </p>
+  <p>
+    <b>
+      完全开源的 Git 代码托管服务
+    </b>
+  </p>
+  <p>
+
+[![contributions welcome](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/contributions.svg)](CODE_OF_CONDUCT.md) [![Website](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/website.svg)](https://codefever.cn) [![Docker](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/docker.svg)](https://github.com/PGYER/codefever/)
+
+  </p>
+  <p>
+    <sub>
+      Built with ❤︎ by
+      <a href="https://codefever.cn">
+        CodeFever
+      </a>
+    </sub>
+  </p>
+  <br />
+  <p>
+    <a href="https://codefever.cn">
+      <img
+        src="https://assets.pgyer.com/image/view/admin_images/e1fcb4241b6d39a7a80a1d9d2421a1c4"
+        alt="Screenshot"
+        width="80%"
+      />
+    </a>
+  </p>
+</div
 
 英文版本文档正在完善中, 欢迎 [提交文档](doc/zh-cn/contribute/doc_pr.md)
 
 [English](doc/en-us/start/welcome.md)
 
-### 关于 CodeFever
+<details open>
+  <summary><b>目录</b></summary>
+
+---
+
+- [关于](#关于)
+- [如何安装](#如何安装)
+- [使用](#使用)
+- [问题反馈](#问题反馈)
+- [贡献代码](#贡献代码)
+- [贡献文档](#贡献文档)
+- [贡献者](#贡献者)
+
+---
+
+</details>
+
+### **关于**
 
 `CodeFever` 项目起初由 蒲公英开发者服务平台 开发和维护，项目于 2020 年 6 月上线 [https://codefever.pgyer.com/](https://codefever.pgyer.com/) 。 经过将近两年时间打磨和稳定性验证，于 2022 年 2 月开源，接受社区的考验。
 
@@ -14,7 +76,7 @@
 
 `CodeFever Community` 保留了 `CodeFever` 的大部分功能，并且进行了更适合单机部署的优化。`CodeFever Community` 也会随 `CodeFever` 更新的同时接受来自社区的提交。
 
-### 如何安装
+### **如何安装**
 
 `CodeFever` 提供 `从头开始安装` 和 `Docker 镜像安装` 两种安装方式, 可以根据自己的实际需要选择安装方式。
 
@@ -31,7 +93,7 @@
 
 参照: [Docker 镜像安装](doc/zh-cn/installation/install_via_docker.md)
 
-### 使用
+### **使用**
 
 [仓库](doc/zh-cn/reposiotry)
 
@@ -43,7 +105,7 @@
 
 [常见问题](doc/zh-cn/common)
 
-### 问题反馈
+### **问题反馈**
 
 如果你在使用过程中遇到期望外的结果，欢迎提交 `Issue`。
 
@@ -53,7 +115,7 @@
 
 参照: [提交特性请求](doc/zh-cn/contribute/request_feature_issue.md)
 
-### 贡献代码
+### **贡献代码**
 
 欢迎提交 `PR`, 请确定修复 `Bug` 后或者新增 `Feature` 后进行适当的测试。
 
@@ -72,3 +134,5 @@
 提交 `PR` 前请确定文档内容表述是否准确
 
 参照: [提交文档](doc/zh-cn/contribute/doc_pr.md)
+
+
