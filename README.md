@@ -55,12 +55,12 @@
 ---
 
 - [关于](#关于)
+- [功能特性](#功能特性)
 - [如何安装](#如何安装)
 - [使用](#使用)
 - [问题反馈](#问题反馈)
 - [贡献代码](#贡献代码)
 - [贡献文档](#贡献文档)
-- [贡献者](#贡献者)
 
 ---
 
@@ -75,6 +75,20 @@
 `CodeFever Community` 由 `英蒲公英开发者服务平台` 团队完整自主研发并基于 `MIT` 协议进行完整开源，拥有完全自主的知识产权，因此您可以放心使用而不必考虑是否侵犯他人权利。
 
 `CodeFever Community` 保留了 `CodeFever` 的大部分功能，并且进行了更适合单机部署的优化。`CodeFever Community` 也会随 `CodeFever` 更新的同时接受来自社区的提交。
+
+### **功能特性**
+
+- 🆓 **永久免费:** 永久免费提供给大家使用，您无需担心付费
+- ❤️ **完整开源:** 毫无保留的完整开源，无任何编译或加密代码
+- 🥬 **轻量安装:** 极简设计风格，排除重度冗余的多余功能
+- ⚡️ **性能高效** 速度极快，对服务器资源要求极低，1核CPU/1G内存即可运行
+- ♾️ **无限仓库** 没有任何仓库数量、使用数量的限制
+- ⌨️ **代码对比** 支持提交代码的不同版本支持高亮显示对比
+- 🛤️ **分支和标签** 完整支持 Git 原生功能，帮助更清晰的管理代码
+- 🙋‍♂️ **合并请求（Merge Request）** 支持多人协作，让代码版本控制更顺畅
+- 🙅🏻‍♀️ **分支保护** 分支保护功能让代码提交安全可控，代码 Review 更容易清晰
+- 👥 **多人协作** 支持多人团队协作，并可以设置每个成员的角色和权限
+- 🖥️ **管理后台** 支持超级管理员后台，可以让团队leader管理所有项目和用户信息
 
 ### **如何安装**
 
@@ -95,37 +109,23 @@
 
 ### **使用**
 
-[仓库](doc/zh-cn/reposiotry)
-
-[仓库组](doc/zh-cn/reposiotry_group)
-
-[管理员设置](doc/zh-cn/admin)
-
-[Git](doc/zh-cn/git)
-
-[常见问题](doc/zh-cn/common)
+- [仓库](doc/zh-cn/reposiotry)
+- [仓库组](doc/zh-cn/reposiotry_group)
+- [管理员设置](doc/zh-cn/admin)
+- [Git](doc/zh-cn/git)
+- [常见问题](doc/zh-cn/common)
 
 ### **问题反馈**
 
-如果你在使用过程中遇到期望外的结果，欢迎提交 `Issue`。
-
-参照: [提交问题](doc/zh-cn/contribute/bug_fix_issue.md)
-
-如果你希望在 `CodeFever Community` 添加一些特性，也欢迎提交 `Issue`。
-
-参照: [提交特性请求](doc/zh-cn/contribute/request_feature_issue.md)
+- 如果你在使用过程中遇到期望外的结果，欢迎提交 `Issue`。参照: [提交问题](doc/zh-cn/contribute/bug_fix_issue.md)
+- 如果你希望在 `CodeFever Community` 添加一些特性，也欢迎提交 `Issue`。参照: [提交特性请求](doc/zh-cn/contribute/request_feature_issue.md)
 
 ### **贡献代码**
 
 欢迎提交 `PR`, 请确定修复 `Bug` 后或者新增 `Feature` 后进行适当的测试。
 
-如果 `PR` 内容是问题，请先提交 `Issue` 并在提交 PR 时引用该 `Issue`。
-
-参照: [提交问题修复](doc/zh-cn/contribute/bug_fix_pr.md)
-
-如果 `PR` 内容是新特性，请在 `PR` 中请尽量详细描述此特性的内容，如果此 PR 是针对某个特性请求的提交，在提交 PR 时引用该 `Issue`。
-
-参照: [提交新特性](doc/zh-cn/contribute/new_feature_pr.md)
+- 如果 `PR` 内容是问题，请先提交 `Issue` 并在提交 PR 时引用该 `Issue`。参照: [提交问题修复](doc/zh-cn/contribute/bug_fix_pr.md)
+- 如果 `PR` 内容是新特性，请在 `PR` 中请尽量详细描述此特性的内容，如果此 PR 是针对某个特性请求的提交，在提交 PR 时引用该 `Issue`。参照: [提交新特性](doc/zh-cn/contribute/new_feature_pr.md)
 
 ### 贡献文档
 
