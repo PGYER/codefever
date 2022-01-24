@@ -161,14 +161,14 @@ class Header extends React.Component {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   this.setState({ helpMenuAnchor: null })
-                  window.open('https://github.com/', '_blank')
+                  window.open('https://github.com/PGYER/codefever/blob/master/doc/zh-cn/contribute/bug_fix_issue.md', '_blank')
                 }}>
                   <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.feedback' })} />
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={() => {
                   this.setState({ helpMenuAnchor: null })
-                  window.open('https://github.com/', '_blank')
+                  window.open('https://github.com/PGYER/codefever', '_blank')
                 }}>
                   <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.contribute' })} />
                 </MenuItem>

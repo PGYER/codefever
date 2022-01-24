@@ -2,7 +2,7 @@
 
 ## 此文档适用条件
 
-> 如果你的情况符合以下条件, 你可以使用 `从零开始安装` 的方式安装 `CodeFever` 否则请使用 `Docker 镜像安装` 方式安装。
+> 如果你的情况符合以下条件, 你可以使用 `从零开始安装` 的方式安装 `CodeFever` 否则请使用 [Docker 镜像安装](install_via_docker.md) 方式安装。
 
 - 学习和技术交流
 - 需要做定制化修改
@@ -38,7 +38,7 @@ swapon /root/swap
 
 ```shell
 # 安装基础软件包
-yum install -y autoconf cmake3 yaml pcre pcre-devel libxml2 libxml2-devel openssl openssl-devel sqlite sqlite-devel libpng libpng-devel libwebp libwebp-devel libjpeg libjpeg-devel libXpm libXpm-devel freetype freetype-devel oniguruma oniguruma-devel libyaml libyaml-devel
+yum install -y sudo tcl tk gettext autoconf gcc cmake3 wget initscripts openssh-server pcre pcre-devel libcurl libcurl-devel libxml2 libxml2-devel openssl openssl-devel sqlite sqlite-devel libpng libpng-devel libwebp libwebp-devel libjpeg libjpeg-devel libXpm libXpm-devel freetype freetype-devel oniguruma oniguruma-devel libyaml libyaml-devel
 ```
 
 除此之外，你还需要安装 `libzip 1.7+` 库，需要去官网下载源码包解压后安装。
@@ -158,7 +158,7 @@ corepack enable
 
 MySQL 不需要单独安装，直接使用系统自带软件工具安装软件包即可。需要安装于 `MySQL 5.7` 以上的相当版本。
 
-去官网按照指导使用镜像源安装二进制版本 (https://mariadb.org/download/?t=repo-config)，如果你使用使用云数据库，你可以跳过此步骤。
+去官网按照指导使用镜像源安装二进制版本 (https://mariadb.org/download/?t=repo-config 选择 `xTom GmbH - San Jose` 镜像)，如果你使用使用云数据库，你可以跳过此步骤。
 
 启动服务后使用 `mysql_secure_installation` 或 `mariadb-secure-installation` 初始化数据库
 		
@@ -175,10 +175,10 @@ set global sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_B
 去 `Github` 上下载源码并安装 `/data/www/codefever-comminuty` 目录下
 
 ```shell
-	mkdir /data/www
-	cd /data/www
-	git clone https://github.com/PGYER/codefever.git codefever-community
-	cd codefever-community
+mkdir -p /data/www
+cd /data/www
+git clone https://github.com/PGYER/codefever.git codefever-community
+cd codefever-community
 ```
 
 * 如果 `Github` 的 `HTTP` 服务访问速度较慢，可以尝试使用 `SSH` 服务（需要提前设置 `SSH Key`）
@@ -222,7 +222,20 @@ sh ./install.sh
 cd /data/www/codefever-community/misc
 sh ./create_db.sh
 ```
-		
+
+为服务开启 `chkconfig` 以开机自动运行
+
+```shell
+chkconfig mariadb on # 或 chkconfig mysql on (根据安装的数据库类型, 如果使用云服务忽略此项目)
+chkconfig nginx on
+chkconfig php-fpm on
+chkconfig codefever on
+```
+
 尝试访问 `http://127.0.0.1` 或 `http://<server ip>` 来登录
 
 默认管理员用户: `root@codefever.cn`, 密码: `123456`。登录后请修改密码并绑定 MFA 设备。
+
+### 10. 服务维护
+
+服务维护请参见 [管理员设置/概览和系统服务](../admin/dashboard.md) 中的 `系统服务状态及维护` 一节
