@@ -134,5 +134,3 @@
 提交 `PR` 前请确定文档内容表述是否准确
 
 参照: [提交文档](doc/zh-cn/contribute/doc_pr.md)
-
-
