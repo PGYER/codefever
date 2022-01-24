@@ -126,7 +126,7 @@ define('GROUP_TYPE_USER', 2); // 用户个人默认分组
 
 // preserve url segment
 define('PRESERVE_URI', [
-    '/^(feature|doc|lang|service|about|pricing|user|users|file|avatar|boss|captcha)$/i',
+    '/^(feature|doc|community|lang|service|about|pricing|user|users|file|avatar|boss|captcha)$/i',
     '/^(static|static-\d+)$/i',
     '/^(api|apiv\d+|apis)$/i',
     '/^(userInfo|userInfos)$/i',

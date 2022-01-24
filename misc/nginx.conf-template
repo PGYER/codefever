@@ -59,7 +59,7 @@ http {
             try_files $uri /app$uri 404;
         }
 
-        location ~* ^/(user|file|feature|doc|lang|captcha|service|api(v\d+)?)?(\/.*)?$ {
+        location ~* ^/(user|file|feature|doc|community|lang|captcha|boss|service|pricing|api(v\d+)?)?(\/.*)?$ {
             try_files $uri $uri/ /index.php;
         }
 
@@ -115,7 +115,7 @@ http {
             proxy_pass http://localhost;
         }
 
-        location ~* ^/(user|file|feature|doc|lang|captcha|boss|service|pricing|api(v\d+)?)?(\/.*)?$ {
+        location ~* ^/(user|file|feature|doc|community|lang|captcha|boss|service|pricing|api(v\d+)?)?(\/.*)?$ {
             proxy_pass http://localhost;
         }
 

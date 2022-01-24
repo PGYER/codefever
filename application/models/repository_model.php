@@ -186,7 +186,7 @@ class Repository_model extends CI_Model
             $data['create'] = strtotime($item['mr_created']);
             $data['update'] = strtotime($item['mr_updated']);
             $data['reviewers'] = $this->getMergeRequestReviewers($item['mr_key']);
-            $data['commit'] = $this->getLastCommit($item['mr_source_r_key'], $item['u_key'], $item['mr_source_branch'], '', $item['mr_source_merged_hash']);
+            $data['commit'] = $this->getLastCommit($item['mr_source_r_key'], $item['u_key'], $item['mr_source_branch'], '', $item['mr_source_merged_hash'] ? $item['mr_source_merged_hash'] : '');
             array_push($output, $data);
         }
 
