@@ -6,7 +6,7 @@
 
 `CodeFever` 开源后，开源版本称为 `CodeFever Conmmunity` 版本。同时公有云版本继续服务，继续称为 `CodeFever。`
 
-`CodeFever Community` 由 `英蒲公英开发者服务平台` 团队完整自主研发并基于 `MIT` 协议进行完整开源，拥有完全自主的知识产权，因此您可以放心使用而不必考虑是否侵犯他人权利。
+`CodeFever Community` 由 `蒲公英开发者服务平台` 团队完整自主研发并基于 `MIT` 协议进行完整开源，拥有完全自主的知识产权，因此您可以放心使用而不必考虑是否侵犯他人权利。
 
 `CodeFever Community` 保留了 `CodeFever` 的大部分功能，并且进行了更适合单机部署的优化。`CodeFever Community` 也会随 `CodeFever` 更新的同时接受来自社区的提交。
 
