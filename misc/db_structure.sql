@@ -173,7 +173,6 @@ CREATE TABLE `cc_ssh_keys` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `cc_users` (
-  `u_id` int(11) NOT NULL,
   `u_key` varchar(32) NOT NULL,
   `u_email` varchar(255) NOT NULL,
   `u_password` varchar(100) NOT NULL,
@@ -192,7 +191,6 @@ CREATE TABLE `cc_users` (
   `u_updated` datetime NOT NULL,
   `u_status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 ALTER TABLE `cc_activities`
   ADD PRIMARY KEY (`a_key`),
