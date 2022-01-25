@@ -35,7 +35,7 @@ echo 'services installed!'
 cp ../config.template.yaml ../config.yaml
 cp ../env.template.yaml ../env.yaml
 
-chmod 0777 config.yaml env.yaml
+chmod 0777 ../config.yaml ../env.yaml
 
 echo 'env files generated!'
 
