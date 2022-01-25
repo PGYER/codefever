@@ -37,7 +37,7 @@
   <p>
     <a href="https://codefever.cn">
       <img
-        src="https://assets.pgyer.com/image/view/admin_images/e1fcb4241b6d39a7a80a1d9d2421a1c4"
+        src="https://assets.pgyer.com/image/view/admin_images/e1fcb4241b6d39a7a80a1d9d2421a1c4/1600"
         alt="Screenshot"
         width="100%"
       />
