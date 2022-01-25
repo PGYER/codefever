@@ -39,7 +39,7 @@
       <img
         src="https://assets.pgyer.com/image/view/admin_images/e1fcb4241b6d39a7a80a1d9d2421a1c4"
         alt="Screenshot"
-        width="80%"
+        width="100%"
       />
     </a>
   </p>
@@ -92,20 +92,10 @@
 
 ### **如何安装**
 
-`CodeFever` 提供 `从头开始安装` 和 `Docker 镜像安装` 两种安装方式, 可以根据自己的实际需要选择安装方式。
+`CodeFever` 提供 `从头开始安装` 和 `Docker 镜像安装` 两种安装方式，可以根据自己的实际需要选择安装方式。
 
-满足以下要求的用户和选择 `从头开始安装` 的方式进行安装。
-
-- 学习和技术交流
-- 需要做定制化修改
-- `Docker 镜像安装` 不能满足处理 `Bug` 和提交 `PR` 的需求
-- Docker 镜像不能在当前 `操作系统` 或 `硬件架构` 上使用
-
-参照: [从头开始安装](doc/zh-cn/installation/install_from_scratch.md)
-
-如果不满足上述要求，你可以选择使用 `Docker 镜像安装` 方式安装 `CodeFever Community`。
-
-参照: [Docker 镜像安装](doc/zh-cn/installation/install_via_docker.md)
+- **(推荐)** 我们推荐的首选安装方式是使用 `Docker` 来安装，只需要一行命令即可完成，具体可见： [Docker 镜像安装](doc/zh-cn/installation/install_via_docker.md) 
+- 如果您想出于自己学习、研究或有更深层次的定制化需求，也可以使用手动的方式来安装，具体可见：[从头开始安装](doc/zh-cn/installation/install_from_scratch.md)
 
 ### **使用**
 
