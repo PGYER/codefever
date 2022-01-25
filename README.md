@@ -22,7 +22,7 @@
   </p>
   <p>
 
-[![contributions welcome](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/contributions.svg)](CODE_OF_CONDUCT.md) [![Website](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/website.svg)](https://codefever.cn) [![Docker](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/docker.svg)](https://github.com/PGYER/codefever/)
+[![contributions welcome](https://img.shields.io/badge/Contributions-welcome-brightgreen?logo=github)](CODE_OF_CONDUCT.md) [![Website](https://img.shields.io/badge/Website-available-brightgreen?logo=e)](https://codefever.cn) [![Docker](https://img.shields.io/badge/Docker-passing-brightgreen?logo=docker)](https://github.com/PGYER/codefever/)
 
   </p>
   <p>
