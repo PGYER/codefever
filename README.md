@@ -22,7 +22,7 @@
   </p>
   <p>
 
-[![contributions welcome](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/contributions.svg)](CODE_OF_CONDUCT.md) [![Website](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/website.svg)](https://codefever.cn) [![Docker](https://pgyer-download.oss-cn-shenzhen.aliyuncs.com/docker.svg)](https://github.com/PGYER/codefever/)
+[![contributions welcome](https://img.shields.io/badge/Contributions-welcome-brightgreen?logo=github)](CODE_OF_CONDUCT.md) [![Website](https://img.shields.io/badge/Website-available-brightgreen?logo=e)](https://codefever.cn) [![Docker](https://img.shields.io/badge/Docker-passing-brightgreen?logo=docker)](https://github.com/PGYER/codefever/)
 
   </p>
   <p>
@@ -37,7 +37,7 @@
   <p>
     <a href="https://codefever.cn">
       <img
-        src="https://assets.pgyer.com/image/view/admin_images/e1fcb4241b6d39a7a80a1d9d2421a1c4"
+        src="https://assets.pgyer.com/image/view/admin_images/e1fcb4241b6d39a7a80a1d9d2421a1c4/1600"
         alt="Screenshot"
         width="100%"
       />
@@ -65,6 +65,10 @@
 ---
 
 </details>
+
+### Demo 示例
+
+[请点击这里查看 Demo](http://114.132.251.156/)（仅测试使用，请勿上传正式代码）
 
 ### **关于**
 
