@@ -1,6 +1,6 @@
-[创建仓库](create_repository.md)
+[创建仓库](create_repo.md)
 
-[Fork 仓库](fork_repository.md)
+[Fork 仓库](fork_repo.md)
 
 [提交代码](commit.md)
 

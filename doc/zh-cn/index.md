@@ -3,9 +3,9 @@
 
 [安装](installation)
 
-[仓库](repository)
+[仓库](repo)
 
-[仓库组](repository_group)
+[仓库组](repo_group)
 
 [管理员设置](admin)
 

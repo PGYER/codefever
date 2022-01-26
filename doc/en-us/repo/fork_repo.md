@@ -4,4 +4,4 @@
 
 具体可以参照文档中 `仓库/创建仓库` 中的 `通过 Fork 创建` 一节.
 
-参照: [创建仓库](create_repository.md)
+参照: [创建仓库](create_repo.md)

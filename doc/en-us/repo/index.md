@@ -1,6 +1,6 @@
-[Create Repository](create_repository.md)
+[Create Repository](create_repo.md)
 
-[Fork](fork_repository.md)
+[Fork](fork_repo.md)
 
 [Commit](commit.md)
 
