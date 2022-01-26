@@ -3,9 +3,9 @@
 
 [Installation](installation)
 
-[Repository](repository)
+[Repository](repo)
 
-[Repository Group](repository_group)
+[Repository Group](repo_group)
 
 [Admin Area](admin)
 

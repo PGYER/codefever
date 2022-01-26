@@ -1,4 +1,4 @@
-[创建仓库组](create_repository_group.md)
+[创建仓库组](create_repo_group.md)
 
 [成员管理](members.md)
 

@@ -93,8 +93,8 @@
 
 ### **使用说明**
 
-- [仓库](doc/zh-cn/reposiotry)
-- [仓库组](doc/zh-cn/reposiotry_group)
+- [仓库](doc/zh-cn/repo)
+- [仓库组](doc/zh-cn/repo_group)
 - [管理员设置](doc/zh-cn/admin)
 - [Git](doc/zh-cn/git)
 - [常见问题](doc/zh-cn/common)
