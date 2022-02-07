@@ -155,7 +155,7 @@ class Header extends React.Component {
                 </MenuItem>
                 <MenuItem onClick={() => {
                   this.setState({ helpMenuAnchor: null })
-                  window.open('https://codefever.pgyer.com/', '_blank')
+                  window.open('https://codefever.pgyer.com/community', '_blank')
                 }}>
                   <ListItemText disableTypography primary={intl.formatMessage({ id: 'label.support' })} />
                 </MenuItem>

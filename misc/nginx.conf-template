@@ -49,7 +49,7 @@ http {
         access_log logs/codefever-access.log access;
         error_log logs/codefever-error.log  error ;
 
-        location ~* ^\/[0-9a-z_]+\/[0-9a-z]+\.git {
+        location ~* ^\/[0-9a-z_]+\/[0-9a-z_]+\.git {
             proxy_pass http://127.0.0.1:27555;
         }
 
@@ -96,7 +96,7 @@ http {
         access_log logs/codefever-dev-access.log access;
         error_log logs/codefever-dev-error.log  error ;
 
-        location ~* ^\/[0-9a-z_]+\/[0-9a-z]+\.git {
+        location ~* ^\/[0-9a-z_]+\/[0-9a-z_]+\.git {
             proxy_pass http://127.0.0.1:27555;
         }
 
