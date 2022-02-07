@@ -27,6 +27,10 @@
 
 参照: [Docker 镜像安装](../installation/install_via_docker.md)
 
+### 更新
+
+`CodeFever` 可以进行保留原有数据更新，按照如下文档即可完成更新操作。具体可见：[更新 CodeFever](../installation/update.md)
+
 ### 使用
 
 [仓库](../reposiotry)
