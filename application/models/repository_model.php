@@ -1483,8 +1483,8 @@ class Repository_model extends CI_Model
             return [];
         }
 
-        $search = array("\r", "\n", '"', "\t", '\\');
-        $replace = array('\r', '\n', '\"', '\t', '\\\\');
+        $search = array("\r", "\n", "\t", '\\', '"');
+        $replace = array('\r', '\n', '\t', '\\\\', '\"');
         $log = str_replace($search, $replace, $log);
 
         return Helper::parseJSON($log, Helper::getDelimiter());
