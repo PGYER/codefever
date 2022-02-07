@@ -4,17 +4,13 @@ if [ $UID -ne 0 ]; then
     exit 1
 fi
 
-echo 'start installation...'
+echo 'start update...'
 
-useradd -r www
-useradd -rm git
+service codefever stop
+service php-fpm stop
+service nginx stop
 
-echo 'user www created!'
-
-echo 'Generateing public key for ssh: (Just Press Enter Key!)'
-sudo -u git ssh-keygen -f /home/git/.ssh/id_rsa
-
-echo 'ssh for user git set!'
+echo 'service stopped!'
 
 cp nginx.conf-template /usr/local/nginx/conf/nginx.conf
 
@@ -30,25 +26,14 @@ cp nginx-service-template /etc/init.d/nginx
 cp php-fpm-service-template /etc/init.d/php-fpm
 cp codefever-service-template /etc/init.d/codefever
 
-echo 'services installed!'
+echo 'services updated!'
 
 cp ../config.template.yaml ../config.yaml
 cp ../env.template.yaml ../env.yaml
 
 chmod 0777 ../config.yaml ../env.yaml
 
-echo 'env files generated!'
-
-mkdir ../application/logs
-chmod -R git:git ../application/logs
-
-chmod -R 0777 ../git-storage
-
-mkdir ../file-storage
-chown -R git:git ../file-storage
-chown -R git:git ../misc
-
-echo 'Enssential directory created!'
+echo 'env files overwrote!'
 
 echo 'Loading composer libraries: (Just Press Enter Key!)'
 
@@ -72,4 +57,4 @@ echo '=== IMPORTANT NOTICE ==='
 echo '1. You shuold edit file </data/www/codefever-community/env.yaml: mysql/*> to finish mysql settings.'
 echo '2. You shuold edit file </data/www/codefever-community/env.yaml: session/*> to finish cookie settings.'
 echo '3. You shuold edit file </data/www/codefever-community/env.yaml: gateway/token> to finish git gateway security settings.'
-echo '4. Run sh ./create_db.sh after change env.yaml.'
+echo 'have fun!'
