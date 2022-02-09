@@ -67,7 +67,7 @@
 
 ### **Demo**
 
-[Demo](http://114.132.251.156/) (Please do not upload the production code, it is for testing only. This demo is running on a 1 core 1 GB memory cloud server.)
+[Demo](http://114.132.251.156/) (Please do not upload the production code, it is for testing only. This demo is running on a 1 vCPU & 1 GB memory VPS)
 
 ### **Features**
 
