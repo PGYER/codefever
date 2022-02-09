@@ -112,7 +112,7 @@
 
 Feel free to submit a `PR`, please make sure to test it properly after fixing the `Bug` or adding a `Feature`.
 
-- If the content of the `PR` is an issue, please submit the `Issue` first and reference the `Issue` when submitting the PR. Reference: [Bug_Fix_PR](doc/en-us/contribute/bug_fix_pr.md)
+- If the content of the `PR` is an issue, please submit the `Issue` first and reference the `Issue` when submitting the PR. Reference: [Bug Fix PR](doc/en-us/contribute/bug_fix_pr.md)
 - If the content of the `PR` is a new feature, please describe the feature in as much detail as possible in the `PR`, and if the PR is a commit for a feature request, reference the `Issue` when submitting the PR. Reference: [New Feature PR](doc/en-us/contribute/new_feature_pr.md)
 
 ### Document
