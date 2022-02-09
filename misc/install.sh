@@ -73,3 +73,4 @@ echo '1. You shuold edit file </data/www/codefever-community/env.yaml: mysql/*> 
 echo '2. You shuold edit file </data/www/codefever-community/env.yaml: session/*> to finish cookie settings.'
 echo '3. You shuold edit file </data/www/codefever-community/env.yaml: gateway/token> to finish git gateway security settings.'
 echo '4. Run sh ./create_db.sh after change env.yaml.'
+echo '5. Run sh ./remove_test_data.sh if you DO NOT need to run unit test.'
