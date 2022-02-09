@@ -223,6 +223,13 @@ cd /data/www/codefever-community/misc
 sh ./create_db.sh
 ```
 
+如果你不需要对 CodeFever 进行代码上的修改, 或者将来不计划运行单元测试, 可以删除测试数据
+
+```shell
+cd /data/www/codefever-community/misc
+sh ./remove_test_data.sh
+```
+
 为服务开启 `chkconfig` 以开机自动运行
 
 ```shell
