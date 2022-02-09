@@ -47,7 +47,7 @@
 
 英文版本文档正在完善中, 欢迎 [提交文档](doc/zh-cn/contribute/doc_pr.md)
 
-[English](doc/en-us/start/welcome.md)
+[English](README_EN.md)
 
 <details open>
   <summary><b>目录</b></summary>
