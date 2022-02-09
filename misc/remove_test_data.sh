@@ -28,7 +28,7 @@ echo 'Test Group Data Removed!'
 
 rm -rf ../git-storage/7b56eed88bda864c6e5ae1540549f8ab
 
-echo 'Test Repository Removed'
+echo 'Test Repository Removed!'
 
 echo 'Done!'
-echo 'All Test Data Removed !'
+echo 'All Test Data Removed!'
