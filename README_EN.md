@@ -17,7 +17,7 @@
   </p>
   <p>
     <b>
-      Fully Open Source Code Hosting Service for Git
+      A Fully Open Source Code Hosting Service for Git
     </b>
   </p>
   <p>
@@ -55,10 +55,10 @@
 - [Features](#Features)
 - [Installation](#Installation)
 - [Upgrade](#Upgrade)
-- [Instruction](#Instruction)
+- [User Guide](#User%20Guide)
 - [Feedback](#Feedback)
 - [Contribute](#Contribute)
-- [Document](#Document)
+- [Contribute to Docs](#Contribute%20to%Docs)
 - [About](#About)
 
 ---
@@ -67,7 +67,7 @@
 
 ### **Demo**
 
-[Demo](http://114.132.251.156/) (Please do not upload the production code, it is for testing only. This demo is running on a 1 vCPU & 1 GB memory VPS)
+[Demo](http://114.132.251.156/) (DO NOT upload the production code, This DEMO is for evaluation purposes only. This demo is running on a 1 vCPU & 1 GB memory VPS)
 
 ### **Features**
 
@@ -95,7 +95,7 @@
 
 `CodeFever` can be updated and keep the original data, follow the documentation to complete the update operation. See: [Update CodeFever](doc/en-us/installation/update.md)
 
-### **Instruction**
+### **User Guide**
 
 - [Repository](doc/en-us/repo)
 - [Repository Group](doc/en-us/repo_group)
@@ -105,27 +105,27 @@
 
 ### **Feedback**
 
-- If you encounter unexpected results in the process, feel free to submit `Issue`. See also: [Bug Fix Issue](doc/en-us/contribute/bug_fix_issue.md)
-- If you want to add some features to the `CodeFever Community`, feel free to submit an `Issue` as well. Reference: [Request feature issue](doc/en-us/contribute/request_feature_issue.md)
+- If any issue or inconvenient encountered while using `CodeFever Community`, feel free to submit `Issue`. See: [Bug Fix Issue](doc/en-us/contribute/bug_fix_issue.md)
+- If you have any idea to improve `CodeFever Community`, feel free to submit an `Issue` as well. See: [Feature Request issue](doc/en-us/contribute/request_feature_issue.md)
 
 ### **Contribute**
 
 Feel free to submit a `PR`, please make sure to test it properly after fixing the `Bug` or adding a `Feature`.
 
-- If the content of the `PR` is an issue, please submit the `Issue` first and reference the `Issue` when submitting the PR. Reference: [Bug Fix PR](doc/en-us/contribute/bug_fix_pr.md)
-- If the content of the `PR` is a new feature, please describe the feature in as much detail as possible in the `PR`, and if the PR is a commit for a feature request, reference the `Issue` when submitting the PR. Reference: [New Feature PR](doc/en-us/contribute/new_feature_pr.md)
+- If the content of the `PR` is a bug fix issue, please submit the `Issue` first and reference the `Issue` when submitting the PR. Reference: [Bug Fix PR](doc/en-us/contribute/bug_fix_pr.md)
+- If the content of the `PR` is a new feature, please describe the feature in as much detail as possible in the `PR`, and if the PR is a commit for a feature request issue, reference the `Issue` when submitting the PR. Reference: [New Feature PR](doc/en-us/contribute/new_feature_pr.md)
 
-### Document
+### **Contribute to Docs**
 
-You are welcome to correct errors in the document or participate in the translation work, please make sure the content of the document is accurate before submitting `PR`, please refer to: [Document PR](doc/en-us/contribute/doc_pr.md)
+You are welcome to correct errors in the document or participate in the translation works, please make sure the content of the document is accurate before submitting `PR`, please refer to: [Document PR](doc/en-us/contribute/doc_pr.md)
 
 ### **About**
 
-The `CodeFever` project was initially developed and maintained by PGYER and went live in June 2020 [https://codefever.pgyer.com/](https://codefever.pgyer.com/). After nearly two years of stability verification, the project was open sourced in February 2022 to be tested by the community.
+The `CodeFever` project was initially developed and maintained by `PGYER` and went live in June 2020 [https://codefever.pgyer.com/](https://codefever.pgyer.com/). After nearly two years of stability verification, the project was open sourced in February 2022 to be tested by the community.
 
-After `CodeFever` open source, the open source version is called `CodeFever Conmmunity` version. The public cloud version will continue to be called `CodeFever.
+After `CodeFever` open source, the open source version is called `CodeFever Conmmunity` version. The public cloud version will continue to be called `CodeFever`.
 
-`CodeFever Community` is developed by the PGYER team and is fully open source based on the `MIT`, and has completely independent property rights, so you can use it without worrying about whether it violates other's rights.
+`CodeFever Community` is developed by the `PGYER` team and is fully open source based on the `MIT` license, and has completely independent property rights, so you can use it without worrying about whether it violates other's rights.
 
 `CodeFever Community` retains most of the features of `CodeFever` and is optimized for standalone deployment. `CodeFever Community` also accepts community submissions as `CodeFever` is updated.
 
