@@ -88,14 +88,15 @@
 
 ### **如何安装**
 
-`CodeFever` 提供 `从头开始安装` 和 `Docker 镜像安装` 两种安装方式，可以根据自己的实际需要选择安装方式。
+`CodeFever` 提供 `从零开始安装` 和 `Docker 镜像安装` 两种安装方式，可以根据自己的实际需要选择安装方式。
 
-- **(推荐)** 最简单的安装方式是使用 `Docker`，只需要一行命令即可完成，具体可见： [Docker 镜像安装](doc/zh-cn/installation/install_via_docker.md) 
-- 如果出于学习、研究或定制化需求，也可以手动方式安装，具体可见：[从头开始安装](doc/zh-cn/installation/install_from_scratch.md)
+- **(推荐)** 最简单的安装方式是使用 `Docker`, 只需要一行命令即可完成, 具体可见: [Docker 镜像安装](doc/zh-cn/installation/install_via_docker.md) 
+
+- 如果出于学习、研究或定制化需求, 也可以手动方式安装, 具体可见: [从零开始安装](doc/zh-cn/installation/install_from_scratch.md)
 
 ### **如何更新**
 
-`CodeFever` 可以进行保留原有数据更新，按照如下文档即可完成更新操作。具体可见: [更新 CodeFever](doc/zh-cn/installation/update.md)
+`CodeFever` 可以进行保留原有数据更新, 按照如下文档即可完成更新操作。具体可见: [更新 CodeFever](doc/zh-cn/installation/update.md)
 
 ### **使用说明**
 
@@ -108,7 +109,7 @@
 ### **问题反馈**
 
 - 如果你在使用过程中遇到期望外的结果，欢迎提交 `Issue`。参照: [提交问题](doc/zh-cn/contribute/bug_fix_issue.md)
-- 如果你希望在 `CodeFever Community` 添加一些特性，也欢迎提交 `Issue`。参照: [提交特性请求](doc/zh-cn/contribute/request_feature_issue.md)
+- 如果你希望在 `CodeFever Community` 添加一些特性, 也欢迎提交 `Issue`。参照: [提交特性请求](doc/zh-cn/contribute/request_feature_issue.md)
 
 ### **贡献代码**
 
@@ -123,11 +124,11 @@
 
 ### **关于**
 
-`CodeFever` 项目起初由 蒲公英开发者服务平台 开发和维护，项目于 2020 年 6 月上线 [https://codefever.pgyer.com/](https://codefever.pgyer.com/) 。 经过将近两年时间打磨和稳定性验证，于 2022 年 2 月开源，接受社区的考验。
+`CodeFever` 项目起初由 `蒲公英开发者服务平台` 开发和维护, 项目于 2020 年 6 月上线 [https://codefever.pgyer.com/](https://codefever.pgyer.com/) 。 经过将近两年时间打磨和稳定性验证, 于 2022 年 2 月开源, 接受社区的考验。
 
-`CodeFever` 开源后，开源版本称为 `CodeFever Conmmunity` 版本。同时公有云版本继续服务，继续称为 `CodeFever。`
+`CodeFever` 开源后, 开源版本称为 `CodeFever Conmmunity` 版本。同时公有云版本继续服务，继续称为 `CodeFever`。
 
-`CodeFever Community` 由 `蒲公英开发者服务平台` 团队完整自主研发并基于 `MIT` 协议进行完整开源，拥有完全自主的知识产权，因此您可以放心使用而不必考虑是否侵犯他人权利。
+`CodeFever Community` 由 `蒲公英开发者服务平台` 团队完整自主研发并基于 `MIT` 协议进行完整开源, 拥有完全自主的知识产权, 因此您可以放心使用而不必考虑是否侵犯他人权利。
 
-`CodeFever Community` 保留了 `CodeFever` 的大部分功能，并且进行了更适合单机部署的优化。`CodeFever Community` 也会随 `CodeFever` 更新的同时接受来自社区的提交。
+`CodeFever Community` 保留了 `CodeFever` 的大部分功能, 并且进行了更适合单机部署的优化。`CodeFever Community` 也会随 `CodeFever` 更新的同时接受来自社区的提交。
 
