@@ -91,7 +91,6 @@
 `CodeFever` 提供 `从零开始安装` 和 `Docker 镜像安装` 两种安装方式，可以根据自己的实际需要选择安装方式。
 
 - **(推荐)** 最简单的安装方式是使用 `Docker`, 只需要一行命令即可完成, 具体可见: [Docker 镜像安装](doc/zh-cn/installation/install_via_docker.md) 
-
 - 如果出于学习、研究或定制化需求, 也可以手动方式安装, 具体可见: [从零开始安装](doc/zh-cn/installation/install_from_scratch.md)
 
 ### **如何更新**
