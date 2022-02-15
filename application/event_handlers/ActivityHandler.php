@@ -51,6 +51,10 @@ class ActivityHandler extends EventHandler
         EventType::MERGE_REQUEST_REVIEWER_DELETE,
         EventType::MERGE_REQUEST_REVIEWER_REVIEW,
 
+        EventType::WEBHOOK_CREATE,
+        EventType::WEBHOOK_UPDATE,
+        EventType::WEBHOOK_DELETE,
+
         EventType::HOOK_POST_RECEIVE
     ];
 
@@ -125,6 +129,12 @@ class ActivityHandler extends EventHandler
             EventType::MERGE_REQUEST_REVIEWER_REVIEW
         ])) {
             $this->_handleMergeRequestEvent($event);
+        } else if (in_array($eventType, [
+            EventType::WEBHOOK_CREATE,
+            EventType::WEBHOOK_UPDATE,
+            EventType::WEBHOOK_DELETE
+        ])) {
+            $this->_handleWebhookEvent($event);
         }
     }
 
@@ -430,6 +440,35 @@ class ActivityHandler extends EventHandler
             $insertData['a_data'] = json_encode([
                 'id' => $event->data->id,
                 'reviewer' => $event->data->reviewer
+            ]);
+        }
+
+        $this->CI->db->insert('activities', $insertData);
+
+        return TRUE;
+    }
+
+    private function _handleWebhookEvent(Event $event) {
+        $eventActivityTypeMapping = [
+            EventType::WEBHOOK_CREATE => ActivityType::WEBHOOK_CREATE,
+            EventType::WEBHOOK_UPDATE => ActivityType::WEBHOOK_UPDATE,
+            EventType::WEBHOOK_DELETE => ActivityType::WEBHOOK_DELETE
+        ];
+
+        $insertData = [];
+        $insertData['a_key'] = UUID::getKey();
+        $insertData['u_key'] = $event->user;
+        $insertData['a_relative_r_key'] = $event->data->rKey;
+        $insertData['a_relative_g_key'] = $event->data->gKey;
+
+        if (in_array($event->type, [
+                EventType::WEBHOOK_CREATE,
+                EventType::WEBHOOK_UPDATE,
+                EventType::WEBHOOK_DELETE
+            ])) {
+            $insertData['a_type'] = $eventActivityTypeMapping[$event->type];
+            $insertData['a_data'] = json_encode([
+                'rwKey' => $event->data->rwKey
             ]);
         }
 

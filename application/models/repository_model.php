@@ -2105,4 +2105,232 @@ class Repository_model extends CI_Model
 
         return $members;
     }
+
+    public function normalizeWebhooks(array $list)
+    {
+        $output = [];
+        if (!$list) {
+            return [];
+        }
+        foreach ($list as $item) {
+            array_push($output, [
+                'id' => $item['rw_key'],
+                'user' => $item['u_name'],
+                'url' => $item['rw_url'],
+                'secret' => $item['rw_secret'],
+                'events' => $item['rw_events'],
+                'active' => $item['rw_active'],
+                'updated' => (int) strtotime($item['rw_updated'])
+            ]);
+        }
+        return $output;
+    }
+
+    public function getWebhook(string $rwKey) {
+        $this->db->where('rw_key', $rwKey);
+        $query = $this->db->get('repository_webhooks');
+
+        return $query->row_array();
+    }
+
+    public function getWebhooks (string $rKey) {
+        $this->db->select('rw.*, u.u_name');
+        $this->db->from('repository_webhooks AS rw');
+        $this->db->join('users AS u', 'rw.u_key = u.u_key', 'left');
+        $this->db->where('rw.r_key', $rKey);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function createWebhook (array $data)
+    {
+        if (!$data['u_key'] || !$data['r_key'] || !$data['rw_url'] || !$data['rw_events']) {
+            return FALSE;
+        }
+
+        $data['rw_key'] = UUID::getKey();
+        $data['rw_updated'] = date('Y-m-d H:i:s');
+        $this->db->insert('repository_webhooks', $data);
+
+        return $data['rw_key'];
+    }
+
+    public function updateWebhook(string $rwKey, array $data)
+    {
+        if (!$rwKey || !$data['rw_url'] || !$data['rw_events']) {
+            return FALSE;
+        }
+
+        $data['rw_updated'] = date('Y-m-d H:i:s');
+
+        $this->db->where('rw_key', $rwKey);
+        $this->db->update('repository_webhooks', $data);
+
+        return $rwKey;
+    }
+
+    public function deleteWebhook (string $rwKey)
+    {
+        if (!$rwKey) {
+            return false;
+        }
+
+        $this->db->where('rw_key', $rwKey);
+        $this->db->delete('repository_webhooks');
+
+        return $rwKey;
+    }
+
+    public function deleteWebhookEventsByRwKey (string $rwKey)
+    {
+        if (!$rwKey) {
+            return false;
+        }
+        $this->db->where('rw_key', $rwKey);
+        $this->db->delete('repository_webhook_events');
+
+        return true;
+    }
+
+    public function deleteWebhookLogsByRwKey (string $rwKey)
+    {
+        if (!$rwKey) {
+            return false;
+        }
+        $this->db->where('rw_key', $rwKey);
+        $this->db->delete('repository_webhook_logs');
+
+        return true;
+    }
+
+    public function addRepositoryWebhookEvent(string $uKey, string $rKey, string $eventType, string $data)
+    {
+        if (!$uKey || !$rKey || !$eventType || !$data) {
+            return FALSE;
+        }
+
+        $webhooks = $this->getRepositoryWebhooks($rKey);
+        if (!$webhooks) {
+            return FALSE;
+        }
+
+        foreach ($webhooks as $webhook) {
+            $eventTypes = explode(',', $webhook['rw_events']);
+
+            if (!in_array($eventType, $eventTypes)) {
+                continue;
+            }
+
+            $this->db->insert('repository_webhook_events', [
+                'rwe_key' => UUID::getKey(),
+                'rwe_user' => $uKey,
+                'rw_key' => $webhook['rw_key'],
+                'rwe_type' => $eventType,
+                'rwe_data' => $data,
+            ]);
+        }
+
+        return TRUE;
+    }
+
+    public function getRepositoryWebhooks(string $rKey)
+    {
+        if (!$rKey) {
+            return FALSE;
+        }
+
+        $this->db->where('r_key', $rKey);
+        $query = $this->db->get('repository_webhooks');
+        $webhooks = $query->result_array();
+
+        return $webhooks;
+    }
+
+    public function getRepositoryWebhookEvents()
+    {
+        $this->db->from('repository_webhook_events AS rwe');
+        $this->db->join('repository_webhooks AS rw', 'rwe.rw_key = rw.rw_key', 'LEFT');
+        $this->db->where('rw_active', GLOBAL_TRUE);
+        $query = $this->db->get();
+        $events = $query->result_array();
+
+        return $events;
+    }
+
+    public function deleteRepositoryWebhookEvent(string $rweKey)
+    {
+        if (!$rweKey) {
+            return FALSE;
+        }
+
+        $this->db->where('rwe_key', $rweKey);
+        $this->db->delete('repository_webhook_events');
+
+        return TRUE;
+    }
+
+    public function addRepositoryWebhookLog(array $data)
+    {
+        if (!$data) {
+            return FALSE;
+        }
+
+        $this->db->insert('repository_webhook_logs', $data);
+
+        return TRUE;
+    }
+
+    public function normalizeRepositoryWebhookLogData(array $data)
+    {
+        return [
+            'request' => json_decode($data['rwl_request']),
+            'response' => json_decode($data['rwl_response']),
+        ];
+    }
+
+    public function getRepositoryWebhookLogData(string $rwlId)
+    {
+        if (!$rwlId) {
+            return FALSE;
+        }
+
+        $this->db->where('rwl_id', $rwlId);
+        $query = $this->db->get('repository_webhook_logs');
+        $log = $query->row_array();
+
+        return $log;
+    }
+
+    public function normalizeRepositoryWebhookLogs(array $list)
+    {
+        $final = [];
+        foreach ($list as $item) {
+            array_push($final, [
+                'id' => $item['rwl_id'],
+                'webhook' => $item['rw_key'],
+                'start' => (float) $item['rwl_start'],
+                'end' => (float) $item['rwl_end'],
+                'status' => (int) $item['rwl_status'],
+                'success' => $item['rwl_status'] == 200,
+                'created' => $item['rwl_created'],
+            ]);
+        }
+
+        return $final;
+    }
+
+    public function getRepositoryWebhookLogs(string $rwKey)
+    {
+        if (!$rwKey) {
+            return FALSE;
+        }
+
+        $this->db->select('rwl_id, rw_key, rwl_start, rwl_end, rwl_status, rwl_created');
+        $this->db->where('rw_key', $rwKey);
+        $this->db->order_by('rwl_created', 'DESC');
+        $query = $this->db->get('repository_webhook_logs');
+        $logs = $query->result_array();
+
+        return $logs;
+    }
 }

@@ -184,6 +184,30 @@ function relatedMergeRequests (data) {
   return APIRequest.GET('/api/repository/relatedMergeRequests', null, data)
 }
 
+function getWebhook (data) {
+  return APIRequest.POST('/api/repository/getWebhook', data)
+}
+
+function webhooks (data) {
+  return APIRequest.POST('/api/repository/webhooks', data)
+}
+
+function editWebhook (data) {
+  return APIRequest.POST('/api/repository/editWebhook', data)
+}
+
+function deleteWebhook (data) {
+  return APIRequest.POST('/api/repository/deleteWebhook', data)
+}
+
+function getRepositoryWebhookLogs (data) {
+  return APIRequest.POST('/api/repository/getRepositoryWebhookLogs', data)
+}
+
+function getRepositoryWebhookLogData (data) {
+  return APIRequest.POST('/api/repository/getRepositoryWebhookLogData', data)
+}
+
 export default {
   list,
   create,
@@ -230,5 +254,11 @@ export default {
   checkMergeType,
   mergeBranch,
   mergeRequestVersionList,
-  relatedMergeRequests
+  relatedMergeRequests,
+  getWebhook,
+  webhooks,
+  editWebhook,
+  deleteWebhook,
+  getRepositoryWebhookLogs,
+  getRepositoryWebhookLogData
 }

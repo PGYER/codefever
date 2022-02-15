@@ -8,6 +8,7 @@ const data = {
   ...Phrase,
   ...Term,
 
+  update_S_: '修改{s}',
   retryAfter_N_seconds: '{n} 秒后重试',
   userAvatar: [Phrase.user, Phrase.avatar].join(phraseSeperator),
   userName: [Phrase.user, Phrase.name].join(phraseSeperator),
@@ -65,6 +66,18 @@ const data = {
   updateCreator: [Phrase.update, Phrase.creator].join(phraseSeperator),
   updateRepositoryURL: [Phrase.update, Term.repository, Phrase.url].join(phraseSeperator),
   updateGroupURL: [Phrase.update, Term.group, Phrase.url].join(phraseSeperator),
+
+  webhookSetting: [Term.webhook, Term.setting].join(phraseSeperator),
+  createWebhook: [Phrase.create, Term.webhook].join(phraseSeperator),
+  updateWebhook: [Phrase.update, Term.webhook].join(phraseSeperator),
+  deleteWebhook: [Phrase.delete, Term.webhook].join(phraseSeperator),
+  contentType: '数据格式',
+  webhookSecret: '校验秘钥',
+  webhookTrigger: '触发事件',
+  pushTrigger: '仅推送事件',
+  customeTrigger: '自定义',
+  webhookList: 'Webhook列表',
+  webhookLog: [Phrase.webhook, Phrase.log].join(phraseSeperator),
 
   createOrigin: [Phrase.create, Phrase.origin].join(phraseSeperator),
   choseCreateOrigin: [Phrase.chose, Phrase.create, Phrase.origin].join(phraseSeperator),
@@ -171,6 +184,13 @@ const data = {
   feedback: '提交反馈',
   contribute: '为 CodeFever Community 贡献代码',
   about: '关于 CodeFever Community',
+
+  pushEvent: '推送事件',
+  changeMemberRole: [Phrase.modification, Term.member, Term.role].join(phraseSeperator),
+  createProtectedBranchRule: '创建受保护分支规则',
+  changeProtectedBranchRule: '修改受保护分支规则',
+  removeProtectedBranchRule: '删除受保护分支规则',
+  reviewReviewer: '评审代码',
 
   _N_repository: '{n} {n, plural, =0 {' + Term.repository + '}\n=1 {' + Term.repository + '}\nother {' + Term.repository_pl + '}}',
   _N_commit: '{n} {n, plural, =0 {' + Term.commit + '}\n=1 {' + Term.commit + '}\nother {' + Term.commit_pl + '}}',

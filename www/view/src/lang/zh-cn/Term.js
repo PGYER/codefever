@@ -17,6 +17,9 @@ const data = {
   branch: '分支',
   branch_pl: '分支',
 
+  webhook: 'Webhook',
+  webhook_pl: 'Webhooks',
+
   tag: '标签',
   tag_pl: '标签',
 

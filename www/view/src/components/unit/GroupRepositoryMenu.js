@@ -221,7 +221,7 @@ GroupRepositoryMenu.propTypes = {
   currentRepositoryKey: PropTypes.string,
   currentGroupKey: PropTypes.string,
   intl: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string
 }
 
 const mapStateToProps = (state, ownProps) => {

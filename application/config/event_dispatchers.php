@@ -10,7 +10,8 @@ class GeneralEventDispatcher extends EventDispatcher {
         '*' => [
             ['service\EventHandler\TestHandler@capture'],
             ['service\EventHandler\ActivityHandler@capture'],
-            ['service\EventHandler\UserNotificationHandler@capture']
+            ['service\EventHandler\UserNotificationHandler@capture'],
+            ['service\EventHandler\WebhookHandler@capture'],
         ]
     ];
 }

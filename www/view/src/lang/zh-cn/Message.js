@@ -150,7 +150,12 @@ const data = {
   setAdministrator: '设置为管理员',
   cancelAdministrator: '取消管理员',
   memberRemoveConfirm: '成员删除确认',
-  successAddUser: '添加用户成功'
+  successAddUser: '添加用户成功',
+
+  webhookEventsNeed: '请选择推送事件',
+  webhookListEmpty: '还没有创建Webhook',
+  useTime_n: '用时 {n} s',
+  show_n_record: '显示最新{n}条记录'
 }
 
 export default { ...data, __namespace__: 'message' }

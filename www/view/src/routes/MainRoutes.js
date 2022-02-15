@@ -20,6 +20,7 @@ import NewRepository from 'APPSRC/components/view/NewRepository'
 import NewRepositoryFork from 'APPSRC/components/view/NewRepositoryFork'
 import RepositorySettingGeneral from 'APPSRC/components/view/RepositorySettingGeneral'
 import RepositorySettingBranch from 'APPSRC/components/view/RepositorySettingBranch'
+import RepositorySettingWebhook from 'APPSRC/components/view/RepositorySettingWebhook'
 import RepositorySettingMembers from 'APPSRC/components/view/RepositorySettingMembers'
 import RepositorySettingAdvanced from 'APPSRC/components/view/RepositorySettingAdvanced'
 
@@ -127,6 +128,7 @@ class MainRoutes extends React.Component {
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/settings' component={RepositorySettingGeneral} />
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/settings/general' component={RepositorySettingGeneral} />
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/settings/branch' component={RepositorySettingBranch} />
+          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/settings/webhook' component={RepositorySettingWebhook} />
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/settings/advanced' component={RepositorySettingAdvanced} />
 
           <Route component={FileTree} />

@@ -268,6 +268,14 @@ function makeRepositoryDrawerConfig (repositoryConfig) {
               ]
             },
             {
+              path: ['', repositoryConfig.group.name, repositoryConfig.repository.name, 'settings', 'webhook'].join('/'),
+              name: 'menu.webhook_pl',
+              icon: psSetting,
+              activePattern: [
+                /([A-Za-z0-9_]{5,})\/[A-Za-z0-9_]+\/settings\/webhook(\/)?$/i
+              ]
+            },
+            {
               path: ['', repositoryConfig.group.name, repositoryConfig.repository.name, 'settings', 'advanced'].join('/'),
               name: 'menu.advanced',
               icon: psSetting,

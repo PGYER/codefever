@@ -8,6 +8,7 @@ const data = {
   ...Phrase,
   ...Term,
 
+  update_S_: 'Modify {s}',
   retryAfter_N_seconds: 'Retry After {n} Seconds',
   userAvatar: [Phrase.user, Phrase.avatar].join(phraseSeperator),
   userName: [Phrase.user, Phrase.name].join(phraseSeperator),
@@ -65,6 +66,18 @@ const data = {
   updateCreator: [Phrase.update, Phrase.creator].join(phraseSeperator),
   updateRepositoryURL: [Phrase.update, Term.repository, Phrase.url].join(phraseSeperator),
   updateGroupURL: [Phrase.update, Term.group, Phrase.url].join(phraseSeperator),
+
+  webhookSetting: [Term.webhook, Term.setting].join(phraseSeperator),
+  createWebhook: [Phrase.create, Term.webhook].join(phraseSeperator),
+  updateWebhook: [Phrase.update, Term.webhook].join(phraseSeperator),
+  deleteWebhook: [Phrase.delete, Term.webhook].join(phraseSeperator),
+  contentType: 'Content Type',
+  webhookSecret: 'Secret Key',
+  webhookTrigger: 'Trigger Event',
+  pushTrigger: 'Just the push event',
+  customeTrigger: 'Customized',
+  webhookList: 'Webhook List',
+  webhookLog: [Phrase.webhook, Phrase.log].join(phraseSeperator),
 
   createOrigin: [Phrase.create, Phrase.origin].join(phraseSeperator),
   choseCreateOrigin: [Phrase.chose, Phrase.create, Phrase.origin].join(phraseSeperator),
@@ -171,6 +184,13 @@ const data = {
   feedback: 'Submit Feedback',
   contribute: 'Contribute to CodeFever Community',
   about: 'About CodeFever Community',
+
+  pushEvent: 'Push Event',
+  changeMemberRole: [Phrase.modification, Term.member, Term.role].join(phraseSeperator),
+  createProtectedBranchRule: 'Create protected branch rule',
+  changeProtectedBranchRule: 'Update protected branch rule',
+  removeProtectedBranchRule: 'remove protected branch rule',
+  reviewReviewer: 'Review Code',
 
   _N_repository: '{n} {n, plural, =0 {' + Term.repository + '}\n=1 {' + Term.repository + '}\nother {' + Term.repository_pl + '}}',
   _N_commit: '{n} {n, plural, =0 {' + Term.commit + '}\n=1 {' + Term.commit + '}\nother {' + Term.commit_pl + '}}',
