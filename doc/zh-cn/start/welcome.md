@@ -14,8 +14,8 @@
 
 ### 使用
 
-- [仓库](../reposiotry)
-- [仓库组](../reposiotry_group)
+- [仓库](../repo)
+- [仓库组](../repo_group)
 - [管理员设置](../admin)
 - [Git](../git)
 - [常见问题](../common)
