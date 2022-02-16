@@ -61,6 +61,7 @@ echo 'Composer libraries loaded!'
 service codefever start
 service php-fpm start
 service nginx start
+service crond start
 
 echo 'Services Started!'
 

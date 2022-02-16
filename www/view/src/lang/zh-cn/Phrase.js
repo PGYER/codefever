@@ -69,7 +69,7 @@ const data = {
   protected: '保护',
   operating: '操作',
   approve: '评审',
-  enable: '恢复',
+  enable: '启用',
   disable: '禁用',
 
   last: '最近',

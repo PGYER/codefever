@@ -28,7 +28,7 @@ class Codefever_schedule extends CI_Controller {
                 }
 
                 if ($schedule[1] == 'backend') {
-                    $command = "/usr/local/php7/bin/php {$ciIndex} backend/{$schedule[2]}";
+                    $command = "/usr/local/php/bin/php {$ciIndex} backend/{$schedule[2]}";
                 } else if ($schedule[1] == 'customize') {
                     $command = $schedule[2];
                 }
