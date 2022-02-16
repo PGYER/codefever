@@ -132,6 +132,16 @@ class EventType {
     const MERGE_REQUEST_REVIEWER_REVIEW = 'mergeRequestReviewer:review';
     const MERGE_REQUEST_REVIEWER_REVIEW_D = self::MERGE_REQUEST_REVIEWER_DELETE_D;
 
+    // webhook event
+    const WEBHOOK_CREATE = 'webhook:create';
+    const WEBHOOK_CREATE_D = 'gKey:string|rKey:string|rwKey:string';
+
+    const WEBHOOK_UPDATE = 'webhook:update';
+    const WEBHOOK_UPDATE_D = 'gKey:string|rKey:string|rwKey:string';
+
+    const WEBHOOK_DELETE = 'webhook:delete';
+    const WEBHOOK_DELETE_D = 'gKey:string|rKey:string|rwKey:string';
+
     // repository hooks event
     const HOOK = 'hook';
     const HOOK_D = '';

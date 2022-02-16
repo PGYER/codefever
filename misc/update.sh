@@ -28,13 +28,6 @@ cp codefever-service-template /etc/init.d/codefever
 
 echo 'services updated!'
 
-cp ../config.template.yaml ../config.yaml
-cp ../env.template.yaml ../env.yaml
-
-chmod 0777 ../config.yaml ../env.yaml
-
-echo 'env files overwrote!'
-
 echo 'Loading composer libraries: (Just Press Enter Key!)'
 
 cd ../application/libraries/composerlib/
@@ -49,12 +42,31 @@ service nginx start
 
 echo 'services started!'
 
+DB_HOST=`cat ../env.yaml | grep host: | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+DB_PORT=`cat ../env.yaml | grep port: | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+DB_USER=`cat ../env.yaml | grep username: | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+DB_PASS=`cat ../env.yaml | grep password: | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+DB_NAME=`cat ../env.yaml | grep db: | awk -F: '{ print $2 }' | sed 's/^\s*//'`
+
+# update db to version 20220215
+mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -D"$DB_NAME" -e"source db_update_20220215.sql";
+
+echo 'database updated!'
+
+TARGET_CRONJOB=`crontab -u git -l 2>/dev/null | grep 'codefever_schedule.sh' | wc -l`
+if [ $TARGET_CRONJOB -eq 0 ]; then
+    crontab -u git -l 2>/dev/null >  /tmp/cronjob.temp
+    echo "* * * * * sh /data/www/codefever-community/application/backend/codefever_schedule.sh" >> /tmp/cronjob.temp
+    crontab -u git /tmp/cronjob.temp
+    rm -f /tmp/cronjob.temp
+fi
+
+echo 'Cronjob Registerd!'
+
 echo 'Done!'
 
 echo -e "\n\n\n"
 
 echo '=== IMPORTANT NOTICE ==='
-echo '1. You shuold edit file </data/www/codefever-community/env.yaml: mysql/*> to finish mysql settings.'
-echo '2. You shuold edit file </data/www/codefever-community/env.yaml: session/*> to finish cookie settings.'
-echo '3. You shuold edit file </data/www/codefever-community/env.yaml: gateway/token> to finish git gateway security settings.'
+echo '1. CodeFever Comminuty Upgrated.'
 echo 'have fun!'

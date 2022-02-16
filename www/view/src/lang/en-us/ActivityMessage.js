@@ -42,7 +42,11 @@ const data = {
   merge_S_MergeRquest: 'Merged A Merge Request In Repository {s}',
   assign_S_Reviewer: 'Assign Reviewer In Repository {s}',
   delete_S_Reviewer: 'Delete Reviewer In Repository {s}',
-  review_S_Reviewer: 'Approve Changes In Repository {s}'
+  review_S_Reviewer: 'Approve Changes In Repository {s}',
+
+  create_S_Webhook: 'Create Webhook In Repository {s}',
+  update_S_Webhook: 'Update Webhook In Repository {s}',
+  delete_S_Webhook: 'Delete Webhook In Repository {s}'
 }
 
 export default { ...data, __namespace__: 'message.activity' }

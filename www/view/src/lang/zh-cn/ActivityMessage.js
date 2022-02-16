@@ -42,7 +42,11 @@ const data = {
   merge_S_MergeRquest: '在仓库 {s} 合并请求',
   assign_S_Reviewer: '在仓库 {s} 指定评审员',
   delete_S_Reviewer: '在仓库 {s} 删除评审员',
-  review_S_Reviewer: '在仓库 {s} 评审了代码'
+  review_S_Reviewer: '在仓库 {s} 评审了代码',
+
+  create_S_Webhook: '在仓库 {s} 创建了webhook',
+  update_S_Webhook: '在仓库 {s} 更新了webhook',
+  delete_S_Webhook: '在仓库 {s} 删除了webhook'
 }
 
 export default { ...data, __namespace__: 'message.activity' }

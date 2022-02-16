@@ -150,7 +150,12 @@ const data = {
   setAdministrator: 'Set as administrator',
   cancelAdministrator: 'Cancel an administrator',
   memberRemoveConfirm: 'Member delete confirmation',
-  successAddUser: 'User added successfully'
+  successAddUser: 'User added successfully',
+
+  webhookEventsNeed: 'Please select events',
+  webhookListEmpty: 'Webhook List Empty',
+  useTime_n: 'Completed in {n} seconds',
+  show_n_record: 'Show latest {n} records'
 }
 
 export default { ...data, __namespace__: 'message' }

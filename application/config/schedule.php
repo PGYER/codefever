@@ -2,4 +2,5 @@
 
 $config['crontab'] = [
     // ['crontab', 'backend|customize', 'command']
+    ['* * * * *', 'backend', 'repository_webhook run'],
 ];

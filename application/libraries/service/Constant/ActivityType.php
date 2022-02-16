@@ -55,4 +55,9 @@ class ActivityType {
     const MERGE_REQUEST_REVIEWER_CREATE = 0x0704;
     const MERGE_REQUEST_REVIEWER_DELETE = 0x0705;
     const MERGE_REQUEST_REVIEWER_REVIEW = 0x0706;
+
+    // webhook
+    const WEBHOOK_CREATE = 0x0901;
+    const WEBHOOK_UPDATE = 0x0902;
+    const WEBHOOK_DELETE = 0x0903;
 }

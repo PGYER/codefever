@@ -24,6 +24,9 @@ mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -D"$DB_NAME" -e"source
 
 echo 'Default data created!'
 
+# update db to version 20220215
+mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -D"$DB_NAME" -e"source db_update_20220215.sql";
+
 echo 'Done!'
 
 echo -e "\n\n\n"
