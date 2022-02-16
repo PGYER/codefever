@@ -62,7 +62,17 @@ service codefever start
 service php-fpm start
 service nginx start
 
-echo 'services started!'
+echo 'Services Started!'
+
+TARGET_CRONJOB=`crontab -u git -l 2>/dev/null | grep 'codefever_schedule.sh' | wc -l`
+if [ $TARGET_CRONJOB -eq 0 ]; then
+    crontab -u git -l 2>/dev/null >  /tmp/cronjob.temp
+    echo "* * * * * sh /data/www/codefever-community/application/backend/codefever_schedule.sh" >> /tmp/cronjob.temp
+    crontab -u git /tmp/cronjob.temp
+    rm -f /tmp/cronjob.temp
+fi
+
+echo 'Cronjob Registerd!'
 
 echo 'Done!'
 
