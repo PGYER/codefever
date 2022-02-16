@@ -10,6 +10,9 @@ service codefever stop
 service php-fpm stop
 service nginx stop
 
+yum install -y crontabs
+service crond stop
+
 echo 'service stopped!'
 
 cp nginx.conf-template /usr/local/nginx/conf/nginx.conf
@@ -39,6 +42,7 @@ echo 'Composer libraries loaded!'
 service codefever start
 service php-fpm start
 service nginx start
+service crond start
 
 echo 'services started!'
 
