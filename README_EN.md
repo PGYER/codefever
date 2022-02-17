@@ -81,6 +81,7 @@
 - 🙋️ **Merge Request:** Support for team collaboration for smoother code version control
 - 🙅🏻 **Branch Protection:** Branch protection makes code commits safe and controllable, and code reviews easier and clearer
 - 👥 **Collaboration:** Team collaboration and the ability to set roles and permissions for each member
+- 🔌 **Integration:** Eeasily integrated with other systems you are using via webhook, for example, jira, jenkins, etc.
 - 🖥️ **Management:** With super Management protal, you can let the team leader manage all the project and users
 - 💬 **Language:** Native support for both Chinese and English languages
 
