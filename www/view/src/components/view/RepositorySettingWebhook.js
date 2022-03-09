@@ -487,21 +487,27 @@ class RepositorySettingWebhook extends React.Component {
                     </React.Fragment>} />
                 </RadioGroup>
               </Grid>
-              {trigger === '2' && <Grid item xs={12}>
-                {events.map((item, index) => {
-                  return <FormControlLabel
-                    control={<Checkbox checked={item.checked} onChange={e => this.changeEvent(e)} value={item.event} />}
-                    label={
-                      typeof item.title === 'string'
-                        ? intl.formatMessage({ id: item.title })
-                        : intl.formatMessage(
-                          { id: item.title[0] },
-                          { s: intl.formatMessage({ id: item.title[1] }) }
-                        )
-                    }
-                  />
-                })}
-              </Grid>}
+              {trigger === '2' && <React.Fragment><Grid item xs={1} />
+                <Grid item xs={11}>
+                  <Grid container spacing={2}>
+                    {events.map((item, index) => {
+                      return item.divider
+                        ? <Grid item xs={12}><Typography variant='subtitle1' component='div'>{intl.formatMessage({ id: item.title })}</Typography></Grid>
+                        : <Grid item xs={4}><FormControlLabel
+                          control={<Checkbox checked={item.checked} onChange={e => this.changeEvent(e)} value={item.event} />}
+                          label={
+                            typeof item.title === 'string'
+                              ? intl.formatMessage({ id: item.title })
+                              : intl.formatMessage(
+                                { id: item.title[0] },
+                                { s: intl.formatMessage({ id: item.title[1] }) }
+                              )
+                          }
+                        /></Grid>
+                    })}
+                  </Grid>
+                </Grid>
+              </React.Fragment>}
 
               <Grid item xs={12}>
                 <Typography variant='subtitle1' component='div'>{intl.formatMessage({ id: 'label.status' })}</Typography>
