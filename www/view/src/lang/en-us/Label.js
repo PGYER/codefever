@@ -56,6 +56,8 @@ const data = {
   setupNewMFADevice: 'Setup New MFA Device',
   changeMFADevice: 'Change MFA Device',
   removeMFADevice: 'Remove MFA Device',
+  mfaCode1: ['First', Phrase.mfaCode].join(phraseSeperator),
+  mfaCode2: ['Second', Phrase.mfaCode].join(phraseSeperator),
   commitTime: [Phrase.commit, Phrase.time].join(phraseSeperator),
   copyPath: [Phrase.copy, Phrase.path].join(phraseSeperator),
   copyHash: [Phrase.copy, Term.hash].join(phraseSeperator),

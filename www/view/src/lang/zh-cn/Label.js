@@ -56,6 +56,8 @@ const data = {
   setupNewMFADevice: '设置 MFA 设备',
   changeMFADevice: '更换 MFA 设备',
   removeMFADevice: '移除 MFA 设备',
+  mfaCode1: ['第一组 ', Phrase.mfaCode].join(phraseSeperator),
+  mfaCode2: ['第二组 ', Phrase.mfaCode].join(phraseSeperator),
   commitTime: [Phrase.commit, Phrase.time].join(phraseSeperator),
   copyPath: [Phrase.copy, Phrase.path].join(phraseSeperator),
   copyHash: [Phrase.copy, Term.hash].join(phraseSeperator),
