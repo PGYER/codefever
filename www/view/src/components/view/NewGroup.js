@@ -97,6 +97,13 @@ class newRepositoryFork extends React.Component {
       },
       {
         name: 'slug',
+        passPattern: /^[0-9a-zA-z_]+$/,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error.requireCombinationOfCharactersNumbersAndUnderscore' }
+        )
+      },
+      {
+        name: 'slug',
         passPattern: /^.{5,30}$/,
         errorMessage: this.props.intl.formatMessage(
           { id: 'message.error.within_N1_to_N2_characters' },
