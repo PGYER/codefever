@@ -82,10 +82,10 @@ class GroupSettingAdvanced extends React.Component {
       },
       {
         name: 'slug',
-        passPattern: /^.{0,30}$/,
+        passPattern: /^.{5,30}$/,
         errorMessage: this.props.intl.formatMessage(
-          { id: 'message.error.noMoreThan_N_characters' },
-          { n: 30 }
+          { id: 'message.error.within_N1_to_N2_characters' },
+          { n1: 5, n2: 30 }
         )
       }
     ])

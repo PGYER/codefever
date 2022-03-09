@@ -609,7 +609,7 @@ class UserSettingGeneral extends React.Component {
             value={this.state.mfaCode1}
             error={!!this.state.error.mfaCode1}
             helperText={this.state.error.mfaCode1}
-            placeholder={intl.formatMessage({ id: 'label.mfaCode' })}
+            placeholder={intl.formatMessage({ id: 'label.mfaCode1' })}
             onChange={e => this.setState({ mfaCode1: e.target.value })}
           />
         </Grid>
@@ -620,7 +620,7 @@ class UserSettingGeneral extends React.Component {
             value={this.state.mfaCode2}
             error={!!this.state.error.mfaCode2}
             helperText={this.state.error.mfaCode2}
-            placeholder={intl.formatMessage({ id: 'label.mfaCode' })}
+            placeholder={intl.formatMessage({ id: 'label.mfaCode2' })}
             onChange={e => this.setState({ mfaCode2: e.target.value })}
           />
         </Grid>

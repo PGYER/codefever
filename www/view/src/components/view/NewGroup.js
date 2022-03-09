@@ -97,6 +97,14 @@ class newRepositoryFork extends React.Component {
       },
       {
         name: 'slug',
+        passPattern: /^.+$/,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error._S_empty' },
+          { s: this.props.intl.formatMessage({ id: 'label.groupSlug' }) }
+        )
+      },
+      {
+        name: 'slug',
         passPattern: /^.{5,30}$/,
         errorMessage: this.props.intl.formatMessage(
           { id: 'message.error.within_N1_to_N2_characters' },
