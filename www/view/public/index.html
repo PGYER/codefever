@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <!--
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <!--
+  <!--
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <!--
+  <link rel="manifest" href="/manifest.json">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -23,141 +24,176 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>CodeFever Community</title>
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.<br/>
-      打开浏览器对 Javascript 的支持以访问此页面
-    </noscript>
+  <title>CodeFever Community</title>
+</head>
 
-    <!--[if lt IE 10]>
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.<br />
+    打开浏览器对 Javascript 的支持以访问此页面
+  </noscript>
+
+  <!--[if lt IE 10]>
     <div style="line-hight: 40px; color: #E91D63;position: absolute; z-index: 10000; background-color: #FFF;">您的浏览器版本较低，无法正确显示网站中的页面和功能，建议您使用 Chrome、Safari 或升级到 Internet Explorer 10 以上版本的浏览器。</div>
     <![endif]-->
 
-    <div id="root">
-      <style type="text/css">
-        body {
-          background: #FFF;
-          min-height: 100%;
-          font: 300% PingFang SC,Helvetica Neue,Hiragino Sans GB,Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+  <div id="root">
+    <style type="text/css">
+      body {
+        background: #FFF;
+        min-height: 100%;
+        font: 300% PingFang SC, Helvetica Neue, Hiragino Sans GB, Microsoft Yahei, WenQuanYi Micro Hei, sans-serif;
+      }
+
+      .wraper {
+        width: 200px;
+        height: 300px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -100px;
+        margin-top: -50px;
+      }
+
+      .wraper .loadingAni {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(90deg, rgb(0, 53, 236), rgb(77, 114, 242));
+        background-size: 100px 100px;
+        background-repeat: no-repeat;
+        background-position: center;
+        animation: rotateRing 10s linear infinite;
+      }
+
+      .wraper .loadingAni .ring0 {
+        display: block;
+        animation: rotateRing 1.5s cubic-bezier(0, 0, 0.23, 0.77) infinite;
+      }
+
+      .wraper .loadingAni .ring1 {
+        display: block;
+        animation: rotateRing 1.5s cubic-bezier(0.77, 0.23, 1, 1) infinite;
+        position: relative;
+        top: -200px;
+      }
+
+      .loadingText {
+        font-size: 36px;
+        color: #0035ec;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        top: -30px;
+      }
+
+      .loadingText>div {
+        display: inline-block;
+      }
+
+      .loadingText>div:nth-child(1) {
+        animation: jumpText 500ms ease-in 2;
+      }
+
+      .loadingText>div:nth-child(2) {
+        animation: jumpText 500ms ease-in 1 600ms;
+      }
+
+      .loadingText>div:nth-child(3) {
+        animation: jumpText 500ms ease-in 1 700ms;
+      }
+
+      .loadingText>div:nth-child(4) {
+        animation: jumpText 500ms ease-in 1 800ms;
+      }
+
+      .loadingText>div:nth-child(5) {
+        animation: jumpText 500ms ease-in 1 900ms;
+      }
+
+      .loadingText>div:nth-child(6) {
+        animation: jumpText 500ms ease-in 1 1000ms;
+      }
+
+      .loadingText>div:nth-child(7) {
+        animation: jumpText 500ms ease-in 1 1100ms;
+      }
+
+      .loadingText>div:nth-child(8) {
+        animation: jumpText 500ms ease-in 1 1200ms;
+      }
+
+      .loadingText>div:nth-child(9) {
+        animation: jumpText 500ms ease-in 1 1300ms;
+      }
+
+      .loadingText>div:nth-child(10) {
+        animation: jumpText 500ms ease-in 1 1400ms;
+      }
+
+      .svgClass {
+        fill: #fff;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 0.25px;
+      }
+
+      @keyframes rotateRing {
+        from {
+          transform: rotate(0deg);
         }
-        .wraper {
-          width: 200px;
-          height: 300px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          margin-left: -100px;
-          margin-top: -50px;
+
+        to {
+          transform: rotate(359deg);
         }
-        .wraper .loadingAni {
-          width: 200px;
-          height: 200px;
-          background:linear-gradient(90deg, rgb(0, 53, 236), rgb(77, 114, 242));
-          background-size:100px 100px;
-          background-repeat: no-repeat;
-          background-position: center;
-          animation: rotateRing 10s linear infinite;
+      }
+
+      @keyframes jumpText {
+        0% {
+          transform: translateY(0px);
         }
-        .wraper .loadingAni .ring0 {
-          display: block;
-          animation: rotateRing 1.5s cubic-bezier(0, 0, 0.23, 0.77) infinite;
+
+        50% {
+          transform: translateY(-10px);
         }
-        .wraper .loadingAni .ring1 {
-          display: block;
-          animation: rotateRing 1.5s cubic-bezier(0.77, 0.23, 1, 1) infinite;
-          position: relative;
-          top: -200px;
+
+        80% {
+          transform: translateY(0px);
         }
-        .loadingText {
-          font-size: 36px;
-          color: #0035ec;
-          text-align: center;
-          position: relative;
-          z-index: 1;
-          top: -30px;
+
+        90% {
+          transform: translateY(-2px);
         }
-        .loadingText > div {
-          display: inline-block;
+
+        100% {
+          transform: translateX(0);
         }
-        .loadingText > div:nth-child(1) {
-          animation: jumpText 500ms ease-in 2;
-        }
-        .loadingText > div:nth-child(2) {
-          animation: jumpText 500ms ease-in 1 600ms;
-        }
-        .loadingText > div:nth-child(3) {
-          animation: jumpText 500ms ease-in 1 700ms;
-        }
-        .loadingText > div:nth-child(4) {
-          animation: jumpText 500ms ease-in 1 800ms;
-        }
-        .loadingText > div:nth-child(5) {
-          animation: jumpText 500ms ease-in 1 900ms;
-        }
-        .loadingText > div:nth-child(6) {
-          animation: jumpText 500ms ease-in 1 1000ms;
-        }
-        .loadingText > div:nth-child(7) {
-          animation: jumpText 500ms ease-in 1 1100ms;
-        }
-        .loadingText > div:nth-child(8) {
-          animation: jumpText 500ms ease-in 1 1200ms;
-        }
-        .loadingText > div:nth-child(9) {
-          animation: jumpText 500ms ease-in 1 1300ms;
-        }
-        .loadingText > div:nth-child(10) {
-          animation: jumpText 500ms ease-in 1 1400ms;
-        }
-        .svgClass {
-          fill: #fff;
-          stroke: #fff;
-          stroke-miterlimit: 10;
-          stroke-width: 0.25px;
-        }
-        @keyframes rotateRing {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(359deg);
-          }
-        }
-        @keyframes jumpText {
-          0% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-          80% {
-            transform: translateY(0px);
-          }
-          90% {
-            transform: translateY(-2px);
-          }
-          100% {
-            transform: translateX(0);
-          }
-        }
-      </style>
-      <div class='wraper'>
-        <div class="loadingAni">
-          <svg class="ring0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-            <path class="svgClass" d="M0,0V200H200V0ZM100,140a40,40,0,0,1-40-40,2.2,2.2,0,0,1,4.4,0h0a35.6,35.6,0,0,0,71.2,0h0a2.2,2.2,0,0,1,4.39,0A40,40,0,0,1,100,140Z"/>
-          </svg>
-          <svg class="ring1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-            <path class="svgClass" d="M0,0V200H200V0ZM100,140a40,40,0,0,1-40-40,2.2,2.2,0,0,1,4.4,0h0a35.6,35.6,0,0,0,71.2,0h0a2.2,2.2,0,0,1,4.39,0A40,40,0,0,1,100,140Z"/>
-          </svg>
-        </div>
-        <div class="loadingText">
-          <div>C</div><div>o</div><div>d</div><div>e</div><div>F</div><div>e</div><div>v</div><div>e</div><div>r</div>
-        </div>
+      }
+    </style>
+    <div class='wraper'>
+      <div class="loadingAni">
+        <svg class="ring0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+          <path class="svgClass"
+            d="M0,0V200H200V0ZM100,140a40,40,0,0,1-40-40,2.2,2.2,0,0,1,4.4,0h0a35.6,35.6,0,0,0,71.2,0h0a2.2,2.2,0,0,1,4.39,0A40,40,0,0,1,100,140Z" />
+        </svg>
+        <svg class="ring1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+          <path class="svgClass"
+            d="M0,0V200H200V0ZM100,140a40,40,0,0,1-40-40,2.2,2.2,0,0,1,4.4,0h0a35.6,35.6,0,0,0,71.2,0h0a2.2,2.2,0,0,1,4.39,0A40,40,0,0,1,100,140Z" />
+        </svg>
+      </div>
+      <div class="loadingText">
+        <div>C</div>
+        <div>o</div>
+        <div>d</div>
+        <div>e</div>
+        <div>F</div>
+        <div>e</div>
+        <div>v</div>
+        <div>e</div>
+        <div>r</div>
       </div>
     </div>
-    <!--
+  </div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -167,5 +203,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

@@ -145,7 +145,7 @@ const styles = (theme) => ({
 })
 
 class DrawerList extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       open: {},
@@ -155,13 +155,13 @@ class DrawerList extends React.Component {
     }
   }
 
-  openChildren (key) {
+  openChildren(key) {
     const newOpen = { ...this.state.open }
     newOpen[key] = !newOpen[key]
     this.setState({ open: newOpen })
   }
 
-  render () {
+  render() {
     const {
       classes, drawerExpandStatus, drawerConfig, location, intl, mode,
       repositoryList, currentRepositoryKey, groupList, currentGroupKey
