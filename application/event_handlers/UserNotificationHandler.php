@@ -8,6 +8,7 @@ use service\Utility\MessageGenerator;
 use service\AccessControl\UserAccessController;
 use service\Utility\Helper;
 use service\MessageService\Email\EmailSender;
+use service\MessageService\Email\EmailTemplate;
 
 class UserNotificationHandler extends EventHandler {
     protected $ListenedEventList = [
@@ -21,45 +22,45 @@ class UserNotificationHandler extends EventHandler {
     protected $messageTemplate = [
         LANG_CN => [
             EventType::MERGE_REQUEST_CREATE => [
-                'mailTitle' => '{{$user@users:u_name}} 打开了和并请求',
+                'mailTitle' => '【CodeFever Community】{{$user@users:u_name}} 打开了合并请求',
                 'mailBody' => '{{$user@users:u_name}} 打开了和并请求: {{$data->sourceGKey@groups:g_name}}/{{$data->sourceRKey@repositories:r_name}}/{{$data->sourceBranch}} -> {{$data->gKey@groups:g_name}}/{{$data->rKey@repositories:r_name}}/{{$data->targetBranch}}',
             ],
             EventType::MERGE_REQUEST_CLOSE => [
-                'mailTitle' => '{{$user@users:u_name}} 关闭了和并请求',
+                'mailTitle' => '【CodeFever Community】{{$user@users:u_name}} 关闭了合并请求',
                 'mailBody' => '{{$user@users:u_name}} 关闭了和并请求: {{$data->sourceGKey@groups:g_name}}/{{$data->sourceRKey@repositories:r_name}}/{{$data->sourceBranch}} -> {{$data->gKey@groups:g_name}}/{{$data->rKey@repositories:r_name}}/{{$data->targetBranch}}',
             ],
             EventType::MERGE_REQUEST_MERGE => [
-                'mailTitle' => '{{$user@users:u_name}} 合并了和并请求',
+                'mailTitle' => '【CodeFever Community】{{$user@users:u_name}} 合并了合并请求',
                 'mailBody' => '{{$user@users:u_name}} 合并了和并请求: {{$data->sourceGKey@groups:g_name}}/{{$data->sourceRKey@repositories:r_name}}/{{$data->sourceBranch}} -> {{$data->gKey@groups:g_name}}/{{$data->rKey@repositories:r_name}}/{{$data->targetBranch}}',
             ],
             EventType::MERGE_REQUEST_REVIEWER_CREATE => [
-                'mailTitle' => '和并请求评审',
+                'mailTitle' => '【CodeFever Community】合并请求评审',
                 'mailBody' => '{{$user@users:u_name}} 指定你为和并请求 {{$data->rKey@repositories:r_name}}!{{$data->id}} 的评审员',
             ],
             EventType::MERGE_REQUEST_REVIEWER_REVIEW => [
-                'mailTitle' => '和并请求评审',
-                'mailBody' => '{{$user@users:u_name}} 通过了和并请求 {{$data->rKey@repositories:r_name}}!{{$data->id}} 的评审',
+                'mailTitle' => '【CodeFever Community】合并请求评审',
+                'mailBody' => '{{$user@users:u_name}} 通过了合并请求 {{$data->rKey@repositories:r_name}}!{{$data->id}} 的评审',
             ]
         ],
         LANG_EN => [
             EventType::MERGE_REQUEST_CREATE => [
-                'mailTitle' => '{{$user@users:u_name}} Open Merge Request',
+                'mailTitle' => '【CodeFever Community】{{$user@users:u_name}} Open Merge Request',
                 'mailBody' => '{{$user@users:u_name}} Open Merge Request: {{$data->sourceGKey@groups:g_name}}/{{$data->sourceRKey@repositories:r_name}}/{{$data->sourceBranch}} -> {{$data->gKey@groups:g_name}}/{{$data->rKey@repositories:r_name}}/{{$data->targetBranch}}',
             ],
             EventType::MERGE_REQUEST_CLOSE => [
-                'mailTitle' => '{{$user@users:u_name}} Close Merge Request',
+                'mailTitle' => '【CodeFever Community】{{$user@users:u_name}} Close Merge Request',
                 'mailBody' => '{{$user@users:u_name}} Close Merge Request: {{$data->sourceGKey@groups:g_name}}/{{$data->sourceRKey@repositories:r_name}}/{{$data->sourceBranch}} -> {{$data->gKey@groups:g_name}}/{{$data->rKey@repositories:r_name}}/{{$data->targetBranch}}',
             ],
             EventType::MERGE_REQUEST_MERGE => [
-                'mailTitle' => '{{$user@users:u_name}} Merge The Merge Request',
+                'mailTitle' => '【CodeFever Community】{{$user@users:u_name}} Merge The Merge Request',
                 'mailBody' => '{{$user@users:u_name}} Merge The Merge Request: {{$data->sourceGKey@groups:g_name}}/{{$data->sourceRKey@repositories:r_name}}/{{$data->sourceBranch}} -> {{$data->gKey@groups:g_name}}/{{$data->rKey@repositories:r_name}}/{{$data->targetBranch}}',
             ],
             EventType::MERGE_REQUEST_REVIEWER_CREATE => [
-                'mailTitle' => 'Merge Request Review',
+                'mailTitle' => '【CodeFever Community】Merge Request Review',
                 'mailBody' => '{{$user@users:u_name}} Designates You As A Reviewer For Merge Request {{$data->rKey@repositories:r_name}}!{{$data->id}}',
             ],
             EventType::MERGE_REQUEST_REVIEWER_REVIEW => [
-                'mailTitle' => 'Merge Request Review',
+                'mailTitle' => '【CodeFever Community】Merge Request Review',
                 'mailBody' => '{{$user@users:u_name}} Passed Review Of Merge Request {{$data->rKey@repositories:r_name}}!{{$data->id}}',
             ]
         ]
@@ -148,7 +149,7 @@ class UserNotificationHandler extends EventHandler {
         $messageData = $this->composeMessageData($event, $notifyMessageSet);
 
         if (is_array($affectedUsers) && count($affectedUsers)) {
-            // $this->sendMail($event, $messageData, $affectedUsers);
+            $this->sendMail($event, $messageData, $affectedUsers);
             $this->addWebSiteMessage($event, $messageData, $affectedUsers);
             // $this->sendSms($event,  $messageData, $affectedUsers, $projectInfo['p_key']);
             // $this->sendWXMessage($event, $messageData, $affectedUsers, $projectInfo['p_key'], $messageData['i_no'], $projectInfo['p_name'], $messageData['i_status_text']);
@@ -346,7 +347,7 @@ class UserNotificationHandler extends EventHandler {
             return FALSE;
         }
 
-        $host = 'https://codefever.pgyer.com/';
+        $host = YAML_HOST . '/';
         $emails = $affectedUsers['email'];
 
         if (in_array($event->type, [
@@ -359,7 +360,7 @@ class UserNotificationHandler extends EventHandler {
             $messageData['url'] = $host . $messageData['internalData']['group'] . '/' . $messageData['internalData']['repository'] . '/mergerequests/' . $messageData['internalData']['number'];
         }
 
-        $body = $this->CI->load->view('mail/user_notification', $messageData, TRUE);
+        $body = EmailTemplate::notify($messageData);
 
         foreach($emails as $email) {
             EmailSender::send(
