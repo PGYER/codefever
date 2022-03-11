@@ -222,7 +222,7 @@ class FileTree extends React.Component {
                 currentPath ? currentPath + '/' + item.name : item.name
               )}>{item.name}</Link>
           </Typography>,
-          <Link className={this.props.classes.linkCommitMessage} to={
+          item.commit && item.commit.sha && <Link className={this.props.classes.linkCommitMessage} to={
             makeLink(
               this.props.currentRepositoryConfig.group.name,
               this.props.currentRepositoryConfig.repository.name,
