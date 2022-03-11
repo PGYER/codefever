@@ -25,11 +25,11 @@
 
 选择合适的 `Linux` 发行版本，推荐使用 `CentOS 7.x`。
 
-* 执行编译安装时需要保证机器至少有 `1500 MB` 内存，如果内存不足 `1500 MB` 请临时添加交换分区使可用内存到达 `1500 MB`。
+* 执行编译安装时需要保证机器至少有 `1800 MB` 内存，如果内存不足 `1800 MB` 请临时添加交换分区使可用内存到达 `1800 MB`。
 
 ```shell
-# 临时增加 512 MB Swap 空间
-dd if=/dev/zero of=/root/swap bs=1024 count=500000
+# 临时增加 1000 MB Swap 空间
+dd if=/dev/zero of=/root/swap bs=1024 count=1000000
 mkswap /root/swap
 swapon /root/swap
 ```
@@ -38,7 +38,7 @@ swapon /root/swap
 
 ```shell
 # 安装基础软件包
-yum install -y sudo tcl tk gettext autoconf gcc cmake3 wget initscripts openssh-server crontabs pcre pcre-devel libcurl libcurl-devel libxml2 libxml2-devel openssl openssl-devel sqlite sqlite-devel libpng libpng-devel libwebp libwebp-devel libjpeg libjpeg-devel libXpm libXpm-devel freetype freetype-devel oniguruma oniguruma-devel libyaml libyaml-devel
+yum install -y sudo tcl tk gettext autoconf gcc cmake3 wget initscripts openssh-server crontabs mailx pcre pcre-devel libcurl libcurl-devel libxml2 libxml2-devel openssl openssl-devel sqlite sqlite-devel libpng libpng-devel libwebp libwebp-devel libjpeg libjpeg-devel libXpm libXpm-devel freetype freetype-devel oniguruma oniguruma-devel libyaml libyaml-devel
 ```
 
 除此之外，你还需要安装 `libzip 1.7+` 库，需要去官网下载源码包解压后安装。
@@ -160,8 +160,8 @@ MySQL 不需要单独安装，直接使用系统自带软件工具安装软件�
 
 去官网按照指导使用镜像源安装二进制版本 (https://mariadb.org/download/?t=repo-config 选择 `xTom GmbH - San Jose` 镜像)，如果你使用使用云数据库，你可以跳过此步骤。
 
-启动服务后使用 `mysql_secure_installation` 或 `mariadb-secure-installation` 初始化数据库
-		
+运行 `service mariadb start` 或 `service mysql start` 启动服务后使用 `mysql_secure_installation` 或 `mariadb-secure-installation` 初始化数据库
+
 *当设置 `root` 密码为 `123456` 时，不需要在下一步中修改 `env.yaml` 中的数据库设置。
 
 如果你使用 `MySQL 5.7` 版本数据，需要修改 `SQL MODE` 变量，否则创建数据库时会报错，如果使用 `MariaDB` 可以忽略此选项。

@@ -1413,7 +1413,7 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $revision =   Command::wrapArgument($revision);
+        $revision = Command::wrapArgument($revision);
         $filepath = Command::wrapArgument($filepath);
 
         // create target repository workspace
@@ -1464,6 +1464,9 @@ class Repository_model extends CI_Model
         if (!$rKey || !$uKey || !$branch) {
             return FALSE;
         }
+
+        $branch = Command::wrapArgument($branch);
+        $filePath = Command::wrapArgument($filePath);
 
         $command = GitCommand::getLastLog($branch, $filePath, $lastSha);
         if (!$command) {

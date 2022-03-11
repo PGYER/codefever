@@ -17,6 +17,7 @@ use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use service\MessageService\Email\EmailTemplate;
 
 class User extends Base
 {
@@ -244,12 +245,10 @@ class User extends Base
             Response::reject(0x040C);
         }
 
-        $code = TOTP::generate($email);
-
         EmailSender::send(
             $email,
-            '验证新邮箱',
-            $code
+            '【CodeFever Community】验证电子邮件地址',
+            EmailTemplate::verifyCode(TOTP::generate($email))
         );
 
         Response::output([]);
@@ -304,12 +303,10 @@ class User extends Base
             Response::reject(0x0405);
         }
 
-        $code = TOTP::generate($email);
-
         EmailSender::send(
             $email,
-            '添加关联邮箱',
-            $code
+            '【CodeFever Community】验证电子邮件地址',
+            EmailTemplate::verifyCode(TOTP::generate($email))
         );
 
         Response::output([]);
@@ -330,12 +327,10 @@ class User extends Base
             Response::reject(0x0201);
         }
 
-        $code = TOTP::generate($email);
-
         EmailSender::send(
             $email,
-            '添加关联邮箱',
-            $code
+            '【CodeFever Community】验证电子邮件地址',
+            EmailTemplate::verifyCode(TOTP::generate($email))
         );
 
         Response::output([]);

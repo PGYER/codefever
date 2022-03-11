@@ -7,6 +7,7 @@ use service\Utility\UUID;
 use service\Utility\Helper;
 use service\Utility\TOTP;
 use service\MessageService\Email\EmailSender;
+use service\MessageService\Email\EmailTemplate;
 use service\Utility\GoogleAuthenticator;
 
 class User extends Base
@@ -304,8 +305,8 @@ class User extends Base
 
         EmailSender::send(
             $email,
-            '修改密码',
-            TOTP::generate($email)
+            '【CodeFever Community】重置密码',
+            EmailTemplate::verifyCode(TOTP::generate($email))
         );
         return $this->_ajax_message();
     }
