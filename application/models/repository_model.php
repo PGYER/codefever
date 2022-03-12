@@ -1465,7 +1465,6 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $branch = Command::wrapArgument($branch);
         $filePath = Command::wrapArgument($filePath);
 
         $command = GitCommand::getLastLog($branch, $filePath, $lastSha);
