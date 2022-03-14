@@ -106,7 +106,7 @@ class UserSettingEmail extends React.Component {
       validationEmail: null,
       code: '',
       codeDisabled: false,
-      count: 61
+      count: 121
     }
 
     const { intl } = props
@@ -244,7 +244,7 @@ class UserSettingEmail extends React.Component {
       this.setState({ codeDisabled: true, count: --count })
       window.setTimeout(() => this.countDown(), 1000)
     } else {
-      this.setState({ codeDisabled: false, count: 61 })
+      this.setState({ codeDisabled: false, count: 121 })
     }
   }
 

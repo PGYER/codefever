@@ -12,7 +12,8 @@ class Mail {
         );
 
         $from = YAML_EMAIL_NAME . '<' . YAML_EMAIL_FROM . '>';
-        $result = exec("echo -e '{$body}' | mail -r '{$from}' -s '{$title}' '{$to}'");
+
+        $result = exec("export LANG=en_US.UTF-8 && echo -e '{$body}' | mail -r '{$from}' -s '{$title}' '{$to}' > /dev/null &");
 
         Logger::Log(
             'from:' . $from . ' Sent result:' .  json_encode($result),
