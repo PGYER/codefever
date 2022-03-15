@@ -193,11 +193,13 @@ class Repository extends Base
         $config['tags'] = $this->repositoryModel->getTagList($rKey, $uKey);
         $config['tags'] = $this->repositoryModel->normalizeTags($config['tags']);
 
+        $countObjects = $this->repositoryModel->getObjectsCount($rKey, $uKey);
+
         $config['count'] = [
             'commit' => (int) $this->repositoryModel->getCommitCount($rKey, $uKey, $config['repository']['defaultBranch'] ?: ($config['branches'] ? $config['branches'][0]['name'] : '')),
             'branch' => count($config['branches']),
             'tag' => count($config['tags']),
-            'file' => ((int) $this->repositoryModel->getObjectsCount($rKey, $uKey)['size-pack']) * 1024,
+            'file' => ((int) $countObjects['size'] + (int) $countObjects['size-pack'] + (int) $countObjects['size-garbage']) * 1024,
             'mergeRequest' => $this->repositoryModel->countMergeRequests($rKey),
         ];
 
