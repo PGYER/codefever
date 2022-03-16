@@ -110,6 +110,12 @@ class Dashboard extends React.Component {
       <Grid item sm={6} md={3}>
         <NumbericDashboard title='PHP-FPM' paletteName='fromValue' icon={psNewFeature} numbericValue={pending ? null : this.state.data.service.php ? 'Running' : 'Stopped'} />
       </Grid>
+      <Grid item sm={6} md={3}>
+        <NumbericDashboard title='Crond' paletteName='fromValue' icon={psNewFeature} numbericValue={pending ? null : this.state.data.service.crond ? 'Running' : 'Stopped'} />
+      </Grid>
+      <Grid item sm={6} md={3}>
+        <NumbericDashboard title='SendMail' paletteName='fromValue' icon={psNewFeature} numbericValue={pending ? null : this.state.data.service.sendmail ? 'Running' : 'Stopped'} />
+      </Grid>
     </Grid>)
   }
 }

@@ -38,7 +38,7 @@ swapon /root/swap
 
 ```shell
 # 安装基础软件包
-yum install -y sudo tcl tk gettext autoconf gcc cmake3 wget initscripts openssh-server crontabs mailx pcre pcre-devel libcurl libcurl-devel libxml2 libxml2-devel openssl openssl-devel sqlite sqlite-devel libpng libpng-devel libwebp libwebp-devel libjpeg libjpeg-devel libXpm libXpm-devel freetype freetype-devel oniguruma oniguruma-devel libyaml libyaml-devel
+yum install -y sudo tcl tk gettext autoconf gcc cmake3 wget initscripts openssh-server crontabs mailx sendmail pcre pcre-devel libcurl libcurl-devel libxml2 libxml2-devel openssl openssl-devel sqlite sqlite-devel libpng libpng-devel libwebp libwebp-devel libjpeg libjpeg-devel libXpm libXpm-devel freetype freetype-devel oniguruma oniguruma-devel libyaml libyaml-devel
 ```
 
 除此之外，你还需要安装 `libzip 1.7+` 库，需要去官网下载源码包解压后安装。
@@ -234,6 +234,7 @@ sh ./remove_test_data.sh
 
 ```shell
 chkconfig mariadb on # 或 chkconfig mysql on (根据安装的数据库类型, 如果使用云服务忽略此项目)
+chkconfig sendmail on
 chkconfig nginx on
 chkconfig php-fpm on
 chkconfig codefever on

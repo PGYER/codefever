@@ -10,7 +10,7 @@ service codefever stop
 service php-fpm stop
 service nginx stop
 
-yum install -y crontabs
+yum install -y crontabs sendmail mailx
 service crond stop
 
 echo 'service stopped!'
@@ -43,6 +43,10 @@ service codefever start
 service php-fpm start
 service nginx start
 service crond start
+service sendmail start
+
+chkconfig crond on
+chkconfig sendmail on
 
 echo 'services started!'
 

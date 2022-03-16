@@ -31,7 +31,8 @@ const styles = theme => ({
   drawerPaper: {
     position: 'relative',
     boxSizing: 'border-box',
-    width: '100%'
+    width: '100%',
+    overflowX: 'hidden'
   },
   drawerExpandControl: {
     position: 'absolute',

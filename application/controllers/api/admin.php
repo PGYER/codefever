@@ -421,6 +421,8 @@ class Admin extends Base
             'nginx' => FALSE,
             'php' => FALSE,
             'codefever' => FALSE,
+            'crond' => FALSE,
+            'sendmail' => FALSE
         ];
 
         $output = [];
@@ -441,6 +443,20 @@ class Admin extends Base
         if (Command::run(['ps uax | grep "modify_authorized_keys_shell_running" | grep -v "grep" | wc -l'], $output)) {
             if ($output[0] > 1) {
                 $service['codefever'] = TRUE;
+            }
+        }
+
+        $output = [];
+        if (Command::run(['ps uax | grep "crond" | grep -v "grep" | wc -l'], $output)) {
+            if ($output[0] > 0) {
+                $service['crond'] = TRUE;
+            }
+        }
+
+        $output = [];
+        if (Command::run(['ps uax | grep "sendmail" | grep -v "grep" | wc -l'], $output)) {
+            if ($output[0] > 0) {
+                $service['sendmail'] = TRUE;
             }
         }
 
