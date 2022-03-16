@@ -62,6 +62,7 @@ service codefever start
 service php-fpm start
 service nginx start
 service crond start
+service sendmail start
 
 echo 'Services Started!'
 
