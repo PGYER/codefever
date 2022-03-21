@@ -300,6 +300,7 @@ class Helper
     public static function parseJSON(string $json, string $delimiter = '"')
     {
         $json = str_replace($delimiter, '"', $json);
+        $json = preg_replace('/[\x01-\x1f\x7f]/', ' ', $json);
         $data = json_decode($json, TRUE);
 
         return $data;
