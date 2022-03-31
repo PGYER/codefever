@@ -40,7 +40,7 @@ chmod 0777 ../config.yaml ../env.yaml
 echo 'env files generated!'
 
 mkdir ../application/logs
-chmod -R git:git ../application/logs
+chown -R git:git ../application/logs
 
 chmod -R 0777 ../git-storage
 
