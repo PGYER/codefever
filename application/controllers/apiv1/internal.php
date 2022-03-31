@@ -40,7 +40,7 @@ class Internal extends Base
         $data = Request::parse()->parsed;
 
         $parsedRepo = [];
-        preg_match("/([\w\d\_]+)\/([\w\d\_]+)\.git/", $data['repo'], $parsedRepo);
+        preg_match("/([\w\d_]+)\/([\w\d_]+)\.git/", $data['repo'], $parsedRepo);
 
         if ($data && $data['userID'] && $data['repo'] && $data['action'] && $parsedRepo[0] && $parsedRepo[1]) {
 
@@ -74,6 +74,7 @@ class Internal extends Base
             // group or repository not found
             Response::reject(0x0302);
         }
+
         Response::reject(0x0201);
     }
 
@@ -81,7 +82,7 @@ class Internal extends Base
         $data = Request::parse()->parsed;
 
         $parsedRepo = [];
-        preg_match("/([\w\d\_]+)\/([\w\d\_]+)\.git/", $data['repo'], $parsedRepo);
+        preg_match("/([\w\d_]+)\/([\w\d_]+)\.git/", $data['repo'], $parsedRepo);
 
         if ($data && $data['user'] && $data['pass'] && $data['repo'] && $parsedRepo[1] && $parsedRepo[2]) {
             // check email and password
@@ -134,6 +135,7 @@ class Internal extends Base
             // user not found
             Response::reject(0x0101);
         }
+
         Response::reject(0x0201);
     }
 
