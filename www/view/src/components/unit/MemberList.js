@@ -99,6 +99,7 @@ class MemberList extends React.Component {
                       item.id,
                       data
                     )}
+                    removeable={isRepository ? !groupMember : groupMember}
                     onRemove={data => this.deleteConfirm(data, item.name)}
                   /></TableRow>
                 })
