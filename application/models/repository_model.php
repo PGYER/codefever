@@ -650,7 +650,7 @@ class Repository_model extends CI_Model
                     "cd {$repositoryPath}",
                     "git init --bare",
                     "rm -r hooks",
-                    "ln -s ../hooks hooks",
+                    "ln -s ../../misc/hooks hooks",
                     "chmod -R 0777 {$repositoryPath}",
                 ];
                 break;
@@ -661,7 +661,7 @@ class Repository_model extends CI_Model
                     "git clone --bare {$command} .",
                     "git remote remove origin",
                     "rm -r hooks",
-                    "ln -s ../hooks hooks",
+                    "ln -s ../../misc/hooks hooks",
                     "chmod -R 0777 {$repositoryPath}",
                 ];
                 break;
