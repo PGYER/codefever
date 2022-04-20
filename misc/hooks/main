@@ -1,0 +1,58 @@
+#!/usr/local/php/bin/php
+<?php
+$config = yaml_parse_file(dirname(__FILE__, 3) . '/env.yaml');
+
+if ($config['gateway'] && $config['gateway']['token'] && $config['gateway']['hooks']) {
+    $config = [
+        'endpoint' => $config['gateway']['hooks'],
+        'token' => $config['gateway']['token']
+    ];
+} else {
+    echo '[CodeFever Community]: Bad configuration, Contact site administrator if operation rejected!.';
+    exit(255);
+}
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $config['endpoint']);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Token: ' . $config['token'],
+    'Content-Type: application/json',
+    'Accept: application/json',
+]);
+curl_setopt($ch, CURLOPT_POST, 1);
+
+$input = fopen('php://stdin', 'r');
+stream_set_blocking($input, 0);
+$data = [
+    'uid' => getenv('PGYER_UID'),
+    'args' => $argv,
+    'stdin' => stream_get_contents($input)
+];
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+$response = curl_exec($ch);
+
+curl_close($ch);
+
+$result = json_decode($response, TRUE);
+
+if ($result) {
+    if (!$result['code']) {
+        if ($result['data'] && $result['data']['remote']) {
+            echo $result['data']['remote'];
+        }
+        exit(0);
+    } else {
+        echo 'Operation Stopped: ';
+        if ($result['data'] && $result['data']['remote']) {
+            echo $result['data']['remote'] . "\n";
+        }
+        echo 'Request-ID: ' . $result['request-id'] . "\n";
+    }
+} else {
+    echo 'Contact site administrator if operation rejected!';
+}
+
+exit(255);

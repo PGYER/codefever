@@ -1756,6 +1756,8 @@ class Repository extends Base
                 Response::output([]);
             }
         }
+
+        Response::reject(0x0405);
     }
 
     public function blameInfo_get()
