@@ -1054,7 +1054,7 @@ class Repository_model extends CI_Model
         // clone target repository and checkout target branch
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'clone', '-b', $targetRepositoryBranchName, $targetRepositoryURL, '.'
+            YAML_CLI_GIT, 'clone', '-b', $targetRepositoryBranchName, $targetRepositoryURL, '.'
         ]);
 
         if (!$status) {
@@ -1065,8 +1065,8 @@ class Repository_model extends CI_Model
         // fetch source branch
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'remote', 'add', $sourceRepositoryKey, $sourceRepositoryURL, '&&',
-            'git', 'fetch', $sourceRepositoryKey, $sourceRepositoryBranchName
+            YAML_CLI_GIT, 'remote', 'add', $sourceRepositoryKey, $sourceRepositoryURL, '&&',
+            YAML_CLI_GIT, 'fetch', $sourceRepositoryKey, $sourceRepositoryBranchName
         ]);
 
         if (!$status) {
@@ -1080,8 +1080,8 @@ class Repository_model extends CI_Model
             if ($usingSquash) {
                 $status = Command::run([
                     'cd', $workspace, '&&',
-                    'git', 'merge', '--squash', 'FETCH_HEAD', '&&',
-                    'git', 'commit', '-m', Command::wrapArgument($message)
+                    YAML_CLI_GIT, 'merge', '--squash', 'FETCH_HEAD', '&&',
+                    YAML_CLI_GIT, 'commit', '-m', Command::wrapArgument($message)
                 ], $output, [
                     'GIT_COMMITTER_NAME' => $name,
                     'GIT_COMMITTER_EMAIL' => $email,
@@ -1091,7 +1091,7 @@ class Repository_model extends CI_Model
             } else {
                 $status = Command::run([
                     'cd', $workspace, '&&',
-                    'git', 'merge', '--no-ff', '-m', Command::wrapArgument($message), 'FETCH_HEAD'
+                    YAML_CLI_GIT, 'merge', '--no-ff', '-m', Command::wrapArgument($message), 'FETCH_HEAD'
                 ], $output, [
                     'GIT_COMMITTER_NAME' => $name,
                     'GIT_COMMITTER_EMAIL' => $email,
@@ -1102,7 +1102,7 @@ class Repository_model extends CI_Model
         } else {
             $status = Command::run([
                 'cd', $workspace, '&&',
-                'git', 'merge', 'FETCH_HEAD'
+                YAML_CLI_GIT, 'merge', 'FETCH_HEAD'
             ], $output);
         }
 
@@ -1114,7 +1114,7 @@ class Repository_model extends CI_Model
         // push to tareget repository
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'push', 'origin', $targetRepositoryBranchName
+            YAML_CLI_GIT, 'push', 'origin', $targetRepositoryBranchName
         ]);
 
         if (!$status) {
@@ -1422,7 +1422,7 @@ class Repository_model extends CI_Model
         // clone target repository
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'clone', $repositoryURL, '.'
+            YAML_CLI_GIT, 'clone', $repositoryURL, '.'
         ]);
 
         if (!$status) {
@@ -1433,8 +1433,8 @@ class Repository_model extends CI_Model
         $output = [];
         $status = Command::run([
             'cd', $workspace, '&&',
-            'git', 'checkout', $revision, '&&',
-            'git', 'blame', '-p', $revision, $filepath
+            YAML_CLI_GIT, 'checkout', $revision, '&&',
+            YAML_CLI_GIT, 'blame', '-p', $revision, $filepath
         ], $output);
 
         if (!$status) {
