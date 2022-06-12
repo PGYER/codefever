@@ -58,7 +58,7 @@ class UserSettingSSHKey extends React.Component {
     this.checkInput = ValidatorGenerator.stateValidator(this, [
       {
         name: 'key',
-        passPattern: /^.+$/,
+        passPattern: /^.+$/m,
         errorMessage: this.props.intl.formatMessage(
           { id: 'message.error._S_empty' },
           { s: this.props.intl.formatMessage({ id: 'label.SSHKey' }) }

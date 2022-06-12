@@ -648,9 +648,9 @@ class Repository_model extends CI_Model
                 $commands = [
                     "mkdir {$repositoryPath}",
                     "cd {$repositoryPath}",
-                    "git init --bare",
+                    YAML_CLI_GIT . " init --bare",
                     "rm -r hooks",
-                    "ln -s ../hooks hooks",
+                    "ln -s ../../misc/hooks hooks",
                     "chmod -R 0777 {$repositoryPath}",
                 ];
                 break;
@@ -658,10 +658,10 @@ class Repository_model extends CI_Model
                 $commands = [
                     "mkdir {$repositoryPath}",
                     "cd {$repositoryPath}",
-                    "git clone --bare {$command} .",
-                    "git remote remove origin",
+                    YAML_CLI_GIT . " clone --bare {$command} .",
+                    YAML_CLI_GIT . " remote remove origin",
                     "rm -r hooks",
-                    "ln -s ../hooks hooks",
+                    "ln -s ../../misc/hooks hooks",
                     "chmod -R 0777 {$repositoryPath}",
                 ];
                 break;
@@ -671,7 +671,7 @@ class Repository_model extends CI_Model
                     "export GIT_COMMITTER_EMAIL={$email}",
                     "export GIT_AUTHOR_NAME={$name}",
                     "cd {$repositoryPath}",
-                    "git {$command}",
+                    YAML_CLI_GIT . " {$command}",
                 ];
                 break;
             case GIT_COMMAND_DIFF_REMOTE:
@@ -680,11 +680,11 @@ class Repository_model extends CI_Model
                 $remoteName = $remoteRKey . $nonce;
                 $commands = [
                     "cd {$repositoryPath}",
-                    "git remote add {$remoteName} {$remoteAccessURL}",
-                    "git fetch -q {$remoteName}",
-                    "git diff {$remoteCommitHash}...{$localCommitHash}",
-                    "git remote remove {$remoteName}",
-                    "git gc -q --prune=now",
+                    YAML_CLI_GIT . " remote add {$remoteName} {$remoteAccessURL}",
+                    YAML_CLI_GIT . " fetch -q {$remoteName}",
+                    YAML_CLI_GIT . " diff {$remoteCommitHash}...{$localCommitHash}",
+                    YAML_CLI_GIT . " remote remove {$remoteName}",
+                    YAML_CLI_GIT . " gc -q --prune=now",
                     "rm FETCH_HEAD",
                 ];
                 break;
@@ -694,11 +694,11 @@ class Repository_model extends CI_Model
                 $remoteName = $remoteRKey . $nonce;
                 $commands = [
                     "cd {$repositoryPath}",
-                    "git remote add {$remoteName} {$remoteAccessURL}",
-                    "git fetch -q {$remoteName}",
-                    "git log --cherry-pick --left-only {$localCommitHash}...{$remoteCommitHash} --pretty=\"{$prettyPattern}\"",
-                    "git remote remove {$remoteName}",
-                    "git gc -q --prune=now",
+                    YAML_CLI_GIT . " remote add {$remoteName} {$remoteAccessURL}",
+                    YAML_CLI_GIT . " fetch -q {$remoteName}",
+                    YAML_CLI_GIT . " log --cherry-pick --left-only {$localCommitHash}...{$remoteCommitHash} --pretty=\"{$prettyPattern}\"",
+                    YAML_CLI_GIT . " remote remove {$remoteName}",
+                    YAML_CLI_GIT . " gc -q --prune=now",
                     "rm FETCH_HEAD",
                 ];
                 break;
@@ -1054,7 +1054,7 @@ class Repository_model extends CI_Model
         // clone target repository and checkout target branch
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'clone', '-b', $targetRepositoryBranchName, $targetRepositoryURL, '.'
+            YAML_CLI_GIT, 'clone', '-b', $targetRepositoryBranchName, $targetRepositoryURL, '.'
         ]);
 
         if (!$status) {
@@ -1065,8 +1065,8 @@ class Repository_model extends CI_Model
         // fetch source branch
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'remote', 'add', $sourceRepositoryKey, $sourceRepositoryURL, '&&',
-            'git', 'fetch', $sourceRepositoryKey, $sourceRepositoryBranchName
+            YAML_CLI_GIT, 'remote', 'add', $sourceRepositoryKey, $sourceRepositoryURL, '&&',
+            YAML_CLI_GIT, 'fetch', $sourceRepositoryKey, $sourceRepositoryBranchName
         ]);
 
         if (!$status) {
@@ -1080,8 +1080,8 @@ class Repository_model extends CI_Model
             if ($usingSquash) {
                 $status = Command::run([
                     'cd', $workspace, '&&',
-                    'git', 'merge', '--squash', 'FETCH_HEAD', '&&',
-                    'git', 'commit', '-m', Command::wrapArgument($message)
+                    YAML_CLI_GIT, 'merge', '--squash', 'FETCH_HEAD', '&&',
+                    YAML_CLI_GIT, 'commit', '-m', Command::wrapArgument($message)
                 ], $output, [
                     'GIT_COMMITTER_NAME' => $name,
                     'GIT_COMMITTER_EMAIL' => $email,
@@ -1091,7 +1091,7 @@ class Repository_model extends CI_Model
             } else {
                 $status = Command::run([
                     'cd', $workspace, '&&',
-                    'git', 'merge', '--no-ff', '-m', Command::wrapArgument($message), 'FETCH_HEAD'
+                    YAML_CLI_GIT, 'merge', '--no-ff', '-m', Command::wrapArgument($message), 'FETCH_HEAD'
                 ], $output, [
                     'GIT_COMMITTER_NAME' => $name,
                     'GIT_COMMITTER_EMAIL' => $email,
@@ -1102,7 +1102,7 @@ class Repository_model extends CI_Model
         } else {
             $status = Command::run([
                 'cd', $workspace, '&&',
-                'git', 'merge', 'FETCH_HEAD'
+                YAML_CLI_GIT, 'merge', 'FETCH_HEAD'
             ], $output);
         }
 
@@ -1114,7 +1114,7 @@ class Repository_model extends CI_Model
         // push to tareget repository
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'push', 'origin', $targetRepositoryBranchName
+            YAML_CLI_GIT, 'push', 'origin', $targetRepositoryBranchName
         ]);
 
         if (!$status) {
@@ -1413,7 +1413,7 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $revision =   Command::wrapArgument($revision);
+        $revision = Command::wrapArgument($revision);
         $filepath = Command::wrapArgument($filepath);
 
         // create target repository workspace
@@ -1422,7 +1422,7 @@ class Repository_model extends CI_Model
         // clone target repository
         $status = Command::runWithoutOutput([
             'cd', $workspace, '&&',
-            'git', 'clone', $repositoryURL, '.'
+            YAML_CLI_GIT, 'clone', $repositoryURL, '.'
         ]);
 
         if (!$status) {
@@ -1433,8 +1433,8 @@ class Repository_model extends CI_Model
         $output = [];
         $status = Command::run([
             'cd', $workspace, '&&',
-            'git', 'checkout', $revision, '&&',
-            'git', 'blame', '-p', $revision, $filepath
+            YAML_CLI_GIT, 'checkout', $revision, '&&',
+            YAML_CLI_GIT, 'blame', '-p', $revision, $filepath
         ], $output);
 
         if (!$status) {
@@ -1470,6 +1470,9 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $branch = Command::wrapArgument($branch);
+        $filePath = Command::wrapArgument($filePath);
+
         $log = $this->execCommand($rKey, $uKey, GIT_COMMAND_QUERY, $command);
         $log = rtrim($log, Helper::getDelimiter() . "\n");
         $log = $this->_logStringToArray($log);
@@ -1483,8 +1486,8 @@ class Repository_model extends CI_Model
             return [];
         }
 
-        $search = array("\r", "\n", '"', "\t", '\\');
-        $replace = array('\r', '\n', '\"', '\t', '\\\\');
+        $search = array("\r", "\n", "\t", '\\', '"');
+        $replace = array('\r', '\n', '\t', '\\\\', '\"');
         $log = str_replace($search, $replace, $log);
 
         return Helper::parseJSON($log, Helper::getDelimiter());
@@ -2104,5 +2107,233 @@ class Repository_model extends CI_Model
         $members = Helper::getUniqueMemberList($members, 'id');
 
         return $members;
+    }
+
+    public function normalizeWebhooks(array $list)
+    {
+        $output = [];
+        if (!$list) {
+            return [];
+        }
+        foreach ($list as $item) {
+            array_push($output, [
+                'id' => $item['rw_key'],
+                'user' => $item['u_name'],
+                'url' => $item['rw_url'],
+                'secret' => $item['rw_secret'],
+                'events' => $item['rw_events'],
+                'active' => $item['rw_active'],
+                'updated' => (int) strtotime($item['rw_updated'])
+            ]);
+        }
+        return $output;
+    }
+
+    public function getWebhook(string $rwKey) {
+        $this->db->where('rw_key', $rwKey);
+        $query = $this->db->get('repository_webhooks');
+
+        return $query->row_array();
+    }
+
+    public function getWebhooks (string $rKey) {
+        $this->db->select('rw.*, u.u_name');
+        $this->db->from('repository_webhooks AS rw');
+        $this->db->join('users AS u', 'rw.u_key = u.u_key', 'left');
+        $this->db->where('rw.r_key', $rKey);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function createWebhook (array $data)
+    {
+        if (!$data['u_key'] || !$data['r_key'] || !$data['rw_url'] || !$data['rw_events']) {
+            return FALSE;
+        }
+
+        $data['rw_key'] = UUID::getKey();
+        $data['rw_updated'] = date('Y-m-d H:i:s');
+        $this->db->insert('repository_webhooks', $data);
+
+        return $data['rw_key'];
+    }
+
+    public function updateWebhook(string $rwKey, array $data)
+    {
+        if (!$rwKey || !$data['rw_url'] || !$data['rw_events']) {
+            return FALSE;
+        }
+
+        $data['rw_updated'] = date('Y-m-d H:i:s');
+
+        $this->db->where('rw_key', $rwKey);
+        $this->db->update('repository_webhooks', $data);
+
+        return $rwKey;
+    }
+
+    public function deleteWebhook (string $rwKey)
+    {
+        if (!$rwKey) {
+            return false;
+        }
+
+        $this->db->where('rw_key', $rwKey);
+        $this->db->delete('repository_webhooks');
+
+        return $rwKey;
+    }
+
+    public function deleteWebhookEventsByRwKey (string $rwKey)
+    {
+        if (!$rwKey) {
+            return false;
+        }
+        $this->db->where('rw_key', $rwKey);
+        $this->db->delete('repository_webhook_events');
+
+        return true;
+    }
+
+    public function deleteWebhookLogsByRwKey (string $rwKey)
+    {
+        if (!$rwKey) {
+            return false;
+        }
+        $this->db->where('rw_key', $rwKey);
+        $this->db->delete('repository_webhook_logs');
+
+        return true;
+    }
+
+    public function addRepositoryWebhookEvent(string $uKey, string $rKey, string $eventType, string $data)
+    {
+        if (!$uKey || !$rKey || !$eventType || !$data) {
+            return FALSE;
+        }
+
+        $webhooks = $this->getRepositoryWebhooks($rKey);
+        if (!$webhooks) {
+            return FALSE;
+        }
+
+        foreach ($webhooks as $webhook) {
+            $eventTypes = explode(',', $webhook['rw_events']);
+
+            if (!in_array($eventType, $eventTypes)) {
+                continue;
+            }
+
+            $this->db->insert('repository_webhook_events', [
+                'rwe_key' => UUID::getKey(),
+                'rwe_user' => $uKey,
+                'rw_key' => $webhook['rw_key'],
+                'rwe_type' => $eventType,
+                'rwe_data' => $data,
+            ]);
+        }
+
+        return TRUE;
+    }
+
+    public function getRepositoryWebhooks(string $rKey)
+    {
+        if (!$rKey) {
+            return FALSE;
+        }
+
+        $this->db->where('r_key', $rKey);
+        $query = $this->db->get('repository_webhooks');
+        $webhooks = $query->result_array();
+
+        return $webhooks;
+    }
+
+    public function getRepositoryWebhookEvents()
+    {
+        $this->db->from('repository_webhook_events AS rwe');
+        $this->db->join('repository_webhooks AS rw', 'rwe.rw_key = rw.rw_key', 'LEFT');
+        $this->db->where('rw_active', GLOBAL_TRUE);
+        $query = $this->db->get();
+        $events = $query->result_array();
+
+        return $events;
+    }
+
+    public function deleteRepositoryWebhookEvent(string $rweKey)
+    {
+        if (!$rweKey) {
+            return FALSE;
+        }
+
+        $this->db->where('rwe_key', $rweKey);
+        $this->db->delete('repository_webhook_events');
+
+        return TRUE;
+    }
+
+    public function addRepositoryWebhookLog(array $data)
+    {
+        if (!$data) {
+            return FALSE;
+        }
+
+        $this->db->insert('repository_webhook_logs', $data);
+
+        return TRUE;
+    }
+
+    public function normalizeRepositoryWebhookLogData(array $data)
+    {
+        return [
+            'request' => json_decode($data['rwl_request']),
+            'response' => json_decode($data['rwl_response']),
+        ];
+    }
+
+    public function getRepositoryWebhookLogData(string $rwlId)
+    {
+        if (!$rwlId) {
+            return FALSE;
+        }
+
+        $this->db->where('rwl_id', $rwlId);
+        $query = $this->db->get('repository_webhook_logs');
+        $log = $query->row_array();
+
+        return $log;
+    }
+
+    public function normalizeRepositoryWebhookLogs(array $list)
+    {
+        $final = [];
+        foreach ($list as $item) {
+            array_push($final, [
+                'id' => $item['rwl_id'],
+                'webhook' => $item['rw_key'],
+                'start' => (float) $item['rwl_start'],
+                'end' => (float) $item['rwl_end'],
+                'status' => (int) $item['rwl_status'],
+                'success' => $item['rwl_status'] == 200,
+                'created' => $item['rwl_created'],
+            ]);
+        }
+
+        return $final;
+    }
+
+    public function getRepositoryWebhookLogs(string $rwKey)
+    {
+        if (!$rwKey) {
+            return FALSE;
+        }
+
+        $this->db->select('rwl_id, rw_key, rwl_start, rwl_end, rwl_status, rwl_created');
+        $this->db->where('rw_key', $rwKey);
+        $this->db->order_by('rwl_created', 'DESC');
+        $query = $this->db->get('repository_webhook_logs');
+        $logs = $query->result_array();
+
+        return $logs;
     }
 }

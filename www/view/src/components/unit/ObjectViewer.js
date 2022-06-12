@@ -18,6 +18,7 @@ import { plFile, plCodeFile, plCopy } from '@pgyer/icons'
 import SquareIconButton from 'APPSRC/components/unit/SquareIconButton'
 
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import CodeViewer from 'APPSRC/components/unit/CodeViewer'
 import Constants from 'APPSRC/config/Constants'
 
@@ -217,7 +218,7 @@ class ObjectViewer extends React.Component {
           </Grid>
           <Grid item xs={12} className={[mdSourceShow ? classes.height0 : classes.markdown, 'markdown-body'].join(' ')}>
             <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css' />
-            <ReactMarkdown children={object.object.raw} />
+            <ReactMarkdown children={object.object.raw} remarkPlugins={[remarkGfm]} />
           </Grid>
         </Grid>
         }

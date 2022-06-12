@@ -34,7 +34,7 @@
 
 ### 系统服务状态及维护
 
-`CodeFever` 有三个主要的系统服务, 分别是 `PHP` , `Nginx` 和 `CodeFever` 。如果某个服务异常需要手动重新启动。
+`CodeFever` 有五个主要的系统服务, 分别是 `PHP` , `Nginx` , `CodeFever` , `Crond` 和 `Sendmail` 。如果某个服务异常需要手动重新启动。
 
 具体服务启动方式如下:
 
@@ -76,4 +76,30 @@ service codefever start  # 启动
 service codefever stop # 停止
 service codefever restart # 重新启动
 service codefever status # 查看状态
+```
+
+#### Crond
+
+说明: 基础服务, 用于 `CodeFever` 的定时任务时钟事件源
+
+支持的维护命令: 
+
+```shell
+service conrd start  # 启动
+service codefever stop # 停止
+service codefever restart # 重新启动
+service codefever status # 查看状态
+```
+
+#### Sendmail
+
+说明: 基础服务, 用于 `CodeFever` 的邮件发送队列管理和代理
+
+支持的维护命令: 
+
+```shell
+service sendmail start  # 启动
+service sendmail stop # 停止
+service sendmail restart # 重新启动
+service sendmail status # 查看状态
 ```

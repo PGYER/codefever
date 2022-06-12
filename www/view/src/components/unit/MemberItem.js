@@ -58,7 +58,7 @@ class MemberItem extends React.Component {
   }
 
   render () {
-    let { item, intl, disabled, classes } = this.props
+    let { item, intl, disabled, classes, removeable } = this.props
     disabled = disabled || item.creatorFlag || item.deleteFlag
 
     return (<React.Fragment>
@@ -84,11 +84,11 @@ class MemberItem extends React.Component {
           <MenuItem key={UAC.Role.DEVELOPER} value={UAC.Role.DEVELOPER}>{intl.formatMessage({ id: 'label.developer' })}</MenuItem>
           <MenuItem key={UAC.Role.MAINTAINER} value={UAC.Role.MAINTAINER}>{intl.formatMessage({ id: 'label.maintianer' })}</MenuItem>
           <MenuItem key={UAC.Role.OWNER} value={UAC.Role.OWNER}>{intl.formatMessage({ id: 'label.owner' })}</MenuItem>
-          <Divider className={classes.split} />
-          <MenuItem key={item.id} value={item.id} className={classes.deleteMember}>
+          {removeable && <Divider className={classes.split} />}
+          {removeable && <MenuItem key={item.id} value={item.id} className={classes.deleteMember}>
             <FontAwesomeIcon icon={plTrash} />
             &nbsp;&nbsp;{intl.formatMessage({ id: 'label.removeMember' })}
-          </MenuItem>
+          </MenuItem>}
         </TextField>
       </TableCell>
     </React.Fragment>)
@@ -100,6 +100,7 @@ MemberItem.propTypes = {
   disabled: PropTypes.bool,
   onUpdate: PropTypes.func,
   onRemove: PropTypes.func,
+  removeable: PropTypes.bool,
   intl: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 }

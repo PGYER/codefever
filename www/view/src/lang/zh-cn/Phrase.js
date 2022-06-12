@@ -25,6 +25,11 @@ const data = {
   all: '所有',
   detail: '详情',
   language: '语言',
+  webhook: 'Webhook',
+  log: '日志',
+  httpHeaders: '头部',
+  httpBody: '响应数据',
+  httpPayload: '请求数据',
 
   browser: '浏览',
   expand: '展开',
@@ -55,6 +60,7 @@ const data = {
   copied: '已复制',
   contain: '包含',
   request: '请求',
+  response: '响应',
   bind: '绑定',
   unbind: '解绑',
   replace: '替换',
@@ -63,7 +69,7 @@ const data = {
   protected: '保护',
   operating: '操作',
   approve: '评审',
-  enable: '恢复',
+  enable: '启用',
   disable: '禁用',
 
   last: '最近',

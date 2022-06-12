@@ -637,6 +637,39 @@ function parser (config) {
       ),
       detail: config.formatter({ id: 'message.review_M_Reviewer' }, { m: mergeRequestLink })
     }
+  } else if (code === 0x0901) {
+    return {
+      user,
+      action: config.formatter(
+        { id: 'message.activity.create_S_Webhook' },
+        { s: config.relatedGroup.displayName + '/' + config.relatedRepository.displayName }
+      ),
+      detail: <React.Fragment>
+        {config.formatter({ id: 'label.createWebhook' })}
+      </React.Fragment>
+    }
+  } else if (code === 0x0902) {
+    return {
+      user,
+      action: config.formatter(
+        { id: 'message.activity.update_S_Webhook' },
+        { s: config.relatedGroup.displayName + '/' + config.relatedRepository.displayName }
+      ),
+      detail: <React.Fragment>
+        {config.formatter({ id: 'label.updateWebhook' })}
+      </React.Fragment>
+    }
+  } else if (code === 0x0903) {
+    return {
+      user,
+      action: config.formatter(
+        { id: 'message.activity.delete_S_Webhook' },
+        { s: config.relatedGroup.displayName + '/' + config.relatedRepository.displayName }
+      ),
+      detail: <React.Fragment>
+        {config.formatter({ id: 'label.deleteWebhook' })}
+      </React.Fragment>
+    }
   }
 
   return {

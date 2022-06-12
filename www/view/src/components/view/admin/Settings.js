@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
 import Button from '@material-ui/core/Button'
-// import UserData from 'APPSRC/data_providers/UserData'
+import UserData from 'APPSRC/data_providers/UserData'
 import AdminData from 'APPSRC/data_providers/AdminData'
 // import Constants from 'APPSRC/config/Constants'
 
@@ -134,6 +134,17 @@ class Settings extends React.Component {
         if (!data.code) {
           this.props.dispatchEvent(EventGenerator.NewNotification(this.props.intl.formatMessage({ id: 'message.updated' }), 0))
           this.getData()
+          this.reloadUserData()
+        }
+      })
+  }
+
+  reloadUserData () {
+    UserData.getUserInfo()
+      .then(NetworkHelper.withEventdispatcher(this.props.dispatchEvent)(NetworkHelper.getJSONData))
+      .then((data) => {
+        if (!data.code) {
+          this.props.dispatchEvent({ type: 'data.currentUserInfo.update', data: data.data })
         }
       })
   }

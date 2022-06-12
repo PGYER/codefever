@@ -17,6 +17,9 @@ const data = {
   branch: 'Branch',
   branch_pl: 'Branches',
 
+  webhook: 'Webhook',
+  webhook_pl: 'Webhooks',
+
   tag: 'Tag',
   tag_pl: 'Tags',
 

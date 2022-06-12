@@ -79,7 +79,7 @@ jQuery.validator.addMethod("regexTel",
 , "格式错误"); // addMethod第3个参数:默认错误信息
 
 var validateMobileCodeTimes = 0;
-var tickingSecond = 60;
+var tickingSecond = 120;
 var key = '<?php echo $key; ?>'
 var mode = '<?php echo $mode; ?>'
 
@@ -212,7 +212,7 @@ function startTicking() {
         tickingSecond --;
     } else {
         $('#btn_get_code').text('<?php echo lang('user_form_get_code_re')?>').removeAttr('disabled').removeClass('color-grey');
-        tickingSecond = 60;
+        tickingSecond = 120;
     }
 }
 
