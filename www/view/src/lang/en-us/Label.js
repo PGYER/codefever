@@ -145,7 +145,7 @@ const data = {
 
   dangerOperation: 'Dangerous Action',
   dangerOperationConfirm: 'Confirm Dangerous Action',
-  compareBranch: 'Comoare And Continue',
+  compareBranch: 'Compare and Continue',
   lastModified: 'Last Modified',
   lastModified_N: '{n}{n, plural, =1 {st}\n=2 {nd}\n=3 {rd}\nother {th}} Revision',
 
