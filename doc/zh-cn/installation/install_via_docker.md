@@ -19,6 +19,10 @@ docker run -d --privileged=true --name codefever -p 80:80 -p 22:22 -it pgyer/cod
 3. 如果服务异常你可以登录 Shell 去人工维护, 也可以直接重启容器重启服务。
 4. 默认管理员用户: `root@codefever.cn`, 密码: `123456`。登录后请修改密码并绑定 MFA 设备。
 
+### 使用 docker-compose 安装
+
+参见: [使用 docker-compose 安装](install_via_docker_compose.md)
+
 ### 服务维护
 
 服务维护请参见 [管理员设置/概览和系统服务](../admin/dashboard.md) 中的 `系统服务状态及维护` 一节
