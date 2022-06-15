@@ -1,0 +1,32 @@
+version: "3"
+services:
+  codefever:
+    image: rexshi/cc:latest
+    ports:
+      - "80:80"
+      - "22:22"
+    depends_on:
+      - db
+    volumes:
+      - /data/git-storage:/data/www/codefever-community/git-storage
+      - /data/logs:/data/www/codefever-community/application/logs
+    environment:
+      DB_HOST: "db"
+      DB_PORT: "3306"
+      DB_USER: "root"
+      DB_PASS: "123456" # Need to be the same as MYSQL_ROOT_PASSWORD
+      DB_NAME: "codefever_community"
+
+  db:
+    image: mysql:5.7.31
+    restart: always
+    #privileged: true
+    volumes:
+      - /data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    command: [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_general_ci',
+        '--max_connections=3000'
+    ]
