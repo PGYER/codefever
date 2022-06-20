@@ -75,7 +75,7 @@ class Response
                 ];
             }
 
-            $content = json_encode($jsonData);
+            $content = json_encode($jsonData, JSON_INVALID_UTF8_SUBSTITUTE);
         } else {
             // binary output
             header('Content-Type: application/octet-stream');
