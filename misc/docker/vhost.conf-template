@@ -1,0 +1,73 @@
+server_names_hash_max_size 512;
+server_names_hash_bucket_size 128;
+
+server {
+    listen 80;
+    server_name localhost;
+    index index.php index.html index.htm;
+    root /data/www/codefever-community/www/;
+
+    location ~* ^\/[0-9a-z_]+\/[0-9a-z_]+\.git {
+        proxy_pass http://127.0.0.1:27555;
+    }
+
+    location ^~ /static/ {
+        rewrite "(.*)\.map(.*)" "/static/not/found" last;
+        rewrite "^/static/\d{14}/(.*)$" "/static/$1" last;
+        try_files $uri /app$uri 404;
+    }
+
+    location ~* ^/(user|file|feature|doc|community|lang|captcha|boss|service|pricing|api(v\d+)?)?(\/.*)?$ {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location / {
+        try_files $uri /app/index.html;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_param  ENVIRONMENT "production";
+        include        fastcgi_params;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_read_timeout 300s;
+    }
+}
+
+server {
+    listen 80;
+    server_name localhost-dev;
+    index index.php index.html index.htm;
+    root /data/www/codefever-community/www/;
+
+    location ~* ^\/[0-9a-z_]+\/[0-9a-z_]+\.git {
+        proxy_pass http://127.0.0.1:27555;
+    }
+
+    location ^~ /sockjs-node {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    location ^~ /__webpack_dev_server__/ {
+        proxy_pass http://127.0.0.1:3000;
+    }
+
+    location ~ ^/static/\d+/ {
+        proxy_pass http://localhost;
+    }
+
+    location ~* ^/(user|file|feature|doc|community|lang|captcha|boss|service|pricing|api(v\d+)?)?(\/.*)?$ {
+        proxy_pass http://localhost;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
