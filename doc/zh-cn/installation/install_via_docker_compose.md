@@ -11,7 +11,7 @@
 首先 clone 整个 CodeFever Community 仓库到您的服务器，然后进入项目的根目录，并执行以下命令：
 
 ```shell
-docker-compose run -d
+docker-compose up -d
 ```
 
 1. 服务启动后尝试访问 `http://127.0.0.1` 或 `http://<server ip>` 登录
