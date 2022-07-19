@@ -26,7 +26,7 @@ class Logger {
 
     static function Log(string $log = '', string $scope) {
         $path = self::getLogPath($scope);
-        $log = '[' . date('Y-m-d H:i:s ms') . '] : ' . $log . PHP_EOL;
+        $log = '[' . date('Y-m-d H:i:s u') . '] : ' . $log . PHP_EOL;
         file_put_contents($path, $log, FILE_APPEND);
         return TRUE;
     }
