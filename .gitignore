@@ -20,7 +20,7 @@ asd
 /misc/modify_authorized_keys.pid
 /misc/modify_authorized_keys.child.pipe
 /misc/modify_authorized_keys.master.pipe
-
+asd
 /file-storage/**
 /git-storage/**
 !/git-storage/hooksasdasd
