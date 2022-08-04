@@ -12,7 +12,7 @@ asd
 /www/view/node_modules
 /www/view/npm-debug.log*
 /www/view/yarn-debug.log*
-/www/view/yarn-error.log*
+/www/view/yarn-error.log*ggg
 
 /http-gateway/main
 /ssh-gateway/shell/main
