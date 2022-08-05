@@ -19,6 +19,12 @@ docker-compose up -d
 3. 如果服务异常你可以登录 Shell 去人工维护, 也可以直接重启容器重启服务。
 4. 默认管理员用户: `root@codefever.cn`, 密码: `123456`。登录后请修改密码并绑定 MFA 设备。
 
+注意: 如果你没有修改 docker compose 文件 或者 使用 MySQL 5.7 版本数据库，需要修改 SQL MODE 变量，否则创建数据库时会报错，如果使用 MariaDB 可以忽略此选项。
+
+``` sql
+set global sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+```
+
 ### 构建自己的镜像
 
 进入项目的根目录，并执行以下命令：
@@ -33,7 +39,7 @@ docker build -t you-name/codefever-community-lite:latest .
 
 ## 此文档适用条件
 
-如果你的情况符合以下条件，你需要使用 [从零开始安装](install_from_scratch.md) 的方式安装 `CodeFever` 否则请跳过本章节继续使用 `Docker 镜像安装` 方式安装。
+如果你的情况符合以下条件，你需要使用 [从零开始安装](install_from_scratch.md) 的方式安装 `CodeFever` 否则请跳过本章节继续使用 `docker-compose 安装` 方式安装。
 
 - 学习和技术交流
 - 需要做定制化修改
