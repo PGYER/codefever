@@ -8,7 +8,7 @@ RUN apt-get update -y \
 && apt-get install libyaml-dev git golang-go zip sendmail mailutils mariadb-client vim -y \
 && pecl install yaml \
 && docker-php-ext-enable yaml
-
+asdasd
 # Nodejs
 RUN cd /usr/local \
 && wget https://nodejs.org/dist/v16.15.1/node-v16.15.1-linux-x64.tar.xz \
