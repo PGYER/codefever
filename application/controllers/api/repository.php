@@ -1093,6 +1093,53 @@ class Repository extends Base
             }
         }
 
+        // add url attribute for sub module
+        if ($output['object'][0]) {
+            $gitModuleFlag = FALSE;
+            $gitModuleURLMap = [];
+            foreach ($output['object'] as $item) {
+                if ($item['type'] === 'commit') {
+                    $gitModuleFlag = TRUE;
+                    break;
+                }
+            }
+
+            if ($gitModuleFlag) {
+                $rootdirData = $this->repositoryModel->catObject($rKey, $uKey, $rev);
+                $gitModuleData = NULL;
+                foreach ($rootdirData[1] as $item) {
+                    if ($item['name'] === '.gitmodules') {
+                        $gitModuleData = $item;
+                    }
+                }
+
+                if ($gitModuleData) {
+                    $gitModuleFileInfo = $this->repositoryModel->catObject($rKey, $uKey, $gitModuleData['object']);
+                    $gitModuleFileContent = Helper::parseObjectToFile($gitModuleFileInfo[1]);
+                    if ($gitModuleFileContent['raw']) {
+                        $matches = [];
+                        preg_match_all('/\[.*\]\r?\n\s*path\s*=\s*(.*)\r?\n\s*url\s*=\s*(.*)\r?\n?/m', $gitModuleFileContent['raw'], $matches);
+
+                        foreach ($matches[1] as $submoduleIndex => $submodulePath) {
+                            $gitModuleURLMap[$submodulePath] = $matches[2][$submoduleIndex];
+                        }
+                    }
+                }
+            }
+
+            foreach ($output['object'] as &$item) {
+                if ($item['type'] === 'commit') {
+                    if ($path) {
+                        $item['url'] = $gitModuleURLMap[$path . '/' . $item['name']];
+                    } else {
+                        $item['url'] = $gitModuleURLMap[$item['name']];
+                    }
+                } else {
+                    $item['url'] = '';
+                }
+            }
+        }
+
         Response::output($output);
     }
 
