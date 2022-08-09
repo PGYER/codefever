@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Tooltip from '@material-ui/core/Tooltip'
+
 import RepositoryDashboard from 'APPSRC/components/unit/RepositoryDashboard'
 import EmptyListNotice from 'APPSRC/components/unit/EmptyListNotice'
 import RevisionSelector from 'APPSRC/components/unit/RevisionSelector'
@@ -19,7 +21,7 @@ import TableList from 'APPSRC/components/unit/TableList'
 import ObjectViewer from 'APPSRC/components/unit/ObjectViewer'
 import CommitItem from 'APPSRC/components/unit/CommitItem'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { plFile, psFolder, plSearch } from '@pgyer/icons'
+import { plFile, psFolder, plSearch, psRepository } from '@pgyer/icons'
 import FormattedTime from 'APPSRC/components/unit/FormattedTime'
 import RepositoryEmpty from 'APPSRC/components/unit/RepositoryEmpty'
 import RepositoryData from 'APPSRC/data_providers/RepositoryData'
@@ -212,8 +214,9 @@ class FileTree extends React.Component {
       .map((item) => {
         return [
           <Typography variant='body1'>
-            <FontAwesomeIcon icon={item.type === 'blob' ? plFile : psFolder} /> &nbsp;&nbsp;
-            <Link className={this.props.classes.linkObjectName} to={
+            { item.type === 'blob' && <React.Fragment>
+              <FontAwesomeIcon icon={plFile} /> &nbsp;&nbsp;
+              <Link className={this.props.classes.linkObjectName} to={
               makeLink(
                 this.props.currentRepositoryConfig.group.name,
                 this.props.currentRepositoryConfig.repository.name,
@@ -221,6 +224,25 @@ class FileTree extends React.Component {
                 encodeURIComponent(this.props.match.params.rev || getDefaultBranch(this.props.currentRepositoryConfig)),
                 currentPath ? currentPath + '/' + item.name : item.name
               )}>{item.name}</Link>
+            </React.Fragment> }
+            { item.type === 'tree' && <React.Fragment>
+              <FontAwesomeIcon icon={psFolder} /> &nbsp;&nbsp;
+              <Link className={this.props.classes.linkObjectName} to={
+              makeLink(
+                this.props.currentRepositoryConfig.group.name,
+                this.props.currentRepositoryConfig.repository.name,
+                'files',
+                encodeURIComponent(this.props.match.params.rev || getDefaultBranch(this.props.currentRepositoryConfig)),
+                currentPath ? currentPath + '/' + item.name : item.name
+              )}>{item.name}</Link>
+            </React.Fragment> }
+            { item.type === 'commit' && <React.Fragment>
+              <FontAwesomeIcon icon={psRepository} /> &nbsp;&nbsp;
+              {item.name}&nbsp;
+              <Tooltip title={item.url} placement='top' disableFocusListener>
+                <Typography component='span' variant='body2'>@{item.object.slice(0, 8)}</Typography>
+              </Tooltip>
+            </React.Fragment> }
           </Typography>,
           item.commit && item.commit.sha && <Link className={this.props.classes.linkCommitMessage} to={
             makeLink(
