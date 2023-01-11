@@ -36,6 +36,7 @@ class User_model extends CI_Model
                 'unReadNotification' => $extra ? $this->notificationModel->unReadNotificationCount($item['u_key']) : 0,
                 'status' => $item['u_status'] == COMMON_STATUS_NORMAL,
                 'host' => YAML_HOST,
+                'ssh' => YAML_SSH,
             ]);
         }
         return $result;

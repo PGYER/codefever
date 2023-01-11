@@ -1,5 +1,6 @@
 ---
 host: http://localhost
+ssh: 'git@localhost:'
 allowRegister: true
 email:
   name: CodeFever Community

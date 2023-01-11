@@ -181,6 +181,8 @@ const data = {
   senderAddress: 'Sender Email Address',
   register: 'Register',
   allowRegister: 'Allow Register',
+  urlPrefix: [Phrase.url, Phrase.prefix].join(phraseSeperator),
+  sshPrefix: [Phrase.ssh, Phrase.prefix].join(phraseSeperator),
 
   support: 'Technical Support',
   feedback: 'Submit Feedback',

@@ -87,7 +87,9 @@ function getHost (userinfo) {
 }
 
 function getSSHHost (userinfo) {
-  return userinfo && 'git@' + userinfo.host.replace('http://', '').replace('https://', '')
+  return userinfo && userinfo.ssh
+    ? userinfo.ssh
+    : 'git@' + userinfo.host.replace('http://', '').replace('https://', '')
 }
 
 function makeSlug (input) {

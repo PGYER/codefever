@@ -181,6 +181,8 @@ const data = {
   senderAddress: '发件人地址',
   register: '注册',
   allowRegister: '开放注册',
+  urlPrefix: [Phrase.url, ' ', Phrase.prefix].join(phraseSeperator),
+  sshPrefix: [Phrase.ssh, ' ', Phrase.prefix].join(phraseSeperator),
 
   support: '技术支持',
   feedback: '提交反馈',
