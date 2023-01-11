@@ -235,7 +235,7 @@ class RepositoryDashboard extends Component {
                           fullWidth
                           variant='outlined'
                           value={
-                            NetworkHelper.getSSHHost(currentUserInfo) + ':' +
+                            NetworkHelper.getSSHHost(currentUserInfo) +
                             [repositoryConfig.group.name, repositoryConfig.repository.name].join('/') +
                             '.git'
                           }

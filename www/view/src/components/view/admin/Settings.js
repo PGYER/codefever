@@ -35,6 +35,7 @@ class Settings extends React.Component {
     this.state = {
       allowRegister: false,
       host: '',
+      ssh: '',
       email_from: '',
       email_name: '',
       pending: true,
@@ -55,7 +56,15 @@ class Settings extends React.Component {
         passPattern: /^http(s)?:\/\/[^/]+$/,
         errorMessage: this.props.intl.formatMessage(
           { id: 'message.error._S_invalid' },
-          { s: this.props.intl.formatMessage({ id: 'label.url' }) }
+          { s: this.props.intl.formatMessage({ id: 'label.urlPrefix' }) }
+        )
+      },
+      {
+        name: 'ssh',
+        passPattern: /^[^@]+@.+$/,
+        errorMessage: this.props.intl.formatMessage(
+          { id: 'message.error._S_invalid' },
+          { s: this.props.intl.formatMessage({ id: 'label.sshPrefix' }) }
         )
       },
       {
@@ -103,6 +112,7 @@ class Settings extends React.Component {
           this.setState({
             pending: false,
             host: data.data.host,
+            ssh: data.data.ssh,
             allowRegister: data.data.allowRegister,
             email_from: data.data.email.from,
             email_name: data.data.email.name
@@ -118,6 +128,7 @@ class Settings extends React.Component {
 
     const data = {
       host: this.state.host,
+      ssh: this.state.ssh,
       allowRegister: this.state.allowRegister,
       email: { name: this.state.email_name, from: this.state.email_from }
     }
@@ -159,13 +170,13 @@ class Settings extends React.Component {
       <Grid item xs={12}>
         <Paper className={classes.paper}>
           <Grid container spacing={2}>
-          <Grid item xs={12}>
+            <Grid item xs={12}>
               <Typography variant='h6' component='div' gutterBottom> {intl.formatMessage({ id: 'label.host' })} </Typography>
             </Grid>
             <Grid item xs={12} mg={9} lg={8}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography variant='subtitle1' component='div' gutterBottom> {intl.formatMessage({ id: 'label.url' })} </Typography>
+                    <Typography variant='subtitle1' component='div' gutterBottom> {intl.formatMessage({ id: 'label.urlPrefix' })} </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -174,8 +185,22 @@ class Settings extends React.Component {
                     value={this.state.host}
                     error={!!this.state.error.host}
                     helperText={this.state.error.host}
-                    placeholder={intl.formatMessage({ id: 'label.url' })}
+                    placeholder={intl.formatMessage({ id: 'label.urlPrefix' })}
                     onChange={e => this.setState({ host: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant='subtitle1' component='div' gutterBottom> {intl.formatMessage({ id: 'label.sshPrefix' })} </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    variant='outlined'
+                    value={this.state.ssh}
+                    error={!!this.state.error.ssh}
+                    helperText={this.state.error.ssh}
+                    placeholder={intl.formatMessage({ id: 'label.sshPrefix' })}
+                    onChange={e => this.setState({ ssh: e.target.value })}
                   />
                 </Grid>
               </Grid>
