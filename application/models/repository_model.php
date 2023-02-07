@@ -640,8 +640,9 @@ class Repository_model extends CI_Model
 
         $storagePath = dirname(APPPATH) . '/git-storage';
         $repositoryPath = $storagePath . $repositoryInfo['r_path'];
-        $name = explode('@', $userInfo['u_email'])[0];
-        $email = $userInfo['u_email'];
+
+        $name = Command::wrapArgument(explode('@', $userInfo['u_email'])[0]);
+        $email = Command::wrapArgument($userInfo['u_email']);
 
         switch ($commandType) {
             case GIT_COMMAND_INIT:
@@ -1045,7 +1046,7 @@ class Repository_model extends CI_Model
         if (!$userInfo) {
             return FALSE;
         }
-        $name =   Command::wrapArgument(explode('@', $userInfo['u_email'])[0]);
+        $name = Command::wrapArgument(explode('@', $userInfo['u_email'])[0]);
         $email = Command::wrapArgument($userInfo['u_email']);
 
         // create target repository workspace

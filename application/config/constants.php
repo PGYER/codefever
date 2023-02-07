@@ -114,7 +114,7 @@ define('MAX_DISPLAY_FILE_SIZE', 0x200000); // 2M
 define('WORKSPACE_DIR', '/tmp/workspace');
 
 // salt for totp generator
-define('TOTP_SALT', 'codefever-salt');
+define('TOTP_SALT', YAML_TOTP_SALT);
 
 // default paging sessing
 define('DEFAULT_PAGE_SIZE', 20);
