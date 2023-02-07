@@ -121,7 +121,7 @@ class UserSettingEmail extends React.Component {
       },
       {
         name: 'email',
-        passPattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
+        passPattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         errorMessage: intl.formatMessage(
           { id: 'message.error._S_invalid' },
           { s: intl.formatMessage({ id: 'label.email' }) }

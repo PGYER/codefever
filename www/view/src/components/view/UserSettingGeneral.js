@@ -123,7 +123,7 @@ class UserSettingGeneral extends React.Component {
       },
       {
         name: 'email',
-        passPattern: /^[^@]+@[^@]+\.[^@]+$/,
+        passPattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         errorMessage: this.props.intl.formatMessage(
           { id: 'message.error._S_invalid' },
           { s: this.props.intl.formatMessage({ id: 'label.email' }) }
