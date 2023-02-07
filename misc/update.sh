@@ -77,4 +77,5 @@ echo -e "\n\n\n"
 
 echo '=== IMPORTANT NOTICE ==='
 echo '1. CodeFever Comminuty Upgrated.'
+echo '2. Check <./env.yaml> file, copy <totp/salt> section from <./env.template.yaml> if not exsit.'
 echo 'have fun!'
