@@ -265,7 +265,7 @@ class User extends Base
         if (!$email || !$code || !$password) {
             Response::reject(0x0201);
         }
-        if (!preg_match("/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/", $email)) {
+        if (!preg_match('/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/', $email)) {
             Response::reject(0x0201);
         }
 
@@ -291,7 +291,7 @@ class User extends Base
             Response::reject(0x0201);
         }
 
-        if (!preg_match('/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/', $email)) {
+        if (!preg_match('/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/', $email)) {
             Response::reject(0x0201);
         }
 
@@ -323,7 +323,7 @@ class User extends Base
             Response::reject(0x0201);
         }
 
-        if (!preg_match('/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/', $email)) {
+        if (!preg_match('/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/', $email)) {
             Response::reject(0x0201);
         }
 
