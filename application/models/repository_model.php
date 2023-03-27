@@ -1466,13 +1466,13 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $branch = Command::wrapArgument($branch);
+        $filePath = Command::wrapArgument($filePath);
+
         $command = GitCommand::getLastLog($branch, $filePath, $lastSha);
         if (!$command) {
             return FALSE;
         }
-
-        $branch = Command::wrapArgument($branch);
-        $filePath = Command::wrapArgument($filePath);
 
         $log = $this->execCommand($rKey, $uKey, GIT_COMMAND_QUERY, $command);
         $log = rtrim($log, Helper::getDelimiter() . "\n");
