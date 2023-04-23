@@ -65,8 +65,8 @@ class Repository_webhook extends CI_Controller {
             ]);
 
             $headers = [
-                'Request URL' => $event['rw_url'],
-                'Request method' => 'POST',
+                'Request-URL' => $event['rw_url'],
+                'Request-Method' => 'POST',
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'User-Agent' => 'CodeFever-Webhook',
