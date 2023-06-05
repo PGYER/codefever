@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -f ../install.lock ]; then
+if [ -f ../application/logs/install.lock ]; then
     exit 0
 fi
 
@@ -47,4 +47,4 @@ mariadb-install-db
 echo -e "\ny\ny\n123456\n123456\ny\ny\ny\ny\n" | mariadb-secure-installation
 ./misc/create_db.sh
 
-echo '1' > ../install.lock
+echo '1' > ../application/logs/install.lock
