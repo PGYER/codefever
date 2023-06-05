@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ -f ../install.lock ]; then
+    exit 0
+fi
+
 echo '> Start post initialization...'
 
 cp ../config.template.yaml ../config.yaml
@@ -37,7 +41,10 @@ chkconfig php-fpm on
 chkconfig codefever on
 chkconfig crond on
 
-# set mysql root password 
+# init database
 echo 'Start Database Initialization...'
+mariadb-install-db
+echo -e "\ny\ny\n123456\n123456\ny\ny\ny\ny\n" | mariadb-secure-installation
 ./misc/create_db.sh
 
+echo '1' > ../install.lock
