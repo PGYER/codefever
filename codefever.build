@@ -1,0 +1,54 @@
+FROM pgyer/codefever-community-env-dry
+
+MAINTAINER cubicwork@qq.com
+
+WORKDIR /data/www/codefever-community
+
+ENV GO111MODULE=off
+ENV GOPROXY=https://mirrors.aliyun.com/goproxy
+
+RUN useradd -r www
+RUN useradd -rm git
+
+# install dependencies
+RUN go get gopkg.in/yaml.v2
+
+# copy repo
+RUN mkdir -p /data/www
+RUN git clone https://github.com/PGYER/codefever.git /data/www/codefever-community
+
+EXPOSE 80 22
+
+VOLUME ["/var/lib/mysql", "/data/www/codefever-community/env", "/data/www/codefever-community/application/logs", "/data/www/codefever-community/git-storage", "/data/www/codefever-community/file-storage"]
+
+# build gateway
+RUN cd /data/www/codefever-community/http-gateway && go build main.go
+RUN cd /data/www/codefever-community/ssh-gateway/shell && go build main.go
+
+# copy configs
+RUN cp ./misc/nginx.conf-template /usr/local/nginx/conf/nginx.conf
+RUN cp ./misc/php.ini-template /usr/local/php/etc/php.ini
+RUN cp ./misc/www.conf-template /usr/local/php/etc/php-fpm.d/www.conf
+RUN cp ./misc/php-fpm.conf-template /usr/local/php/etc/php-fpm.conf
+
+# copy start scripts
+RUN cp ./misc/nginx-service-template /etc/init.d/nginx
+RUN cp ./misc/php-fpm-service-template /etc/init.d/php-fpm
+RUN cp ./misc/codefever-service-template /etc/init.d/codefever
+
+# install composer dependencies
+RUN cd ./application/libraries/composerlib/ && /usr/local/php/bin/php ./composer.phar install
+
+# create symbolic link
+RUN mkdir -p ./env && chmod -R 0777 ./env 
+RUN ln -s ./env/env.yaml ./env.yaml && ln -s ./env/config.yaml ./config.yaml
+
+# initialize container
+RUN chmod +x ./misc/initailize_container.sh ./misc/system_init.sh
+CMD ./misc/system_init.sh
+
+# USAGE:
+# docker build --no-cache -f ./codefever.build -t pgyer/codefever-community .
+# docker container run -d --privileged=true --name codefever-test -p 40080:80 -p 40022:22 -v ~/config-test/db:/var/lib/mysql -v ~/config-test/env:/data/www/codefever-community/env -v ~/config-test/logs:/data/www/codefever-community/application/logs -v ~/config-test/git-storage:/data/www/codefever-community/git-storage -v ~/config-test/file-storage:/data/www/codefever-community/file-storage -it pgyer/codefever-community
+# docker container run -d --privileged=true --name codefever -p 80:80 -p 22:22 -v ~/config/db:/var/lib/mysql -v ~/config/env:/data/www/codefever-community/env -v ~/config/logs:/data/www/codefever-community/application/logs -v ~/config/git-storage:/data/www/codefever-community/git-storage -v ~/config/file-storage:/data/www/codefever-community/file-storage -it pgyer/codefever-community
+# docker push pgyer/codefever-community
