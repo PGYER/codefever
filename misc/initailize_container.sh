@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -f ../application/logs/install.lock ]; then
+if [ -f ./application/logs/install.lock ]; then
     exit 0
 fi
 
@@ -14,8 +14,12 @@ cp ./env.template.yaml ./env/env.yaml
 chmod 0777 ./env/config.yaml ./env/env.yaml ./env.yaml ./config.yaml
 chmod -R 0777 ./git-storage
 
+chmod -R 0777 ./application/logs
 chown -R git:git ./application/logs
+
+chmod -R 0777 ./file-storage
 chown -R git:git ./file-storage
+
 chown -R git:git ./misc
 
 TARGET_CRONJOB=`crontab -u git -l 2>/dev/null | grep 'codefever_schedule.sh' | wc -l`
@@ -51,6 +55,7 @@ sudo -u mysql mariadb-install-db
 
 service mariadb start
 echo -e "\ny\ny\n123456\n123456\ny\ny\ny\ny\n" | mariadb-secure-installation
+chmod +x ./misc/create_db.sh
 ./misc/create_db.sh
 
-echo '1' > ../application/logs/install.lock
+echo '1' > ./application/logs/install.lock
