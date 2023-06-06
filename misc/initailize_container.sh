@@ -55,7 +55,8 @@ sudo -u mysql mariadb-install-db
 
 service mariadb start
 echo -e "\ny\ny\n123456\n123456\ny\ny\ny\ny\n" | mariadb-secure-installation
+
 chmod +x ./misc/create_db.sh
-./misc/create_db.sh
+cd ./misc/ && ./create_db.sh && cd -
 
 echo '1' > ./application/logs/install.lock
