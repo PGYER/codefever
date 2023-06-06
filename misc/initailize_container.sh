@@ -5,14 +5,14 @@ fi
 
 echo '> Start post initialization...'
 
-cp ../config.template.yaml ../env/config.yaml
-cp ../env.template.yaml ../env/env.yaml
-chmod 0777 ../env/config.yaml ../env/env.yaml ./env.yaml ./config.yaml
-chmod -R 0777 ../git-storage
+cp ./config.template.yaml ./env/config.yaml
+cp ./env.template.yaml ./env/env.yaml
+chmod 0777 ./env/config.yaml ./env/env.yaml ./env.yaml ./config.yaml
+chmod -R 0777 ./git-storage
 
-chown -R git:git ../application/logs
-chown -R git:git ../file-storage
-chown -R git:git ../misc
+chown -R git:git ./application/logs
+chown -R git:git ./file-storage
+chown -R git:git ./misc
 
 TARGET_CRONJOB=`crontab -u git -l 2>/dev/null | grep 'codefever_schedule.sh' | wc -l`
 if [ $TARGET_CRONJOB -eq 0 ]; then
@@ -22,8 +22,8 @@ if [ $TARGET_CRONJOB -eq 0 ]; then
     rm -f /tmp/cronjob.temp
 fi
 
-echo 'Generateing public key for ssh: (Just Press Enter Key!)'
-sudo -u git ssh-keygen -f /home/git/.ssh/id_rsa
+echo 'Generateing public key for ssh ...'
+echo -n "y" | sudo -u git ssh-keygen -N ""  -f /home/git/.ssh/id_rsa
 service sshd restart
 
 # start services
