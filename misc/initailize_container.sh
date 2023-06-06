@@ -36,7 +36,6 @@ service php-fpm start
 service nginx start
 service crond start
 service sendmail start
-service mariadb start
 
 # enable all services
 chkconfig mariadb on
@@ -48,7 +47,9 @@ chkconfig crond on
 
 # init database
 echo 'Start Database Initialization...'
-mariadb-install-db
+sudo -u mysql mariadb-install-db
+
+service mariadb start
 echo -e "\ny\ny\n123456\n123456\ny\ny\ny\ny\n" | mariadb-secure-installation
 ./misc/create_db.sh
 
