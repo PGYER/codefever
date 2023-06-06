@@ -36,6 +36,7 @@ service php-fpm start
 service nginx start
 service crond start
 service sendmail start
+service mariadb start
 
 # enable all services
 chkconfig mariadb on
