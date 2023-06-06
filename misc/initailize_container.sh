@@ -1,13 +1,15 @@
 #!/bin/bash
 
-chmod +x ./misc/initailize_container.sh
-setsid ./misc/initailize_container.sh &
+chmod +x ./misc/system_init.sh
+setsid ./misc/system_init.sh &
 
 if [ -f ../application/logs/install.lock ]; then
     exit 0
 fi
 
 echo '> Start post initialization...'
+echo 'await system initializing...'
+sleep 10
 
 cp ./config.template.yaml ./env/config.yaml
 cp ./env.template.yaml ./env/env.yaml
