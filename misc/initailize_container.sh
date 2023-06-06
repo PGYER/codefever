@@ -1,4 +1,7 @@
 #!/bin/bash
+
+exec /usr/sbin/init
+
 if [ -f ../application/logs/install.lock ]; then
     exit 0
 fi
