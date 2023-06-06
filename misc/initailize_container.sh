@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -f ./application/logs/install.lock ]; then
+if [ -f ./install.lock ]; then
     exit 0
 fi
 
@@ -9,8 +9,14 @@ sleep 30
 
 echo '> Start post initialization...'
 
-cp ./config.template.yaml ./env/config.yaml
-cp ./env.template.yaml ./env/env.yaml
+if [ ! -f ./env/env.yaml ]; then
+    cp ./env.template.yaml ./env/env.yaml
+fi
+
+if [ ! -f ./env/config.yaml ]; then
+    cp ./config.template.yaml ./env/config.yaml
+fi
+
 chmod 0777 ./env/config.yaml ./env/env.yaml ./env.yaml ./config.yaml
 chmod -R 0777 ./git-storage
 
@@ -59,4 +65,4 @@ echo -e "\ny\ny\n123456\n123456\ny\ny\ny\ny\n" | mariadb-secure-installation
 chmod +x ./misc/create_db.sh
 cd ./misc/ && ./create_db.sh && cd -
 
-echo '1' > ./application/logs/install.lock
+echo '1' > ./install.lock
