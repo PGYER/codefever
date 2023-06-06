@@ -5,9 +5,9 @@ fi
 
 echo '> Start post initialization...'
 
-cp ../config.template.yaml ../config.yaml
-cp ../env.template.yaml ../env.yaml
-chmod 0777 ../config.yaml ../env.yaml
+cp ../config.template.yaml ../env/config.yaml
+cp ../env.template.yaml ../env/env.yaml
+chmod 0777 ../env/config.yaml ../env/env.yaml
 chmod -R 0777 ../git-storage
 
 chown -R git:git ../application/logs
