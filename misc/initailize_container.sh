@@ -1,6 +1,7 @@
 #!/bin/bash
 
-exec /usr/sbin/init
+chmod +x ./misc/initailize_container.sh
+setsid ./misc/initailize_container.sh &
 
 if [ -f ../application/logs/install.lock ]; then
     exit 0
