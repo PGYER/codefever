@@ -814,7 +814,7 @@ class Repository extends Base
 
         $updateData = [
             'pbr_status' => COMMON_STATUS_DELETE,
-            'pbr_deleted' => date('Y-m-d H:i:S')
+            'pbr_deleted' => date('Y-m-d H:i:s')
         ];
 
         if (!$this->repositoryModel->updateProtectedBranchRule($pbrKey, $updateData)) {
