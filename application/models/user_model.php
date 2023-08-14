@@ -32,7 +32,7 @@ class User_model extends CI_Model
                 'notification' => (int) $item['u_notification_status'],
                 'mfaEnabled' => $item['u_2fa'] ? TRUE : FALSE,
                 'admin' => $item['u_admin'] ? TRUE : FALSE,
-                'emails' => $this->getCommitEmails($item, !$extra),
+                'emails' => $item ? $this->getCommitEmails($item, !$extra) : [],
                 'unReadNotification' => $extra ? $this->notificationModel->unReadNotificationCount($item['u_key']) : 0,
                 'status' => $item['u_status'] == COMMON_STATUS_NORMAL,
                 'host' => YAML_HOST,
