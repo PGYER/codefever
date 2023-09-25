@@ -1048,6 +1048,8 @@ class Repository_model extends CI_Model
         }
         $name = Command::wrapArgument(explode('@', $userInfo['u_email'])[0]);
         $email = Command::wrapArgument($userInfo['u_email']);
+        $sourceRepositoryBranchName = Command::wrapArgument($sourceRepositoryBranchName);
+        $targetRepositoryBranchName = Command::wrapArgument($targetRepositoryBranchName);
 
         // create target repository workspace
         $workspace = Workspace::create();
@@ -1141,6 +1143,8 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $branchName = Command::wrapArgument($branchName);
+        $sourceBranchName = Command::wrapArgument($sourceBranchName);
         $command = GitCommand::createBranch($branchName, $sourceBranchName);
         if (!$command) {
             return FALSE;
@@ -1156,6 +1160,7 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $branch = Command::wrapArgument($branch);
         $command = GitCommand::deleteBranch($branch);
         if (!$command) {
             return FALSE;
@@ -1231,6 +1236,7 @@ class Repository_model extends CI_Model
 
         $sourceLastCommit = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '');
         $sourceLastHash = $sourceLastCommit['sha'];
+        $sourceBranch = Command::wrapArgument($sourceBranch);
         $command = GitCommand::getRevisionRange($initVersionHash, $sourceLastHash, $sourceBranch);
 
         if (!$command) {
@@ -1368,6 +1374,7 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $parent = Command::wrapArgument($parent);
         $object = $parent;
 
         $command = GitCommand::getObjectType($parent);
@@ -1500,6 +1507,7 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $branch = Command::wrapArgument($branch);
         $command = GitCommand::getCommitCount($branch);
         if (!$command) {
             return FALSE;
@@ -1603,6 +1611,7 @@ class Repository_model extends CI_Model
             return [];
         }
 
+        $revision = Command::wrapArgument($revision);
         $command = GitCommand::getCommitList($revision, $path, $keyword, $page, $perpage);
         if (!$command) {
             return FALSE;
@@ -1653,10 +1662,11 @@ class Repository_model extends CI_Model
         }
 
         foreach ($branchList as &$branch) {
-            $command = GitCommand::getCommitList($branch['name'], '', '', 1, 1);
+            $branchName = Command::wrapArgument($branch['name']);
+            $command = GitCommand::getCommitList($branchName, '', '', 1, 1);
             $commit = $this->execCommand($rKey, $uKey, GIT_COMMAND_QUERY, $command);
 
-            $command = GitCommand::getBranchCompare($repository['r_default_branch_name'] ?: 'master', $branch['name']);
+            $command = GitCommand::getBranchCompare($repository['r_default_branch_name'] ?: 'master', $branchName);
             $commitsCount = $this->execCommand($rKey, $uKey, GIT_COMMAND_QUERY, $command);
 
             $commit = rtrim($commit, Helper::getDelimiter());
@@ -1704,6 +1714,7 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        $branch = Command::wrapArgument($branch);
         $command = GitCommand::getBranchCompare($repository['r_default_branch_name'] ?: 'master', $branch);
         if (!$command) {
             return FALSE;
