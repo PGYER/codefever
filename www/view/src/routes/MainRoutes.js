@@ -102,17 +102,17 @@ class MainRoutes extends React.Component {
       <Route path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)'>
         <Switch>
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/files' component={FileTree} />
-          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/files/:rev([\w\-\.%]+)' component={FileTree} />
-          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/:type(files|blame)/:rev([\w\-\.%]+):path(/.*)' component={FileTree} />
+          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/files/:rev([\w\-\.%|]+)' component={FileTree} />
+          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/:type(files|blame)/:rev([\w\-\.%|]+):path(/.*)' component={FileTree} />
 
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/commit/:hash([0-9a-f]{8})' component={CommitDetail} />
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/commits' component={CommitList} />
-          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/commits/:rev([\w\-\.%]+)' component={CommitList} />
-          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/commits/:rev([\w\-\.%]+):path(/.*)' component={CommitList} />
+          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/commits/:rev([\w\-\.%|]+)' component={CommitList} />
+          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/commits/:rev([\w\-\.%|]+):path(/.*)' component={CommitList} />
 
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/mergerequests' component={MergeRequest} />
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/mergerequests/new' component={CreateMergeRequest} />
-          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/mergerequests/detail/:sourceRepository([0-9a-f]{32})/:sourceBranch([\w\-\.%]+)/:targetRepository([0-9a-f]{32})/:targetBranch([\w\-\.%]+)' component={MergeRequestDetail} />
+          <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/mergerequests/detail/:sourceRepository([0-9a-f]{32})/:sourceBranch([\w\-\.%|]+)/:targetRepository([0-9a-f]{32})/:targetBranch([\w\-\.%|]+)' component={MergeRequestDetail} />
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/mergerequests/:mid(\d+)' component={MergeRequestDetail} />
 
           <Route exact path='/:groupName([A-Za-z0-9_]{5,})/:repositoryName([A-Za-z0-9_]+)/branches' component={BranchList} />
