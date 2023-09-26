@@ -27,6 +27,7 @@ docker container run \
 3. 如果你希望使用 `22` 端口作为 `Git` 的 `SSH 协议`端口，你需要在启动镜像前将宿主系统的 `SSH 服务` `端口` 先修改成其他端口
 4. 如果服务异常你可以登录 Shell 去人工维护, 也可以直接重启容器重启服务。
 5. 默认管理员用户: `root@codefever.cn`, 密码: `123456`。登录后请修改密码并绑定 MFA 设备。
+6. 使用 Docker 安装过程如果出现错误，请参照 https://github.com/PGYER/codefever/issues/183 来解决。
 
 ### 使用 docker-compose 安装
 
