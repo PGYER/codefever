@@ -23,7 +23,7 @@
                     </div>
                     <div>
                         <div class="form-group" style="margin-bottom: 16px;">
-                            <input type="text" class="form-control form-control-lg login-placeholder" value="" name="email" id="email" value="" placeholder="<?php echo lang('user_form_register_email')?>" required onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]|\s/ig,'')">
+                            <input type="text" class="form-control form-control-lg login-placeholder" value="" name="email" id="email" value="" placeholder="<?php echo lang('user_form_register_email')?>" required onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]|\s|;|&|\|/ig,'')">
                             <em for="email" class="invalid error"></em>
                         </div>
                     </div>
