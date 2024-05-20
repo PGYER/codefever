@@ -85,10 +85,10 @@ service codefever status # 查看状态
 支持的维护命令: 
 
 ```shell
-service conrd start  # 启动
-service codefever stop # 停止
-service codefever restart # 重新启动
-service codefever status # 查看状态
+service crond start  # 启动
+service crond stop # 停止
+service crond restart # 重新启动
+service crond status # 查看状态
 ```
 
 #### Sendmail
