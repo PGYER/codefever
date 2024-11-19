@@ -111,7 +111,7 @@ ln -s /usr/local/git/bin/git /usr/local/bin/
 
 ### 5. 安装 Go (无需编译, 二进制安装)
 
-访问 [https://golang.google.cn/dl/](https://golang.google.cn/dl/) 下载 1.16 版本以上的二进制安装包解压后复制到 `/usr/local/go` 目录下
+访问 [https://golang.google.cn/dl/](https://golang.google.cn/dl/) 下载 1.16 版本以上 (可以使用 1.18 版本) 的二进制安装包解压后复制到 `/usr/local/go` 目录下
 
 ```shell
 # 复制到 /usr/local	目录下
