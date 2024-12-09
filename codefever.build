@@ -45,7 +45,7 @@ RUN ln -s ./env/env.yaml ./env.yaml && ln -s ./env/config.yaml ./config.yaml
 
 # initialize container
 RUN chmod +x ./misc/initailize_container.sh ./misc/system_init.sh
-CMD ./misc/system_init.sh
+CMD ["/bin/bash", "./misc/system_init.sh"]
 
 # USAGE:
 # docker build --no-cache -f ./codefever.build -t pgyer/codefever-community .
