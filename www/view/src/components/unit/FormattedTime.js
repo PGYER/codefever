@@ -29,7 +29,7 @@ class FormattedTime extends Component {
         return formatString
       }
     }
-  
+
     // 31536000000 = Date('1971/01/01')
     timestamp *= timestamp < 31536E6 ? 1E3 : 1
     const current = (new Date()).getTime()
