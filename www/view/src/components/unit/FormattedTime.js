@@ -16,8 +16,20 @@ import localeEN from 'date-fns/locale/en-US'
 class FormattedTime extends Component {
   render () {
     let { currentLanguage, timestamp, absolute, relative } = this.props
-    const localObject = currentLanguage === 'zh-cn' ? localeCN : localeEN
+    let localObject = currentLanguage === 'zh-cn' ? localeCN : localeEN
 
+    const originFormatRelative = localObject.formatRelative
+    localObject = {
+      ...localObject,
+      formatRelative: (token, _date, _baseDate, _options) => {
+        const formatString = originFormatRelative(token, _date, _baseDate, _options)
+        if (typeof formatString === 'string') {
+          return formatString.replace('p', 'H:mm')
+        }
+        return formatString
+      }
+    }
+  
     // 31536000000 = Date('1971/01/01')
     timestamp *= timestamp < 31536E6 ? 1E3 : 1
     const current = (new Date()).getTime()
