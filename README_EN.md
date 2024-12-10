@@ -67,7 +67,7 @@
 
 ### **Demo**
 
-[Demo](http://114.132.251.156/) (DO NOT upload the production code, This DEMO is for evaluation purposes only. This demo is running on a 1 vCPU & 1 GB memory VPS)
+[Demo](http://43.132.120.17/) (DO NOT upload the production code, This DEMO is for evaluation purposes only. This demo is running on a 1 vCPU & 1 GB memory VPS)
 
 ### **Features**
 
