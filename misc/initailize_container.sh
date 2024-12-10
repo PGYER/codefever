@@ -28,6 +28,8 @@ chown -R git:git ./file-storage
 
 chown -R git:git ./misc
 
+chown -R mysql:mysql /var/lib/mysql
+
 TARGET_CRONJOB=`crontab -u git -l 2>/dev/null | grep 'codefever_schedule.sh' | wc -l`
 if [ $TARGET_CRONJOB -eq 0 ]; then
     crontab -u git -l 2>/dev/null >  /tmp/cronjob.temp
