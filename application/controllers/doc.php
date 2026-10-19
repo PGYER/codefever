@@ -4,6 +4,8 @@ require_once APPPATH . '/controllers/base.php';
 
 class Doc extends Base
 {
+    private $docRoot;
+
     public function __construct()
     {
         $path = $_SERVER['PATH_INFO'];
@@ -39,22 +41,27 @@ class Doc extends Base
         $path = $this->uri->uri_string;
         $segments = explode('/', $path);
         $fileName = $segments[count($segments) - 1];
-        $rootDir = implode('/', [dirname(APPPATH), 'doc', $docPath]) . '/';
+        $this->docRoot = realpath(dirname(APPPATH) . '/doc/' . $docPath);
+        if ($this->docRoot === FALSE) {
+            show_404();
+            return;
+        }
+        $rootDir = $this->docRoot . DIRECTORY_SEPARATOR;
         $docDir = array_slice($segments, 2);
-        $docFile = $rootDir . implode('/', $docDir);
+        $docFile = $this->_resolveDocPath($rootDir . implode('/', $docDir), TRUE);
+        if ($docFile === FALSE) {
+            show_404();
+            return;
+        }
 
         if (preg_match('/^\w{32}\.png$/', $fileName)) {
             $this->_assets($docFile);
             exit;
         }
 
-        if (!file_exists($docFile)) {
-            header("Location: /doc/{$segments[1]}/");
-            exit;
-        }
-
-        if (strpos($fileName, '.md')) {
-            $docDir = array_slice($segments, 2, -1);
+        if (is_file($docFile) && pathinfo($docFile, PATHINFO_EXTENSION) !== 'md') {
+            show_404();
+            return;
         }
 
         $menuFile = $rootDir . 'index.md';
@@ -75,22 +82,33 @@ class Doc extends Base
             $item['submenu'] = $submenu;
         }
 
-        if (!preg_match('/\.[a-z0-9]+/i', $docFile)) {
+        if (is_dir($docFile)) {
             $menuOptions = $this->_extractMenu($docFile . '/index.md');
             $pathinfo = $_SERVER['PATH_INFO'];
             while ($menu && count($menuOptions) > 0) {
                 if (strpos($menuOptions[0]['path'], '.') > 0) {
                     $pathinfo = rtrim($pathinfo, '/');
                     $pathinfo .= '/' . $menuOptions[0]['path'];
+                    $target = $this->_resolveDocPath($docFile . '/' . $menuOptions[0]['path']);
+                    if ($target === FALSE || pathinfo($target, PATHINFO_EXTENSION) !== 'md') {
+                        show_404();
+                        return;
+                    }
                     header("Location: $pathinfo");
-                    break;
+                    exit;
                 } else {
                     $pathinfo = rtrim($pathinfo, '/');
                     $pathinfo .= '/' . $menuOptions[0]['path'];
-                    $docFile .= '/' . $menuOptions[0]['path'];
+                    $docFile = $this->_resolveDocPath($docFile . '/' . $menuOptions[0]['path'], TRUE);
+                    if ($docFile === FALSE) {
+                        show_404();
+                        return;
+                    }
                     $menuOptions = $this->_extractMenu($docFile . '/index.md');
                 }
             }
+            show_404();
+            return;
         }
 
         $this->load->view('doc/detail', [
@@ -100,8 +118,34 @@ class Doc extends Base
         ]);
     }
 
+    // Resolve symlinks as well as traversal, and include the separator in the boundary.
+    private function _resolveDocPath(string $path, bool $allowDirectory = FALSE)
+    {
+        if ($this->docRoot === FALSE || $this->docRoot === NULL || strpos($path, "\0") !== FALSE) {
+            return FALSE;
+        }
+
+        $resolved = realpath($path);
+        $prefix = $this->docRoot . DIRECTORY_SEPARATOR;
+        if ($resolved === FALSE ||
+            ($resolved !== $this->docRoot && strpos($resolved, $prefix) !== 0) ||
+            !is_readable($resolved)) {
+            return FALSE;
+        }
+
+        if (is_file($resolved) || ($allowDirectory && is_dir($resolved))) {
+            return $resolved;
+        }
+
+        return FALSE;
+    }
+
     private function _extractMenu(string $menuFilePath)
     {
+        $menuFilePath = $this->_resolveDocPath($menuFilePath);
+        if ($menuFilePath === FALSE || pathinfo($menuFilePath, PATHINFO_EXTENSION) !== 'md') {
+            return [];
+        }
         $data = file_get_contents($menuFilePath);
         $output = [];
         $lines = explode("\n", $data);
@@ -117,8 +161,10 @@ class Doc extends Base
 
     private function _assets($path)
     {
-        if (!file_exists($path)) {
-            exit;
+        $path = $this->_resolveDocPath($path);
+        if ($path === FALSE || !preg_match('/^\w{32}\.png$/', basename($path))) {
+            show_404();
+            return;
         }
 
         $finfo = finfo_open(FILEINFO_MIME); // 返回 mime 类型
