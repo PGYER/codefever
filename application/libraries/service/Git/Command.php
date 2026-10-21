@@ -59,14 +59,14 @@ class Command
         $command = ['tag'];
 
         if ($message) {
-            array_push($command, '-a', $tag);
-            array_push($command, '-m', $message);
-        } else {
-            array_push($command, $tag);
+            array_push($command, '-a', '-m', escapeshellarg($message));
         }
 
+        // Prevent Git from interpreting user input as command-line options.
+        array_push($command, '--', escapeshellarg($tag));
+
         if ($commitSHA) {
-            array_push($command, $commitSHA);
+            array_push($command, escapeshellarg($commitSHA));
         }
 
         return implode(self::DELIMITER, $command);
