@@ -49,6 +49,8 @@
 
 [English](README_EN.md)
 
+[![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/PGYER/codefever)
+
 <details open>
   <summary><b>目录</b></summary>
 
