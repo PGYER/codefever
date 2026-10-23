@@ -199,7 +199,7 @@ class Command
         $command = ['log', $branch];
 
         if ($keyword) {
-            array_push($command, '--grep=' . $keyword);
+            array_push($command, '--grep=' . escapeshellarg($keyword));
         }
 
         $page = $page ? $page : 1;
@@ -220,7 +220,7 @@ class Command
         array_push($command, "--pretty=\"$prettyPattern\"");
 
         if ($path) {
-            array_push($command, '--', $path);
+            array_push($command, '--', escapeshellarg($path));
         }
 
         return implode(self::DELIMITER, $command);
