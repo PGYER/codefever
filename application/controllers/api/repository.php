@@ -903,14 +903,19 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
-        if (!$mrKey) {
-            if (!$this->service->requestRepositoryPermission(
-                $rKey,
-                $uKey,
-                UserAccessController::UAC_REPO_READ
-            )) {
-                Response::reject(0x0106);
-            }
+        if (!$this->service->requestRepositoryPermission(
+            $rKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
+        }
+        if ($targetRKey && $targetRKey !== $rKey && !$this->service->requestRepositoryPermission(
+            $targetRKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
         }
 
         if ($targetRKey) {
@@ -1328,6 +1333,21 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
+        if (!$this->service->requestRepositoryPermission(
+            $sourceRKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
+        }
+        if ($targetRKey !== $sourceRKey && !$this->service->requestRepositoryPermission(
+            $targetRKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
+        }
+
         $remoteObjects = $this->repositoryModel->getMergeRequestLastCommitSha($uKey, $mrKey, $sourceRKey, $sourceBranch, $targetRKey, $targetBranch);
         if (!$remoteObjects) {
             Response::reject(0x0201);
@@ -1392,6 +1412,13 @@ class Repository extends Base
         $rKey = $data['repository'];
         $ref = $data['ref'];
         $path = trim($data['path'], '/');
+        if (!$this->service->requestRepositoryPermission(
+            $rKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
+        }
         $log = $this->repositoryModel->getLastCommit($rKey, $uKey, $ref, $path);
         Response::output($log);
     }

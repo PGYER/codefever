@@ -41,7 +41,7 @@ namespace {
         $checks++;
         if (!$condition) { $failures++; echo 'FAIL: ' . $label . "\n"; }
     }
-    foreach (['commitDetail_get', 'refListContainSHA_get'] as $endpoint) {
+    foreach (['commitDetail_get', 'refListContainSHA_get', 'lastCommitLog_get'] as $endpoint) {
         foreach ([FALSE, TRUE] as $allowed) {
             $controller = (new ReflectionClass('Repository'))->newInstanceWithoutConstructor();
             $controller->service = new class($allowed) {
@@ -60,6 +60,10 @@ namespace {
                     return ['parent' => 'first second'];
                 }
                 public function normalizeCommitDetail($commit) { return $commit; }
+                public function getLastCommit($repository, $user, $ref, $path) {
+                    $this->calls[] = ['last', $repository, $user, $ref, $path];
+                    return ['sha' => 'commit'];
+                }
                 public function getBranchListBySHA1($repository, $user, $hash) {
                     $this->calls[] = ['branch', $repository, $user, $hash]; return ['main'];
                 }
@@ -69,7 +73,8 @@ namespace {
             };
             \service\Network\Request::$request = (object) [
                 'authData' => ['userData' => ['u_key' => 'request-user']],
-                'query' => ['repository' => 'requested-repository', 'commitSHA' => 'HEAD', 'hash' => 'HEAD']
+                'query' => ['repository' => 'requested-repository', 'commitSHA' => 'HEAD', 'hash' => 'HEAD',
+                    'ref' => 'HEAD', 'path' => '']
             ];
             $code = NULL;
             try { $controller->$endpoint(); }
