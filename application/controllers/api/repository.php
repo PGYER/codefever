@@ -871,6 +871,13 @@ class Repository extends Base
         $uKey = $userInfo['u_key'];
         $rKey = $requestData['repository'];
         $commitSHA = $requestData['commitSHA'];
+        if (!$this->service->requestRepositoryPermission(
+            $rKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
+        }
         $result = $this->repositoryModel->getCommitDetail($rKey, $uKey, $commitSHA);
         $result = $this->repositoryModel->normalizeCommitDetail($result);
         Response::output($result);
@@ -975,6 +982,13 @@ class Repository extends Base
 
         if (!$uKey || !$rKey || !$commitHash) {
             Response::reject(0x0201);
+        }
+        if (!$this->service->requestRepositoryPermission(
+            $rKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
         }
         $commitLog = $this->repositoryModel->getCommitDetail($rKey, $uKey, $commitHash);
         $parent = $commitLog['parent'];

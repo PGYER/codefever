@@ -79,7 +79,7 @@ class Command
 
     static function deleteTag(string $tagName)
     {
-        return implode(self::DELIMITER, ['tag', '-d', $tagName]);
+        return implode(self::DELIMITER, ['tag', '-d', '--', escapeshellarg($tagName)]);
     }
 
     static function getShow($option = NULL)
@@ -275,7 +275,7 @@ class Command
 
     public static function getCommitLog(string $commitSHA)
     {
-        if (!$commitSHA) {
+        if (!$commitSHA || $commitSHA[0] === '-') {
             return FALSE;
         }
 
@@ -289,51 +289,51 @@ class Command
 
         $prettyPattern = Helper::toJSON($pattern, Helper::getDelimiter());
 
-        return implode(self::DELIMITER, ['log', $commitSHA, '-1', "--pretty=\"$prettyPattern\""]);
+        return implode(self::DELIMITER, ['log', escapeshellarg($commitSHA), '-1', "--pretty=\"$prettyPattern\"", '--']);
     }
 
     public static function getDiffCount(string $commitSHA1, string $commitSHA2)
     {
-        if (!$commitSHA2) {
+        if (!$commitSHA2 || $commitSHA2[0] === '-' || (isset($commitSHA1[0]) && $commitSHA1[0] === '-')) {
             return FALSE;
         }
 
         if (!$commitSHA1 || preg_match('/^0+$/i', $commitSHA1)) {
-            return implode(self::DELIMITER, ['show', $commitSHA2, '--name-only', '--pretty=%H']);
+            return implode(self::DELIMITER, ['show', escapeshellarg($commitSHA2), '--name-only', '--pretty=%H', '--']);
         }
 
-        return implode(self::DELIMITER, ['diff', "$commitSHA1...$commitSHA2", '--name-only']);
+        return implode(self::DELIMITER, ['diff', escapeshellarg("$commitSHA1...$commitSHA2"), '--name-only', '--']);
     }
 
     public static function getDiffDetail(string $commitSHA1, string $commitSHA2)
     {
-        if (!$commitSHA2) {
+        if (!$commitSHA2 || $commitSHA2[0] === '-' || (isset($commitSHA1[0]) && $commitSHA1[0] === '-')) {
             return FALSE;
         }
 
         if (!$commitSHA1 || preg_match('/^0+$/i', $commitSHA1)) {
-            return implode(self::DELIMITER, ['show', $commitSHA2]);
+            return implode(self::DELIMITER, ['show', escapeshellarg($commitSHA2), '--']);
         }
 
-        return implode(self::DELIMITER, ['diff', "$commitSHA1...$commitSHA2"]);
+        return implode(self::DELIMITER, ['diff', escapeshellarg("$commitSHA1...$commitSHA2"), '--']);
     }
 
     public static function getBranchListBySHA(string $commitSHA1)
     {
-        if (!$commitSHA1) {
+        if (!$commitSHA1 || $commitSHA1[0] === '-') {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['branch', '-a', '--contains', $commitSHA1]);
+        return implode(self::DELIMITER, ['branch', '-a', '--contains', escapeshellarg($commitSHA1)]);
     }
 
     public static function getTagListBySHA(string $commitSHA1)
     {
-        if (!$commitSHA1) {
+        if (!$commitSHA1 || $commitSHA1[0] === '-') {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['tag', '--contains', $commitSHA1]);
+        return implode(self::DELIMITER, ['tag', '--contains', escapeshellarg($commitSHA1)]);
     }
 
     public static function getChangedFileList(string $commitSHA1)

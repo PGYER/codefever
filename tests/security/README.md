@@ -1,23 +1,25 @@
-# Documentation path regression checks
+# Standalone security regression tests
 
-Run with PHP 7.4 or a compatible newer version:
+Run from the repository root with PHP 7.4+ and Git installed:
 
 ```sh
+php tests/security/revision_command_test.php
+php tests/security/repository_read_permission_test.php
+php tests/security/tag_command_test.php
 php tests/security/doc_path_test.php
 ```
 
-The standalone test uses the real documentation controller and URI parser with
-disposable filesystem fixtures. It requires neither Composer dependencies nor a
-database. Controller construction and view rendering are stubbed; this is not a
-full deployment test.
+These tests use temporary fixtures and do not need a database, application
+configuration, credentials, or a running CodeFever instance. Each script exits
+with a nonzero status on failure and removes its own fixtures.
 
-Coverage includes normal Chinese/English Markdown and menus, the sequential URI
-replacement bypass, deeper traversal, sibling directory prefix collisions,
-external file/directory symlinks, image paths, non-Markdown files, missing files,
-empty directories and NUL bytes. Fixtures contain only test markers and are
-removed on shutdown.
+`revision_command_test.php` executes the Git command builders through the same
+shell batch utility used by the repository model. It covers commit details,
+containing refs, ordinary and initial-commit diffs, tag deletion, shell
+metacharacters, Git option injection, and legitimate revision syntax.
 
-For a deployment smoke test, also verify that `/doc/cn/` and `/doc/en/` redirect
-to their welcome documents, that a normal documentation image still loads, and
-that a request targeting a disposable file outside the documentation root
-returns 404 without its contents. Never use real secrets as test fixtures.
+`repository_read_permission_test.php` invokes the real commit-detail and
+containing-ref controller methods with request, service, and model doubles. It
+checks the requested repository/user/read permission and verifies that denied
+requests cannot reach the model. It does not replace HTTP or database-backed
+integration testing.
