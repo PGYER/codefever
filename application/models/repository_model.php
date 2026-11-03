@@ -1262,10 +1262,13 @@ class Repository_model extends CI_Model
 
     public function getMergeRequestLastCommitSha(string $uKey, string $mrKey, string $sourceRKey, string $sourceBranch, string $targetRKey, string $targetBranch)
     {
+        $sourceObject = $targetObject = NULL;
         if ($mrKey) {
             $mergeRequest = $this->getMergeRequestByKey($mrKey);
 
-            if (!$mergeRequest) {
+            // Bind cached merge objects to the repositories named by the caller.
+            if (!$mergeRequest || $mergeRequest['sourceRepository'] !== $sourceRKey ||
+                $mergeRequest['targetRepository'] !== $targetRKey) {
                 return FALSE;
             }
             $sourceObject = $mergeRequest['sourceObject'];
