@@ -33,7 +33,7 @@ class Command
 
     static function showTagCommit(string $tag)
     {
-        if (!$tag) {
+        if (!$tag || $tag[0] === '-') {
             return FALSE;
         }
 
@@ -46,7 +46,7 @@ class Command
 
         $prettyPattern = Helper::getDelimiter() . Helper::toJSON($pattern, Helper::getDelimiter()) . Helper::getDelimiter();
 
-        return implode(self::DELIMITER, ['show', $tag, "--pretty=\"$prettyPattern\""]);
+        return implode(self::DELIMITER, ['show', escapeshellarg($tag), "--pretty=\"$prettyPattern\"", '--']);
     }
 
     static function createBranch(string $branch, string $sourceBranch)
