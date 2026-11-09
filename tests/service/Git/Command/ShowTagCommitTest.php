@@ -7,7 +7,7 @@ use service\Git\Command;
 class ShowTagCommitTest extends TestCase {
     public function testShowTagCommit()
     {
-        $expected = 'show tag1 --pretty="{log:%s,time:%at,sha:%H,email:%ae}"';
+        $expected = 'show \'tag1\' --pretty="{log:%s,time:%at,sha:%H,email:%ae}" --';
         $actual = Command::showTagCommit('tag1');
 
         $this->assertSame($expected, $actual);

@@ -7,6 +7,7 @@ php tests/security/revision_command_test.php
 php tests/security/repository_read_permission_test.php
 php tests/security/repository_comparison_permission_test.php
 php tests/security/tag_command_test.php
+php tests/security/tag_list_command_test.php
 php tests/security/doc_path_test.php
 ```
 
@@ -18,6 +19,14 @@ with a nonzero status on failure and removes its own fixtures.
 shell batch utility used by the repository model. It covers commit details,
 containing refs, ordinary and initial-commit diffs, tag deletion, shell
 metacharacters, Git option injection, and legitimate revision syntax.
+
+`tag_list_command_test.php` pushes ordinary, annotated, and shell-punctuation
+tags to a disposable bare repository, then invokes the original
+`Repository_model::getTags()` path, including its Git builders and shell runner.
+It verifies literal names, commit details, annotations, and absence of injected
+marker files, and checks rejection of option-like tag arguments. Only model
+construction and database-backed repository/user lookups are replaced with
+fixtures; this is not an HTTP/SSH gateway integration test.
 
 `repository_read_permission_test.php` invokes the real commit-detail,
 containing-ref, and last-commit controller methods with request, service, and model doubles. It
