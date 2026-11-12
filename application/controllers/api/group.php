@@ -352,6 +352,12 @@ class Group extends Base
             Response::reject(0x0106);
         }
 
+        $callerRole = $this->service->getGroupRole($data['group'], $uKey);
+        $memberRole = $this->service->getGroupRole($data['group'], $data['userID']);
+        if ((int) $data['roleID'] > $callerRole || $memberRole > $callerRole) {
+            Response::reject(0x0106);
+        }
+
         $result = $this->groupModel->setMemberRole($data['userID'], $data['group'], $data['roleID']);
         if (!$result) {
             Response::reject(0x0405);

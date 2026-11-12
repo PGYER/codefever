@@ -10,6 +10,7 @@ php tests/security/tag_command_test.php
 php tests/security/tag_list_command_test.php
 php tests/security/doc_path_test.php
 php tests/security/webhook_permission_test.php
+php tests/security/member_role_permission_test.php
 ```
 
 These tests use temporary fixtures and do not need a database, application
@@ -75,3 +76,12 @@ synthetic database rows and permission inputs. It checks cross-repository and
 revoked-member denial for webhook reads, edits, deletes and both log endpoints,
 repository-scoped update/delete queries, missing objects, and authorized controls.
 Run with PHP 7.4 or newer. These checks do not require a live HTTP server or database.
+
+## Member role authorization checks
+
+`member_role_permission_test.php` exercises the real repository/group role APIs,
+permission service and member persistence with synthetic rows. It covers
+Maintainer self-promotion followed by deletion, grants above the caller role,
+changes to higher-role members, inherited group roles, and authorized role and
+Owner-only deletion controls. Run with PHP 7.4 or newer. No live database or
+HTTP server is required.
