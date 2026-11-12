@@ -2144,8 +2144,11 @@ class Repository_model extends CI_Model
         return $output;
     }
 
-    public function getWebhook(string $rwKey) {
+    public function getWebhook(string $rwKey, string $rKey = '') {
         $this->db->where('rw_key', $rwKey);
+        if ($rKey !== '') {
+            $this->db->where('r_key', $rKey);
+        }
         $query = $this->db->get('repository_webhooks');
 
         return $query->row_array();
@@ -2173,28 +2176,34 @@ class Repository_model extends CI_Model
         return $data['rw_key'];
     }
 
-    public function updateWebhook(string $rwKey, array $data)
+    public function updateWebhook(string $rwKey, array $data, string $rKey)
     {
-        if (!$rwKey || !$data['rw_url'] || !$data['rw_events']) {
+        if (!$rwKey || !$rKey || !$data['rw_url'] || !$data['rw_events']) {
             return FALSE;
         }
 
         $data['rw_updated'] = date('Y-m-d H:i:s');
 
         $this->db->where('rw_key', $rwKey);
-        $this->db->update('repository_webhooks', $data);
+        $this->db->where('r_key', $rKey);
+        if (!$this->db->update('repository_webhooks', $data)) {
+            return FALSE;
+        }
 
         return $rwKey;
     }
 
-    public function deleteWebhook (string $rwKey)
+    public function deleteWebhook (string $rwKey, string $rKey)
     {
-        if (!$rwKey) {
+        if (!$rwKey || !$rKey) {
             return false;
         }
 
         $this->db->where('rw_key', $rwKey);
-        $this->db->delete('repository_webhooks');
+        $this->db->where('r_key', $rKey);
+        if (!$this->db->delete('repository_webhooks') || $this->db->affected_rows() !== 1) {
+            return FALSE;
+        }
 
         return $rwKey;
     }

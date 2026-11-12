@@ -9,6 +9,7 @@ php tests/security/repository_comparison_permission_test.php
 php tests/security/tag_command_test.php
 php tests/security/tag_list_command_test.php
 php tests/security/doc_path_test.php
+php tests/security/webhook_permission_test.php
 ```
 
 These tests use temporary fixtures and do not need a database, application
@@ -66,3 +67,11 @@ For a deployment smoke test, also verify that `/doc/cn/` and `/doc/en/` redirect
 to their welcome documents, that a normal documentation image still loads, and
 that a request targeting a disposable file outside the documentation root
 returns 404 without its contents. Never use real secrets as test fixtures.
+
+## Webhook authorization checks
+
+`webhook_permission_test.php` invokes the real controller and model methods with
+synthetic database rows and permission inputs. It checks cross-repository and
+revoked-member denial for webhook reads, edits, deletes and both log endpoints,
+repository-scoped update/delete queries, missing objects, and authorized controls.
+Run with PHP 7.4 or newer. These checks do not require a live HTTP server or database.
