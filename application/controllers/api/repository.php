@@ -459,6 +459,12 @@ class Repository extends Base
             Response::reject(0x0106);
         }
 
+        $callerRole = $this->service->getRepositoryRole($data['repository'], $uKey);
+        $memberRole = $this->service->getRepositoryRole($data['repository'], $data['userID']);
+        if ((int) $data['roleID'] > $callerRole || $memberRole > $callerRole) {
+            Response::reject(0x0106);
+        }
+
         $result = $this->repositoryModel->setMemberRole($data['userID'], $data['repository'], $data['roleID']);
         if (!$result) {
             Response::reject(0x0405);

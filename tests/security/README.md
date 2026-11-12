@@ -9,6 +9,7 @@ php tests/security/repository_comparison_permission_test.php
 php tests/security/tag_command_test.php
 php tests/security/tag_list_command_test.php
 php tests/security/doc_path_test.php
+php tests/security/member_role_permission_test.php
 ```
 
 These tests use temporary fixtures and do not need a database, application
@@ -66,3 +67,12 @@ For a deployment smoke test, also verify that `/doc/cn/` and `/doc/en/` redirect
 to their welcome documents, that a normal documentation image still loads, and
 that a request targeting a disposable file outside the documentation root
 returns 404 without its contents. Never use real secrets as test fixtures.
+
+## Member role authorization checks
+
+`member_role_permission_test.php` exercises the real repository/group role APIs,
+permission service and member persistence with synthetic rows. It covers
+Maintainer self-promotion followed by deletion, grants above the caller role,
+changes to higher-role members, inherited group roles, and authorized role and
+Owner-only deletion controls. Run with PHP 7.4 or newer. No live database or
+HTTP server is required.
