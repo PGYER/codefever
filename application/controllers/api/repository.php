@@ -2093,7 +2093,10 @@ class Repository extends Base
             Response::reject(0x0106);
         }
 
-        $webhook = $this->repositoryModel->getWebhook($rwKey);
+        $webhook = $this->repositoryModel->getWebhook($rwKey, $rKey);
+        if (!$webhook) {
+            Response::reject(0x0106);
+        }
         $webhook = $this->repositoryModel->normalizeWebhooks($webhook ? [$webhook] : []);
         Response::output($webhook ? $webhook[0] : []);
     }
@@ -2128,7 +2131,7 @@ class Repository extends Base
         $events = $data['events'];
         $active = (int) $data['active'];
 
-        if (!$url || !$events || !in_array($active, [1, 2])) {
+        if (!$rKey || !$url || !$events || !in_array($active, [1, 2])) {
             Response::reject(0x0201);
         }
 
@@ -2144,7 +2147,10 @@ class Repository extends Base
         );
 
         if ($rwKey) {
-            $result = $this->repositoryModel->updateWebhook($rwKey, $dbData);
+            if (!$this->repositoryModel->getWebhook($rwKey, $rKey)) {
+                Response::reject(0x0106);
+            }
+            $result = $this->repositoryModel->updateWebhook($rwKey, $dbData, $rKey);
             $eventType = 'WEBHOOK_UPDATE';
         } else {
             $dbData['u_key'] = $uKey;
@@ -2182,7 +2188,11 @@ class Repository extends Base
             Response::reject(0x0106);
         }
 
-        if (!$this->repositoryModel->deleteWebhook($rwKey)) {
+        if (!$this->repositoryModel->getWebhook($rwKey, $rKey)) {
+            Response::reject(0x0106);
+        }
+
+        if (!$this->repositoryModel->deleteWebhook($rwKey, $rKey)) {
             Response::reject(0x0405);
         }
 
@@ -2202,11 +2212,19 @@ class Repository extends Base
 
     public function getRepositoryWebhookLogs_post()
     {
+        $uKey = Request::parse()->authData['userData']['u_key'];
         $data = Request::parse()->parsed;
         $rwKey = $data['webhook'];
 
         if (!$rwKey) {
             Response::reject(0x0201);
+        }
+
+        $webhook = $this->repositoryModel->getWebhook($rwKey);
+        if (!$webhook || !$this->service->requestRepositoryPermission(
+            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
         }
 
         $logs = $this->repositoryModel->getRepositoryWebhookLogs($rwKey);
@@ -2217,6 +2235,7 @@ class Repository extends Base
 
     public function getRepositoryWebhookLogData_post()
     {
+        $uKey = Request::parse()->authData['userData']['u_key'];
         $data = Request::parse()->parsed;
         $id = $data['id'];
 
@@ -2225,6 +2244,15 @@ class Repository extends Base
         }
 
         $log = $this->repositoryModel->getRepositoryWebhookLogData($id);
+        if (!$log) {
+            Response::reject(0x0106);
+        }
+        $webhook = $this->repositoryModel->getWebhook($log['rw_key']);
+        if (!$webhook || !$this->service->requestRepositoryPermission(
+            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_READ
+        )) {
+            Response::reject(0x0106);
+        }
         $log = $this->repositoryModel->normalizeRepositoryWebhookLogData($log);
 
         Response::output($log);
