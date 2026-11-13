@@ -134,6 +134,16 @@ namespace {
         if (!$condition) { $failures++; echo 'FAIL: ' . $label . "\n"; }
     }
     foreach (['repository', 'group'] as $scope) {
+        foreach ([[4, 5, 'member', 0x0106], [5, 3, 'creator', 0x0106], [4, 3, 'member', 200], [5, 5, 'member', 200], [3, 2, 'member', 0x0106]] as $case) {
+            list($callerRole, $targetRole, $target, $expected) = $case;
+            $controller = controller($scope, $callerRole, $targetRole);
+            $code = invoke($controller, 'removeMember_post', [$scope => $scope, 'userID' => $target]);
+            check($code === $expected, $scope . ' removal ' . json_encode($case));
+            if ($expected !== 200) {
+                check($controller->repositoryModel->db->writes === [], $scope . ' denied removal preserves members');
+                check($controller->service->events === [], $scope . ' denied removal emits no event');
+            }
+        }
         $controller = controller($scope, UserAccessController::ROLE_MAINTAINER);
         if ($scope === 'group') { $controller->repositoryModel->db->tables['repositories'] = []; }
         $delete = $scope === 'repository' ? 'deleteRepository_post' : 'deleteGroup_post';

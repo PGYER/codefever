@@ -572,6 +572,11 @@ class Repository extends Base
             Response::reject(0x0106);
         }
 
+        if ($this->service->getRepositoryRole($data['repository'], $data['userID'])
+            > $this->service->getRepositoryRole($data['repository'], $uKey)) {
+            Response::reject(0x0106);
+        }
+
         $result = $this->repositoryModel->removeMember($data['userID'], $data['repository']);
         if (!$result) {
             Response::reject(0x0405);

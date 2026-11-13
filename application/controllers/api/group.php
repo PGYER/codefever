@@ -405,6 +405,11 @@ class Group extends Base
             Response::reject(0x0106);
         }
 
+        if ($this->service->getGroupRole($data['group'], $data['userID'])
+            > $this->service->getGroupRole($data['group'], $uKey)) {
+            Response::reject(0x0106);
+        }
+
         $result = $this->groupModel->removeMember($data['userID'], $data['group']);
         if (!$result) {
             Response::reject(0x0405);
