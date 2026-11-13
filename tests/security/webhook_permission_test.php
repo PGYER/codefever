@@ -42,6 +42,7 @@ namespace {
     require $root . '/application/libraries/service/AccessControl/AccessController.php';
     require $root . '/application/config/access_controller.php';
     require $root . '/application/libraries/service/Utility/UUID.php';
+    require $root . '/application/libraries/service/Network/WebhookTarget.php';
     require $root . '/application/controllers/api/repository.php';
     class CI_Model { public $db; }
     require $root . '/application/models/repository_model.php';

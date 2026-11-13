@@ -3,6 +3,9 @@
 set_time_limit(0);
 use service\Utility\UUID;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\HandlerStack;
+use service\Network\WebhookTarget;
 
 class Repository_webhook extends CI_Controller {
     private $_eventDataMap = [
@@ -31,7 +34,11 @@ class Repository_webhook extends CI_Controller {
             exit(0);
         }
 
-        $client = new Client();
+        // Address pinning requires cURL; never fall back to the stream handler.
+        if (!extension_loaded('curl')) {
+            throw new RuntimeException('Webhook delivery requires the cURL extension');
+        }
+        $client = new Client(['handler' => HandlerStack::create(new CurlHandler())]);
 
         foreach ($events as $event) {
             $repository = $this->repositoryModel->get($event['r_key']);
@@ -78,15 +85,16 @@ class Repository_webhook extends CI_Controller {
             $start = microtime(TRUE);
 
             try {
+                $targetOptions = WebhookTarget::requestOptions($event['rw_url']);
                 $response = $client->request(
                     'POST',
                     $event['rw_url'],
-                    [
+                    array_merge($targetOptions, [
                         'body' => $body,
                         'headers' => $headers,
                         'http_errors' => FALSE,
                         'timeout' => 30,
-                    ]
+                    ])
                 );
 
                 $status = $response->getStatusCode();

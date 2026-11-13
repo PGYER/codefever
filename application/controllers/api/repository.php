@@ -5,6 +5,7 @@ require_once APPPATH . '/controllers/api/base.php';
 
 use service\Network\Request;
 use service\Network\Response;
+use service\Network\WebhookTarget;
 use service\Utility\Helper;
 use service\AccessControl\UserAccessController;
 use service\Utility\UUID;
@@ -2137,6 +2138,12 @@ class Repository extends Base
         $active = (int) $data['active'];
 
         if (!$rKey || !$url || !$events || !in_array($active, [1, 2])) {
+            Response::reject(0x0201);
+        }
+
+        try {
+            WebhookTarget::parse($url);
+        } catch (\InvalidArgumentException $e) {
             Response::reject(0x0201);
         }
 
