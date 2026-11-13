@@ -33,7 +33,7 @@
                     </div>
                     <div class="tap-content account-content">
                         <div class="form-group" style="margin-bottom: 16px;">
-                            <input type="text" class="form-control form-control-lg login-placeholder" name="email" id="email" style="ime-mode:disabled;" value="<?php echo $email?>" placeholder="<?php echo lang('user_form_email_tel');?>" required>
+                            <input type="text" class="form-control form-control-lg login-placeholder" name="email" id="email" style="ime-mode:disabled;" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8');?>" placeholder="<?php echo lang('user_form_email_tel');?>" required>
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control form-control-lg login-placeholder" name="password" id="password" placeholder="<?php echo lang('user_form_password')?>" value="" required>
