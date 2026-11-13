@@ -5,6 +5,7 @@ require_once APPPATH . '/controllers/api/base.php';
 
 use service\Network\Request;
 use service\Network\Response;
+use service\Network\WebhookTarget;
 use service\Utility\Helper;
 use service\AccessControl\UserAccessController;
 use service\Utility\UUID;
@@ -569,6 +570,11 @@ class Repository extends Base
         $repositoryInfo = $this->repositoryModel->get($data['repository']);
         // no permision to remove creator
         if ($repositoryInfo['u_key'] === $memberInfo['u_key']) {
+            Response::reject(0x0106);
+        }
+
+        if ($this->service->getRepositoryRole($data['repository'], $data['userID'])
+            > $this->service->getRepositoryRole($data['repository'], $uKey)) {
             Response::reject(0x0106);
         }
 
@@ -2089,7 +2095,7 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
-        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_READ)) {
+        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT)) {
             Response::reject(0x0106);
         }
 
@@ -2097,7 +2103,7 @@ class Repository extends Base
         if (!$webhook) {
             Response::reject(0x0106);
         }
-        $webhook = $this->repositoryModel->normalizeWebhooks($webhook ? [$webhook] : []);
+        $webhook = $this->repositoryModel->normalizeWebhooks($webhook ? [$webhook] : [], TRUE);
         Response::output($webhook ? $webhook[0] : []);
     }
 
@@ -2110,12 +2116,12 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
-        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_READ)) {
+        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT)) {
             Response::reject(0x0106);
         }
 
         $webhooks = $this->repositoryModel->getWebhooks($rKey);
-        $webhooks = $this->repositoryModel->normalizeWebhooks($webhooks);
+        $webhooks = $this->repositoryModel->normalizeWebhooks($webhooks, TRUE);
 
         Response::output($webhooks);
     }
@@ -2132,6 +2138,12 @@ class Repository extends Base
         $active = (int) $data['active'];
 
         if (!$rKey || !$url || !$events || !in_array($active, [1, 2])) {
+            Response::reject(0x0201);
+        }
+
+        try {
+            WebhookTarget::parse($url);
+        } catch (\InvalidArgumentException $e) {
             Response::reject(0x0201);
         }
 
@@ -2222,7 +2234,7 @@ class Repository extends Base
 
         $webhook = $this->repositoryModel->getWebhook($rwKey);
         if (!$webhook || !$this->service->requestRepositoryPermission(
-            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_READ
+            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT
         )) {
             Response::reject(0x0106);
         }
@@ -2249,7 +2261,7 @@ class Repository extends Base
         }
         $webhook = $this->repositoryModel->getWebhook($log['rw_key']);
         if (!$webhook || !$this->service->requestRepositoryPermission(
-            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_READ
+            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT
         )) {
             Response::reject(0x0106);
         }

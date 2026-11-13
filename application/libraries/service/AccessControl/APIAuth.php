@@ -22,6 +22,12 @@ class APIAuth
         }
 
         if (in_array(self::AUTH_TYPE_WEB_USER, $authTypes)) {
+            // The browser client already sends this non-simple header. Cross-site
+            // HTML forms cannot set it, and cross-origin fetches require CORS approval.
+            if (!in_array(strtoupper($_SERVER['REQUEST_METHOD'] ?? ''), ['GET', 'HEAD', 'OPTIONS'], TRUE)
+                && ($_SERVER['HTTP_CODEFEVER_END_ENV'] ?? '') !== 'codefever-app') {
+                Response::reject(0x0106);
+            }
             self::$CI = &get_instance();
             $userData = self::$CI->session->userdata;
             $uKey = $userData['userInfo']['u_key'];

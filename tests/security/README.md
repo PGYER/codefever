@@ -11,6 +11,9 @@ php tests/security/tag_list_command_test.php
 php tests/security/doc_path_test.php
 php tests/security/webhook_permission_test.php
 php tests/security/member_role_permission_test.php
+php tests/security/api_csrf_test.php
+php tests/security/user_output_encoding_test.php
+php tests/security/webhook_target_test.php
 ```
 
 These tests use temporary fixtures and do not need a database, application
@@ -85,3 +88,45 @@ Maintainer self-promotion followed by deletion, grants above the caller role,
 changes to higher-role members, inherited group roles, and authorized role and
 Owner-only deletion controls. Run with PHP 7.4 or newer. No live database or
 HTTP server is required.
+
+## Advisory GHSA-r658-j569-gw7f
+
+`api_csrf_test.php` exercises the real session API authenticator against forged
+form, multipart and JSON requests, valid browser headers, safe methods and
+gateway-token authentication. Unsafe session API requests now require the
+existing `codefever-end-env: codefever-app` header; custom clients using session
+cookies must send it as well. Cross-origin access must not be enabled for
+untrusted origins at a reverse proxy. The framework's global CSRF switch is
+unchanged because enabling it alone would break existing multipart API clients.
+
+`user_output_encoding_test.php` renders the real login and password-reset
+templates with inert injection markers and verifies HTML attributes and script
+string encoding. Includes and translations are fixtures; this is not a browser
+execution test.
+
+`webhook_target_test.php` covers private/reserved IPv4 and IPv6, alternative IP
+syntax, credentials, unsupported protocols, mixed DNS responses, DNS changes,
+address pinning, proxy bypass and redirect prevention. It exercises the real
+dispatcher with deterministic DNS and Guzzle transport doubles, never sending
+requests to real internal services. Requires the PHP cURL extension. Production
+delivery explicitly uses Guzzle's cURL handler and fails closed without cURL.
+Webhook URLs accept HTTP/HTTPS public destinations; private targets and automatic
+redirects are no longer supported. URL syntax and literal addresses are checked
+on save; hostname addresses are checked and pinned immediately before delivery,
+including for previously saved webhooks. Public endpoint response diagnostics
+remain available to webhook editors.
+
+Webhook configuration and logs now require `UAC_REPO_WEBHOOK_EDIT`, rather than
+read access. Secrets are redacted by default in model normalization and are
+included only by the two editor-authorized configuration endpoints, preserving
+the existing editing workflow. `webhook_permission_test.php` covers the role
+boundary as well as cross-repository access. `member_role_permission_test.php`
+also verifies that Maintainers cannot remove Owners in repositories or groups;
+existing same-role management and creator protection remain intact.
+
+The standalone tests use request, storage, DNS or transport doubles where noted.
+They do not replace a deployed HTTP/browser test or a live Guzzle/cURL transport
+integration check. Before rollout, verify normal browser account/repository
+operations and delivery to a controlled public webhook endpoint. Use disposable
+fixtures when checking blocked requests; never probe production metadata or
+private services for validation.

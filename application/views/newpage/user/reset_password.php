@@ -13,7 +13,7 @@
         </div>
         <div class='login-wrap flexRowCenter' style="position:relative;flex-grow: 1;">
             <div class="login-wrap-inner col-12 col-lg-8 col-md-8 col-sm-10">
-                <form name="form" id="form" class="form-horizontal" method="post" action="?mode=<?php echo $mode?>" onsubmit="return false">
+                <form name="form" id="form" class="form-horizontal" method="post" action="?mode=<?php echo htmlspecialchars(rawurlencode($mode), ENT_QUOTES, 'UTF-8');?>" onsubmit="return false">
                     <div class="login-top">
                         <div class="login-top-des color-2F3950 font-26"><?php echo $mode === 'reset' ? lang('user_password_retrieval') : lang('user_password_retrieval_title'); ?></div>
                     </div>
@@ -80,8 +80,8 @@ jQuery.validator.addMethod("regexTel",
 
 var validateMobileCodeTimes = 0;
 var tickingSecond = 120;
-var key = '<?php echo $key; ?>'
-var mode = '<?php echo $mode; ?>'
+var key = <?php echo json_encode($key, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+var mode = <?php echo json_encode($mode, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
 function send() {
     var sendForm = $('#form').serialize();
