@@ -2124,7 +2124,7 @@ class Repository_model extends CI_Model
         return $members;
     }
 
-    public function normalizeWebhooks(array $list)
+    public function normalizeWebhooks(array $list, bool $includeSecret = FALSE)
     {
         $output = [];
         if (!$list) {
@@ -2135,7 +2135,7 @@ class Repository_model extends CI_Model
                 'id' => $item['rw_key'],
                 'user' => $item['u_name'],
                 'url' => $item['rw_url'],
-                'secret' => $item['rw_secret'],
+                'secret' => $includeSecret ? $item['rw_secret'] : '',
                 'events' => $item['rw_events'],
                 'active' => $item['rw_active'],
                 'updated' => (int) strtotime($item['rw_updated'])

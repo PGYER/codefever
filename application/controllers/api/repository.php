@@ -2095,7 +2095,7 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
-        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_READ)) {
+        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT)) {
             Response::reject(0x0106);
         }
 
@@ -2103,7 +2103,7 @@ class Repository extends Base
         if (!$webhook) {
             Response::reject(0x0106);
         }
-        $webhook = $this->repositoryModel->normalizeWebhooks($webhook ? [$webhook] : []);
+        $webhook = $this->repositoryModel->normalizeWebhooks($webhook ? [$webhook] : [], TRUE);
         Response::output($webhook ? $webhook[0] : []);
     }
 
@@ -2116,12 +2116,12 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
-        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_READ)) {
+        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT)) {
             Response::reject(0x0106);
         }
 
         $webhooks = $this->repositoryModel->getWebhooks($rKey);
-        $webhooks = $this->repositoryModel->normalizeWebhooks($webhooks);
+        $webhooks = $this->repositoryModel->normalizeWebhooks($webhooks, TRUE);
 
         Response::output($webhooks);
     }
@@ -2234,7 +2234,7 @@ class Repository extends Base
 
         $webhook = $this->repositoryModel->getWebhook($rwKey);
         if (!$webhook || !$this->service->requestRepositoryPermission(
-            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_READ
+            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT
         )) {
             Response::reject(0x0106);
         }
@@ -2261,7 +2261,7 @@ class Repository extends Base
         }
         $webhook = $this->repositoryModel->getWebhook($log['rw_key']);
         if (!$webhook || !$this->service->requestRepositoryPermission(
-            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_READ
+            $webhook['r_key'], $uKey, UserAccessController::UAC_REPO_WEBHOOK_EDIT
         )) {
             Response::reject(0x0106);
         }

@@ -113,6 +113,9 @@ namespace {
     class WebhookRepository extends Repository_model {
         public function __construct() { $this->db = new WebhookDatabase(); }
         public function get(string $key) { return ['g_key' => 'fixture-group']; }
+        public function getWebhooks(string $key) {
+            return array_values(array_filter($this->db->tables['repository_webhooks'], function ($row) use ($key) { return $row['r_key'] === $key; }));
+        }
     }
     function endpoint($name, $data, $readable = ['own'], $role = UserAccessController::ROLE_MAINTAINER) {
         $controller = (new ReflectionClass('Repository'))->newInstanceWithoutConstructor();
@@ -174,7 +177,7 @@ namespace {
         if ($route === 'getRepositoryWebhookLogs_post') { check($output[0]['id'] === 'own-log', 'authorized log metadata retained'); }
         if ($route === 'getRepositoryWebhookLogData_post') { check($output['request']->marker === 'own-request', 'authorized log body retained'); }
         if (strpos($route, 'getRepositoryWebhookLog') === 0) {
-            check($controller->service->calls === [['own', 'caller', UserAccessController::UAC_REPO_READ]], $route . ' authorizes stored repository');
+            check($controller->service->calls === [['own', 'caller', UserAccessController::UAC_REPO_WEBHOOK_EDIT]], $route . ' authorizes stored repository');
         }
         $missing = array_map(function ($value) { return str_replace('victim-', 'missing-', $value); }, $data);
         list($controller, $code, $output) = endpoint($route, $missing);
@@ -185,7 +188,28 @@ namespace {
         list($controller, $code) = endpoint($route, $data, ['own'], UserAccessController::ROLE_GUEST);
         check($code === 0x0106 && $controller->repositoryModel->db->writes === [], $route . ' read access cannot mutate');
     }
+    foreach (['http://127.0.0.1/', 'http://169.254.169.254/', 'http://[::1]/', 'file:///tmp/canary', 'https://user:pass@example.invalid/'] as $url) {
+        $data = $routes['editWebhook_post'];
+        $data['rwKey'] = 'own-webhook';
+        $data['url'] = $url;
+        list($controller, $code) = endpoint('editWebhook_post', $data);
+        check($code === 0x0201 && $controller->repositoryModel->db->writes === [], 'unsafe webhook URL rejected before save: ' . $url);
+    }
     $model = new WebhookRepository();
+    foreach ([UserAccessController::ROLE_GUEST, UserAccessController::ROLE_REPORTER, UserAccessController::ROLE_DEVELOPER, UserAccessController::ROLE_MAINTAINER, UserAccessController::ROLE_OWNER] as $role) {
+        list($controller, $code, $output) = endpoint('webhooks_post', ['repository' => 'own'], ['own'], $role);
+        check($code === ($role >= UserAccessController::ROLE_MAINTAINER ? 200 : 0x0106), 'webhook list role boundary ' . $role);
+        if ($code === 200) { check($output[0]['secret'] === 'own-secret', 'webhook editor retains existing configuration'); }
+        else { check($output === NULL, 'denied webhook list leaks no secret'); }
+    }
+    check($model->normalizeWebhooks($model->db->tables['repository_webhooks'])[0]['secret'] === '', 'normalization redacts secrets by default');
+    foreach (['getWebhook_post', 'getRepositoryWebhookLogs_post', 'getRepositoryWebhookLogData_post'] as $route) {
+        $data = array_map(function ($value) { return str_replace('victim-', 'own-', $value); }, $routes[$route]);
+        foreach ([UserAccessController::ROLE_GUEST, UserAccessController::ROLE_REPORTER, UserAccessController::ROLE_DEVELOPER] as $role) {
+            list($controller, $code, $output) = endpoint($route, $data, ['own'], $role);
+            check($code === 0x0106 && $output === NULL, $route . ' denies webhook configuration and logs to role ' . $role);
+        }
+    }
     $before = $model->db->tables;
     check(!$model->getWebhook('victim-webhook', 'own'), 'scoped model lookup hides foreign object');
     $model->updateWebhook('victim-webhook', ['rw_url' => 'https://example.invalid/changed', 'rw_events' => 'push'], 'own');
