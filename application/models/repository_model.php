@@ -677,13 +677,28 @@ class Repository_model extends CI_Model
                 break;
             case GIT_COMMAND_DIFF_REMOTE:
                 $nonce = UUID::getKey();
-                list($localCommitHash, $remoteRKey, $remoteAccessURL, $remoteCommitHash) = explode(self::DELIMITER, $command);
-                $remoteName = $remoteRKey . $nonce;
+                $parts = explode(self::DELIMITER, $command);
+                if (count($parts) !== 4) {
+                    return FALSE;
+                }
+                list($localCommitHash, $remoteRKey, $remoteAccessURL, $remoteCommitHash) = $parts;
+                // Preserve ordinary refs and revision suffixes, but reject options,
+                // range expressions, shell syntax and delimiter/control characters.
+                foreach ([$localCommitHash, $remoteCommitHash] as $revision) {
+                    if (!$this->isSafeRemoteRevision($revision)) {
+                        return FALSE;
+                    }
+                }
+                if (!preg_match('/^[a-zA-Z0-9_]+$/D', $remoteRKey)) {
+                    return FALSE;
+                }
+                $remoteAccessURL = escapeshellarg($remoteAccessURL);
+                $remoteName = escapeshellarg($remoteRKey . $nonce);
                 $commands = [
                     "cd {$repositoryPath}",
                     YAML_CLI_GIT . " remote add {$remoteName} {$remoteAccessURL}",
                     YAML_CLI_GIT . " fetch -q {$remoteName}",
-                    YAML_CLI_GIT . " diff {$remoteCommitHash}...{$localCommitHash}",
+                    YAML_CLI_GIT . ' diff ' . escapeshellarg($remoteCommitHash . '...' . $localCommitHash) . ' --',
                     YAML_CLI_GIT . " remote remove {$remoteName}",
                     YAML_CLI_GIT . " gc -q --prune=now",
                     "rm FETCH_HEAD",
@@ -691,13 +706,28 @@ class Repository_model extends CI_Model
                 break;
             case GIT_COMMAND_LOG_REMOTE:
                 $nonce = UUID::getKey();
-                list($localCommitHash, $remoteRKey, $remoteAccessURL, $remoteCommitHash, $prettyPattern) = explode(self::DELIMITER, $command);
-                $remoteName = $remoteRKey . $nonce;
+                $parts = explode(self::DELIMITER, $command);
+                if (count($parts) !== 5) {
+                    return FALSE;
+                }
+                list($localCommitHash, $remoteRKey, $remoteAccessURL, $remoteCommitHash, $prettyPattern) = $parts;
+                // Preserve ordinary refs and revision suffixes, but reject options,
+                // range expressions, shell syntax and delimiter/control characters.
+                foreach ([$localCommitHash, $remoteCommitHash] as $revision) {
+                    if (!$this->isSafeRemoteRevision($revision)) {
+                        return FALSE;
+                    }
+                }
+                if (!preg_match('/^[a-zA-Z0-9_]+$/D', $remoteRKey)) {
+                    return FALSE;
+                }
+                $remoteAccessURL = escapeshellarg($remoteAccessURL);
+                $remoteName = escapeshellarg($remoteRKey . $nonce);
                 $commands = [
                     "cd {$repositoryPath}",
                     YAML_CLI_GIT . " remote add {$remoteName} {$remoteAccessURL}",
                     YAML_CLI_GIT . " fetch -q {$remoteName}",
-                    YAML_CLI_GIT . " log --cherry-pick --left-only {$localCommitHash}...{$remoteCommitHash} --pretty=\"{$prettyPattern}\"",
+                    YAML_CLI_GIT . ' log --cherry-pick --left-only ' . escapeshellarg($localCommitHash . '...' . $remoteCommitHash) . ' --pretty=' . escapeshellarg($prettyPattern) . ' --',
                     YAML_CLI_GIT . " remote remove {$remoteName}",
                     YAML_CLI_GIT . " gc -q --prune=now",
                     "rm FETCH_HEAD",
@@ -1863,6 +1893,12 @@ class Repository_model extends CI_Model
         }
     }
 
+    private function isSafeRemoteRevision(string $revision)
+    {
+        return preg_match('/^[a-zA-Z0-9_][a-zA-Z0-9_.\/@{}^~+\-]*$/D', $revision)
+            && strpos($revision, '..') === FALSE;
+    }
+
     public function getDiffWithRemote(
         string $localRkey,
         string $localCommitHash,
@@ -1870,7 +1906,9 @@ class Repository_model extends CI_Model
         string $remoteCommitHash,
         string $uKey
     ) {
-        if (!$localRkey || !$localCommitHash || !$remoteRkey || !$uKey || !$remoteCommitHash) {
+        if (!$localRkey || !$remoteRkey || !$uKey
+            || !$this->isSafeRemoteRevision($localCommitHash)
+            || !$this->isSafeRemoteRevision($remoteCommitHash)) {
             return FALSE;
         }
         $accessURL = $this->getAccessURL($remoteRkey, $uKey);
@@ -1922,7 +1960,9 @@ class Repository_model extends CI_Model
         string $remoteCommitHash,
         string $uKey
     ) {
-        if (!$localRkey || !$localCommitHash || !$remoteRkey || !$uKey || !$remoteCommitHash) {
+        if (!$localRkey || !$remoteRkey || !$uKey
+            || !$this->isSafeRemoteRevision($localCommitHash)
+            || !$this->isSafeRemoteRevision($remoteCommitHash)) {
             return FALSE;
         }
 
