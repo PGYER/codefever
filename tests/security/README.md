@@ -130,3 +130,18 @@ integration check. Before rollout, verify normal browser account/repository
 operations and delivery to a controlled public webhook endpoint. Use disposable
 fixtures when checking blocked requests; never probe production metadata or
 private services for validation.
+
+## Cross-repository command injection (GHSA-q9r4-62vq-hxm3)
+
+Run `php tests/security/cross_repository_command_test.php` with PHP 7.4+ and Git.
+The test executes the real remote diff/log model entry points, shell batching
+and Git against disposable local bare repositories. It checks both revision
+arguments for shell syntax, control characters, Git options and range injection,
+asserts that rejected requests create neither marker files nor temporary remotes,
+and verifies successful comparisons and remote cleanup. Storage/user lookups
+and the remote access URL use fixtures; no HTTP server or database is required.
+
+Remote comparisons preserve ordinary refs and revision suffixes, including HEAD,
+but reject whitespace, shell metacharacters, option-like input and nested ranges.
+The execution layer also validates packed arguments and shell-quotes the range,
+remote URL, remote name and log format.
