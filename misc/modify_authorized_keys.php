@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/authorized_key_entry.php';
+
 define('BASE_PATH', dirname(__FILE__));
 
 $config = yaml_parse_file(dirname(BASE_PATH) . '/env.yaml');
@@ -101,25 +103,6 @@ function createProcess()
     }
 
     exit(0);
-}
-
-function addAuthorizedKey(array $data)
-{
-    if (!$data) {
-        return FALSE;
-    }
-
-    global $config;
-
-    $sshGateway = dirname(BASE_PATH) . '/ssh-gateway/shell/main';
-    $authorized = [
-        "command=\"PATH=\$PATH:" . dirname($config['cli']['git']) . " && {$sshGateway} \$SSH_ORIGINAL_COMMAND {$data['user']}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty",
-        $data['type'],
-        $data['key'],
-        $data['name'],
-    ];
-
-    file_put_contents(AUTHORIZE_KEYS_FILE, implode(' ', $authorized) . "\n", FILE_APPEND);
 }
 
 function removeAuthorizedKey(string $key)

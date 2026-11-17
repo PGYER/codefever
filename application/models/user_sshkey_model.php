@@ -99,6 +99,11 @@ class User_sshkey_model extends CI_Model
 
     public function add(string $uKey, string $name, string $keyType, string $keyHash, string $key)
     {
+        $entry = ['user' => $uKey, 'type' => $keyType, 'key' => $key];
+        if (!Helper::isSSHKeyLabel($name) || !Helper::isAuthorizedKeyEntry($entry)) {
+            return FALSE;
+        }
+
         $data = [
             'sk_key' => UUID::getKey(),
             'u_key' => $uKey,
@@ -108,13 +113,10 @@ class User_sshkey_model extends CI_Model
             'sk_key_data' => $key
         ];
 
-        $this->db->insert('ssh_keys', $data);
-        $this->_modifyAuthorizedKey([
-            'user' => $uKey,
-            'type' => $keyType,
-            'key' => $key,
-            'name' => $name,
-        ]);
+        if (!$this->db->insert('ssh_keys', $data)) {
+            return FALSE;
+        }
+        $this->_modifyAuthorizedKey($entry);
 
         return TRUE;
     }
