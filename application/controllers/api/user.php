@@ -51,7 +51,8 @@ class User extends Base
         $userInfo = Request::parse()->authData['userData'];
         $data = Request::parse()->parsed;
 
-        if (!$data['name'] || !$data['key']) {
+        if (!is_string($data['name'] ?? NULL) || !Helper::isSSHKeyLabel($data['name'])
+            || !is_string($data['key'] ?? NULL) || !Helper::isSSHKeyData($data['key'])) {
             Response::reject(0x0201);
         }
 

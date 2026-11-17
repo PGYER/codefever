@@ -37,26 +37,6 @@ class Command
 
     public static function wrapArgument(string $argument)
     {
-        // $argument = str_replace('\\', '\\\\',$argument);
-        // $argument = str_replace('"', '\"',$argument);
-        // return '"' . $argument . '"';
-
-        $pattern = [
-            '/(^|[^\\\\])((\\\\\\\\)*[\s\`\'\"\$\|\&\;])/',
-            '/(^|[^\\\\])((\\\\\\\\)*\\\\([^\s\`\'\"\|\$\&\;\\\\]|$))/'
-        ];
-        $replacement = [
-            '$1\\\\$2',
-            '$1\\\\$2'
-        ];
-
-        $result = preg_replace($pattern, $replacement, $argument);
-        while ($result !== $argument) {
-            $argument = $result;
-            $result = preg_replace($pattern, $replacement, $argument);
-        }
-
-        return $result;
-        // return '"' . $result . '"';
+        return escapeshellarg($argument);
     }
 }

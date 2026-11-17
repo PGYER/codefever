@@ -145,3 +145,19 @@ Remote comparisons preserve ordinary refs and revision suffixes, including HEAD,
 but reject whitespace, shell metacharacters, option-like input and nested ranges.
 The execution layer also validates packed arguments and shell-quotes the range,
 remote URL, remote name and log format.
+
+## Git shell arguments and SSH authorized keys
+
+`revision_command_test.php` also covers the last commit log, object reads,
+branch and commit lists, revision comparisons, and branch mutations. It checks
+shell output redirection, Git option injection, and literal paths with spaces,
+leading hyphens, and shell punctuation.
+
+Run `php tests/security/authorized_key_entry_test.php` to exercise the SSH
+worker's real append function against a temporary file. The test checks that
+legacy labels cannot add a second entry, malformed fields leave the file
+unchanged, and legitimate keys keep the forced command and SSH restrictions.
+
+On upgrade, restart the SSH key worker so it loads the patched code. The fix
+prevents new injected entries. Review existing authorized keys for entries
+created before the upgrade and remove unauthorized entries.

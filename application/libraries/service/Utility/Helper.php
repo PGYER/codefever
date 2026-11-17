@@ -28,6 +28,27 @@ class Helper
         return $delimiter['encode'];
     }
 
+    public static function isSSHKeyLabel(string $name)
+    {
+        return trim($name) !== '' && !preg_match('/[\x00-\x1f\x7f]/', $name);
+    }
+
+    public static function isSSHKeyData(string $key)
+    {
+        return preg_match('/^[A-Za-z0-9+\/]+={0,2}$/D', $key)
+            && base64_decode($key, TRUE) !== FALSE;
+    }
+
+    public static function isAuthorizedKeyEntry(array $data)
+    {
+        return is_string($data['user'] ?? NULL)
+            && preg_match('/^[A-Za-z0-9_]+$/D', $data['user'])
+            && is_string($data['type'] ?? NULL)
+            && preg_match('/^(?:ssh|ecdsa|sk)-[A-Za-z0-9@._-]+$/D', $data['type'])
+            && is_string($data['key'] ?? NULL)
+            && self::isSSHKeyData($data['key']);
+    }
+
     public static function getSSHKeyType (string $sshKey)
     {
         $data = base64_decode($sshKey);
