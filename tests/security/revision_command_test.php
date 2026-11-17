@@ -94,6 +94,21 @@ $commands = [
     'diff detail modified' => function ($ref) { return GitCommand::getDiffDetail('HEAD^', $ref); },
     'initial count' => function ($ref) { return GitCommand::getDiffCount(str_repeat('0', 40), $ref); },
     'initial detail' => function ($ref) { return GitCommand::getDiffDetail('', $ref); },
+    'last log ref' => function ($ref) { return GitCommand::getLastLog($ref, 'file.txt'); },
+    'last log override' => function ($ref) { return GitCommand::getLastLog('HEAD', 'file.txt', $ref); },
+    'commit list' => function ($ref) { return GitCommand::getCommitList($ref); },
+    'object contents' => function ($ref) { return GitCommand::catObject($ref); },
+    'object type' => function ($ref) { return GitCommand::getObjectType($ref); },
+    'object size' => function ($ref) { return GitCommand::getObjectSize($ref); },
+    'changed files' => function ($ref) { return GitCommand::getChangedFileList($ref); },
+    'commit info' => function ($ref) { return GitCommand::getCommitInfoByHash($ref); },
+    'commit count' => function ($ref) { return GitCommand::getCommitCount($ref); },
+    'branch compare' => function ($ref) { return GitCommand::getBranchCompare($ref, 'HEAD'); },
+    'revision range' => function ($ref) { return GitCommand::getRevisionRange('HEAD^', 'HEAD', $ref); },
+    'local commit list' => function ($ref) { return GitCommand::getCommitListFromLocal($ref, 'HEAD'); },
+    'diff check' => function ($ref) { return GitCommand::checkDiffCmd($ref, 'HEAD'); },
+    'create branch' => function ($ref) { return GitCommand::createBranch('new-fixture-branch', $ref); },
+    'delete branch' => function ($ref) { return GitCommand::deleteBranch($ref); },
     'delete tag' => function ($ref) { return GitCommand::deleteTag($ref); },
 ];
 $payloads = [
@@ -117,10 +132,25 @@ foreach ($commands as $name => $build) {
 // Reject revisions that Git could treat as options, including file-writing flags.
 foreach (['--output=marker', '--help', '-p'] as $option) {
     foreach ($commands as $name => $build) {
-        if ($name === 'delete tag') { continue; }
+        if ($name === 'delete tag' || ($name === 'last log override' && strlen($option) <= 4)) { continue; }
         check($build($option) === FALSE, $name . ' rejects option ' . $option);
     }
 }
+check(strpos(runCommand(GitCommand::getLastLog('HEAD', '')), $second) !== FALSE, 'last log with no path');
+check(strpos(runCommand(GitCommand::getLastLog('HEAD', 'file.txt')), $second) !== FALSE, 'last log of a normal file');
+check(strpos(runCommand(GitCommand::catObject('HEAD:file.txt')), 'second') !== FALSE, 'object lookup preserves ref:path');
+runCommand(GitCommand::getLastLog('HEAD', 'file.txt>marker'));
+check(!file_exists($fixture . '/marker'), 'last log path cannot redirect output');
+foreach (['file with spaces.txt', 'literal>file.txt', '-n'] as $path) {
+    file_put_contents($fixture . '/' . $path, "tracked\n");
+}
+git(['add', '--', 'file with spaces.txt', 'literal>file.txt', '-n']);
+git(['-c', 'commit.gpgsign=false', 'commit', '-qm', 'special paths']);
+foreach (['file with spaces.txt', 'literal>file.txt', '-n'] as $path) {
+    check(strpos(runCommand(GitCommand::getLastLog('HEAD', $path)), 'special paths') !== FALSE, 'literal path ' . $path);
+}
+runCommand('printf %s ' . ShellCommand::wrapArgument('literal>marker'));
+check(!file_exists($fixture . '/marker'), 'shared shell quoting keeps redirection literal');
 $tags = git(['show-ref', '--tags']);
 foreach (['--delete', '--list', '-l'] as $option) { runCommand(GitCommand::deleteTag($option)); }
 check(git(['show-ref', '--tags']) === $tags, 'tag options cannot alter other tags');

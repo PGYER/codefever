@@ -671,7 +671,7 @@ class Repository_model extends CI_Model
                     "export GIT_COMMITTER_NAME={$name}",
                     "export GIT_COMMITTER_EMAIL={$email}",
                     "export GIT_AUTHOR_NAME={$name}",
-                    "cd {$repositoryPath}",
+                    "cd " . escapeshellarg($repositoryPath),
                     YAML_CLI_GIT . " {$command}",
                 ];
                 break;
@@ -1173,8 +1173,6 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $branchName = Command::wrapArgument($branchName);
-        $sourceBranchName = Command::wrapArgument($sourceBranchName);
         $command = GitCommand::createBranch($branchName, $sourceBranchName);
         if (!$command) {
             return FALSE;
@@ -1190,7 +1188,6 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $branch = Command::wrapArgument($branch);
         $command = GitCommand::deleteBranch($branch);
         if (!$command) {
             return FALSE;
@@ -1266,7 +1263,6 @@ class Repository_model extends CI_Model
 
         $sourceLastCommit = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '');
         $sourceLastHash = $sourceLastCommit['sha'];
-        $sourceBranch = Command::wrapArgument($sourceBranch);
         $command = GitCommand::getRevisionRange($initVersionHash, $sourceLastHash, $sourceBranch);
 
         if (!$command) {
@@ -1407,10 +1403,12 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $parent = Command::wrapArgument($parent);
         $object = $parent;
 
         $command = GitCommand::getObjectType($parent);
+        if (!$command) {
+            return FALSE;
+        }
         $objectType = trim($this->execCommand($rKey, $uKey, GIT_COMMAND_QUERY, $command));
 
         if (!$objectType) {
@@ -1454,6 +1452,9 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
+        if ($revision[0] === '-' || strpos($revision, "\0") !== FALSE || strpos($filepath, "\0") !== FALSE) {
+            return FALSE;
+        }
         $revision = Command::wrapArgument($revision);
         $filepath = Command::wrapArgument($filepath);
 
@@ -1475,7 +1476,7 @@ class Repository_model extends CI_Model
         $status = Command::run([
             'cd', $workspace, '&&',
             YAML_CLI_GIT, 'checkout', $revision, '&&',
-            YAML_CLI_GIT, 'blame', '-p', $revision, $filepath
+            YAML_CLI_GIT, 'blame', '-p', $revision, '--', $filepath
         ], $output);
 
         if (!$status) {
@@ -1505,9 +1506,6 @@ class Repository_model extends CI_Model
         if (!$rKey || !$uKey || !$branch) {
             return FALSE;
         }
-
-        $branch = Command::wrapArgument($branch);
-        $filePath = Command::wrapArgument($filePath);
 
         $command = GitCommand::getLastLog($branch, $filePath, $lastSha);
         if (!$command) {
@@ -1540,7 +1538,6 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $branch = Command::wrapArgument($branch);
         $command = GitCommand::getCommitCount($branch);
         if (!$command) {
             return FALSE;
@@ -1644,7 +1641,6 @@ class Repository_model extends CI_Model
             return [];
         }
 
-        $revision = Command::wrapArgument($revision);
         $command = GitCommand::getCommitList($revision, $path, $keyword, $page, $perpage);
         if (!$command) {
             return FALSE;
@@ -1695,7 +1691,7 @@ class Repository_model extends CI_Model
         }
 
         foreach ($branchList as &$branch) {
-            $branchName = Command::wrapArgument($branch['name']);
+            $branchName = $branch['name'];
             $command = GitCommand::getCommitList($branchName, '', '', 1, 1);
             $commit = $this->execCommand($rKey, $uKey, GIT_COMMAND_QUERY, $command);
 
@@ -1747,7 +1743,6 @@ class Repository_model extends CI_Model
             return FALSE;
         }
 
-        $branch = Command::wrapArgument($branch);
         $command = GitCommand::getBranchCompare($repository['r_default_branch_name'] ?: 'master', $branch);
         if (!$command) {
             return FALSE;

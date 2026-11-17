@@ -8,24 +8,29 @@ class Command
 {
     const DELIMITER = ' ';
 
+    private static function isOperand(string $value)
+    {
+        return $value !== '' && $value[0] !== '-' && strpos($value, "\0") === FALSE;
+    }
+
     static function getLog($since = NULL, $until = NULL, $author = NULL, $max = NULL)
     {
         $command = ['log'];
 
         if ($since) {
-            array_push($command, '--since=' . $since);
+            array_push($command, '--since=' . escapeshellarg($since));
         }
 
         if ($until) {
-            array_push($command, '--until=' . $until);
+            array_push($command, '--until=' . escapeshellarg($until));
         }
 
         if ($author) {
-            array_push($command, '--author=' . $author);
+            array_push($command, '--author=' . escapeshellarg($author));
         }
 
         if ($max) {
-            array_push($command, '--max-count=' . $max);
+            array_push($command, '--max-count=' . escapeshellarg($max));
         }
 
         return implode(self::DELIMITER, $command);
@@ -51,7 +56,11 @@ class Command
 
     static function createBranch(string $branch, string $sourceBranch)
     {
-        return implode(self::DELIMITER, ['branch', $branch, $sourceBranch]);
+        if (!self::isOperand($branch) || !self::isOperand($sourceBranch)) {
+            return FALSE;
+        }
+
+        return implode(self::DELIMITER, ['branch', '--', escapeshellarg($branch), escapeshellarg($sourceBranch)]);
     }
 
     static function createTag(string $tag, string $message = NULL, $commitSHA = NULL)
@@ -107,11 +116,11 @@ class Command
 
     static function checkDiffCmd(string $SHA1Hash, string $SHA1Hash2)
     {
-        if (!$SHA1Hash || !$SHA1Hash2) {
+        if (!self::isOperand($SHA1Hash) || !self::isOperand($SHA1Hash2)) {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['diff', $SHA1Hash, $SHA1Hash2, '-B']);
+        return implode(self::DELIMITER, ['diff', '-B', escapeshellarg($SHA1Hash), escapeshellarg($SHA1Hash2), '--']);
     }
 
     static function getTotalCommitNumberCmd()
@@ -121,38 +130,38 @@ class Command
 
     public static function deleteBranch(string $branch)
     {
-        if (!$branch) {
+        if (!self::isOperand($branch)) {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['branch', '-D', $branch]);
+        return implode(self::DELIMITER, ['branch', '-D', '--', escapeshellarg($branch)]);
     }
 
     public static function catObject(string $revisionOrObject)
     {
-        if (!$revisionOrObject) {
+        if (!self::isOperand($revisionOrObject)) {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['cat-file', '-p', $revisionOrObject]);
+        return implode(self::DELIMITER, ['cat-file', '-p', escapeshellarg($revisionOrObject)]);
     }
 
     public static function getObjectType(string $object)
     {
-        if (!$object) {
+        if (!self::isOperand($object)) {
             return false;
         }
 
-        return implode(self::DELIMITER, ['cat-file', '-t', $object]);
+        return implode(self::DELIMITER, ['cat-file', '-t', escapeshellarg($object)]);
     }
 
     public static function getObjectSize(string $object)
     {
-        if (!$object) {
+        if (!self::isOperand($object)) {
             return false;
         }
 
-        return implode(self::DELIMITER, ['cat-file', '-s', $object]);
+        return implode(self::DELIMITER, ['cat-file', '-s', escapeshellarg($object)]);
     }
 
     public static function getLastLog(string $branch, string $filePath, string $lastSha = '')
@@ -172,11 +181,24 @@ class Command
         $prettyPattern = Helper::toJSON($pattern, Helper::getDelimiter()) . Helper::getDelimiter();
         $lastSha = strlen($lastSha) > 4 ? $lastSha : $branch;
 
-        return implode(self::DELIMITER, ['log', '-1', '--left-only', $lastSha, "--pretty=\"$prettyPattern\"", '--', $filePath]);
+        if (!self::isOperand($lastSha) || strpos($filePath, "\0") !== FALSE) {
+            return FALSE;
+        }
+
+        $command = ['log', '-1', '--left-only', escapeshellarg($lastSha), '--pretty=' . escapeshellarg($prettyPattern), '--'];
+        if ($filePath !== '') {
+            $command[] = escapeshellarg($filePath);
+        }
+
+        return implode(self::DELIMITER, $command);
     }
 
     public static function getCommitListFromLocal(string $sourceCommitHash, string $targetCommitHash)
     {
+        if (!self::isOperand($sourceCommitHash) || !self::isOperand($targetCommitHash)) {
+            return FALSE;
+        }
+
         $pattern = [
             'sha' => '%H',
             'log' => '%s',
@@ -187,16 +209,16 @@ class Command
 
         $prettyPattern = Helper::toJSON($pattern, Helper::getDelimiter()) . Helper::getDelimiter();
 
-        return implode(self::DELIMITER, ['log', '--cherry-pick', '--right-only', "$sourceCommitHash...$targetCommitHash", "--pretty=\"$prettyPattern\""]);
+        return implode(self::DELIMITER, ['log', '--cherry-pick', '--right-only', escapeshellarg("$sourceCommitHash...$targetCommitHash"), "--pretty=\"$prettyPattern\"", '--']);
     }
 
     public static function getCommitList(string $branch, string $path = '', string $keyword = '', int $page = 0, int $perpage = 0)
     {
-        if (!$branch) {
+        if (!self::isOperand($branch)) {
             return FALSE;
         }
 
-        $command = ['log', $branch];
+        $command = ['log', escapeshellarg($branch)];
 
         if ($keyword) {
             array_push($command, '--grep=' . escapeshellarg($keyword));
@@ -219,8 +241,9 @@ class Command
         $prettyPattern = Helper::toJSON($pattern, Helper::getDelimiter()) . Helper::getDelimiter();
         array_push($command, "--pretty=\"$prettyPattern\"");
 
-        if ($path) {
-            array_push($command, '--', escapeshellarg($path));
+        $command[] = '--';
+        if ($path !== '') {
+            $command[] = escapeshellarg($path);
         }
 
         return implode(self::DELIMITER, $command);
@@ -247,11 +270,11 @@ class Command
 
     public static function getCommitCount(string $branch)
     {
-        if (!$branch) {
+        if (!self::isOperand($branch)) {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['rev-list', $branch, '--count']);
+        return implode(self::DELIMITER, ['rev-list', '--count', escapeshellarg($branch), '--']);
     }
 
     public static function getBranchList()
@@ -266,11 +289,11 @@ class Command
 
     public static function getBranchCompare(string $branch1, string $branch2)
     {
-        if (!$branch1 || !$branch2) {
+        if (!self::isOperand($branch1) || !self::isOperand($branch2)) {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['rev-list', "$branch1..$branch2", '--count']);
+        return implode(self::DELIMITER, ['rev-list', '--count', escapeshellarg("$branch1..$branch2"), '--']);
     }
 
     public static function getCommitLog(string $commitSHA)
@@ -338,16 +361,16 @@ class Command
 
     public static function getChangedFileList(string $commitSHA1)
     {
-        if (!$commitSHA1) {
+        if (!self::isOperand($commitSHA1)) {
             return FALSE;
         }
 
-        return implode(self::DELIMITER, ['log', '--stat', $commitSHA1, '-1', '--name-only']);
+        return implode(self::DELIMITER, ['log', '--stat', escapeshellarg($commitSHA1), '-1', '--name-only', '--']);
     }
 
     public static function getRevisionRange(string $startHash, string $endHash, string $branch)
     {
-        if (!$startHash || !$endHash || !$branch) {
+        if (!self::isOperand($startHash) || !self::isOperand($endHash) || !self::isOperand($branch)) {
             return FALSE;
         }
 
@@ -361,12 +384,12 @@ class Command
 
         $prettyPattern = Helper::toJSON($pattern, Helper::getDelimiter()) . Helper::getDelimiter();
 
-        return implode(self::DELIMITER, ['log', $startHash . '..' . $endHash, $branch, "--pretty=\"$prettyPattern\""]);
+        return implode(self::DELIMITER, ['log', escapeshellarg($startHash . '..' . $endHash), escapeshellarg($branch), "--pretty=\"$prettyPattern\"", '--']);
     }
 
     public static function getCommitInfoByHash(string $hash)
     {
-        if (!$hash) {
+        if (!self::isOperand($hash)) {
             return FALSE;
         }
 
@@ -380,6 +403,6 @@ class Command
 
         $prettyPattern = Helper::toJSON($pattern, Helper::getDelimiter()) . Helper::getDelimiter();
 
-        return implode(self::DELIMITER, ['log', "--pretty=\"$prettyPattern\"", '-1', $hash]);
+        return implode(self::DELIMITER, ['log', "--pretty=\"$prettyPattern\"", '-1', escapeshellarg($hash), '--']);
     }
 }
