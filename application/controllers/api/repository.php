@@ -6,6 +6,7 @@ require_once APPPATH . '/controllers/api/base.php';
 use service\Network\Request;
 use service\Network\Response;
 use service\Network\WebhookTarget;
+use service\Git\Command as GitCommand;
 use service\Utility\Helper;
 use service\AccessControl\UserAccessController;
 use service\Utility\UUID;
@@ -771,17 +772,17 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
-        $sameRule = $this->repositoryModel->getProtectedBranchRule($rKey, $rule);
-        if ($sameRule && $sameRule['pbr_key'] !== $pbrKey) {
-            Response::reject(0x0201);
-        }
-
         if (!$this->service->requestRepositoryPermission(
             $rKey,
             $uKey,
-            UserAccessController::UAC_REPO_PROTECTED_BRANCH_RULE_CREATE
+            UserAccessController::UAC_REPO_PROTECTED_BRANCH_RULE_UPDATE
         )) {
             Response::reject(0x0106);
+        }
+
+        $sameRule = $this->repositoryModel->getProtectedBranchRule($rKey, $rule);
+        if ($sameRule && $sameRule['pbr_key'] !== $pbrKey) {
+            Response::reject(0x0201);
         }
 
         $updateData = [
@@ -790,7 +791,7 @@ class Repository extends Base
             'pbr_merge_min_role_id' => $roleMerge,
         ];
 
-        if (!$this->repositoryModel->updateProtectedBranchRule($pbrKey, $updateData)) {
+        if (!$this->repositoryModel->updateProtectedBranchRule($rKey, $pbrKey, $updateData)) {
             Response::reject(0x0405);
         }
 
@@ -829,7 +830,7 @@ class Repository extends Base
             'pbr_deleted' => date('Y-m-d H:i:s')
         ];
 
-        if (!$this->repositoryModel->updateProtectedBranchRule($pbrKey, $updateData)) {
+        if (!$this->repositoryModel->updateProtectedBranchRule($rKey, $pbrKey, $updateData)) {
             Response::reject(0x0405);
         }
 
@@ -1545,20 +1546,25 @@ class Repository extends Base
         $data = Request::parse()->parsed;
         $sourceRepositoryKey = trim($data['sourceRepository']);
         $targetRepositoryKey = trim($data['targetRepository']);
-        $sourceBranch = trim($data['sourceBranch']);
-        $targetBranch = trim($data['targetBranch']);
+        $sourceBranch = $data['sourceBranch'] ?? NULL;
+        $targetBranch = $data['targetBranch'] ?? NULL;
         $title = trim($data['title']);
         $description = trim($data['description']);
         $reviewers = trim($data['reviewers']);
 
         if (
             !$sourceRepositoryKey || !$targetRepositoryKey ||
-            !$sourceBranch || !$targetBranch
+            !is_string($sourceBranch) || !GitCommand::isBranchName($sourceBranch) ||
+            !is_string($targetBranch) || !GitCommand::isBranchName($targetBranch)
         ) {
             Response::reject(0x0201);
         }
 
         if (!$this->service->requestRepositoryPermission(
+            $sourceRepositoryKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        ) || !$this->service->requestRepositoryPermission(
             $targetRepositoryKey,
             $uKey,
             UserAccessController::UAC_MR_PUSH
@@ -1575,6 +1581,9 @@ class Repository extends Base
         }
 
         $remoteObjects = $this->repositoryModel->getMergeRequestLastCommitSha($uKey, '', $sourceRepositoryKey, $sourceBranch, $targetRepositoryKey, $targetBranch);
+        if (!$remoteObjects || !$remoteObjects[0] || !$remoteObjects[1]) {
+            Response::reject(0x040C);
+        }
         if ($sourceRepositoryKey === $targetRepositoryKey) {
             if (!$this->repositoryModel->getCommitWithLocal($sourceRepositoryKey, $remoteObjects[0], $remoteObjects[1], $uKey)) {
                 Response::reject(0x040C);
@@ -1585,7 +1594,7 @@ class Repository extends Base
             }
         }
 
-        $sourceCommitHash = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '')['sha'];
+        $sourceCommitHash = $remoteObjects[0];
 
         $res = $this->repositoryModel->createMergeRequest(
             $uKey,
@@ -1768,15 +1777,23 @@ class Repository extends Base
         $targetRepositoryKey = $mergeRequest['targetRepository'];
         $targetBranch = $mergeRequest['targetBranch'];
 
+        if (!GitCommand::isBranchName($sourceBranch) || !GitCommand::isBranchName($targetBranch)) {
+            Response::reject(0x0201);
+        }
+
         if (!$this->service->requestRepositoryPermission(
+            $sourceRepositoryKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        ) || !$this->service->requestRepositoryPermission(
             $targetRepositoryKey,
             $uKey,
             UserAccessController::UAC_MR_MERGE
         )) {
             Response::reject(0x0106);
         }
-        $sourceCommitHash = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '')['sha'];
-        $targetCommitHash = $this->repositoryModel->getLastCommit($targetRepositoryKey, $uKey, $targetBranch, '')['sha'];
+        $sourceCommitHash = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '')['sha'] ?? '';
+        $targetCommitHash = $this->repositoryModel->getLastCommit($targetRepositoryKey, $uKey, $targetBranch, '')['sha'] ?? '';
         $canBeFastForward = $this->repositoryModel->canBeFastForward($sourceRepositoryKey, $sourceCommitHash, $targetRepositoryKey, $targetCommitHash, $uKey);
 
         Response::output([
@@ -1815,7 +1832,15 @@ class Repository extends Base
         $targetRepositoryKey = $mergeRequest['targetRepository'];
         $targetBranch = $mergeRequest['targetBranch'];
 
+        if (!GitCommand::isBranchName($sourceBranch) || !GitCommand::isBranchName($targetBranch)) {
+            Response::reject(0x0201);
+        }
+
         if (!$this->service->requestRepositoryPermission(
+            $sourceRepositoryKey,
+            $uKey,
+            UserAccessController::UAC_REPO_READ
+        ) || !$this->service->requestRepositoryPermission(
             $targetRepositoryKey,
             $uKey,
             UserAccessController::UAC_MR_MERGE
@@ -1831,8 +1856,11 @@ class Repository extends Base
             Response::reject(0x0405);
         }
 
-        $sourceCommitHash = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '')['sha'];
-        $targetCommitHash = $this->repositoryModel->getLastCommit($targetRepositoryKey, $uKey, $targetBranch, '')['sha'];
+        $sourceCommitHash = $this->repositoryModel->getLastCommit($sourceRepositoryKey, $uKey, $sourceBranch, '')['sha'] ?? '';
+        $targetCommitHash = $this->repositoryModel->getLastCommit($targetRepositoryKey, $uKey, $targetBranch, '')['sha'] ?? '';
+        if (!$sourceCommitHash || !$targetCommitHash) {
+            Response::reject(0x0405);
+        }
         $message = $message ? $message : NULL;
         $res = $this->repositoryModel->mergeBranch($sourceRepositoryKey, $sourceBranch, $targetRepositoryKey, $targetBranch, $uKey, $message, $usingSquash);
         $conflictPattern = '/\bconflicts\b/';
@@ -2057,9 +2085,16 @@ class Repository extends Base
             Response::reject(0x0201);
         }
 
+        if (!$this->service->requestRepositoryPermission($rKey, $uKey, UserAccessController::UAC_REPO_READ)) {
+            Response::reject(0x0106);
+        }
+
         $result = [];
         $targetRepository = [];
         $repository = $this->repositoryModel->get($rKey);
+        if (!$repository) {
+            Response::reject(0x0106);
+        }
         $group = $this->groupModel->get($repository['g_key']);
         $targetRepository['rKey'] = $rKey;
         $targetRepository['name'] = $group['g_display_name'] . '/' . $repository['r_display_name'];
@@ -2067,8 +2102,8 @@ class Repository extends Base
         array_push($result, $targetRepository);
 
         $targetRepository = [];
-        if ($repository['r_fork_r_key']) {
-            $forkRepoKey = $repository['r_fork_r_key'];
+        $forkRepoKey = $repository['r_fork_r_key'];
+        if ($forkRepoKey && $this->service->requestRepositoryPermission($forkRepoKey, $uKey, UserAccessController::UAC_REPO_READ)) {
             $forkRepository = $this->repositoryModel->get($forkRepoKey);
             if (!$forkRepository) {
                 Response::output($result);

@@ -148,7 +148,7 @@ class Group_model extends CI_Model
             $this->db->where('gm_status', COMMON_STATUS_NORMAL);
             $query = $this->db->get('group_members');
             $data = $query->row_array();
-            return (int) $data['gm_role'];
+            return (int) ($data['gm_role'] ?? 0);
         }
 
         return UserAccessController::ROLE_NO_PERMISSION;
@@ -262,24 +262,33 @@ class Group_model extends CI_Model
 
     public function addMember(string $uKey, string $gKey)
     {
-        $this->db->where('u_key', $uKey);
-        $this->db->where('g_key', $gKey);
-        $query = $this->db->get('group_members');
-        $info = $query->row_array();
-
-        if ($info) {
-            $this->setMemberRole($uKey, $gKey, UserAccessController::ROLE_GUEST);
-        } else {
-            $insertData = [
-                'gm_key' => UUID::getKey(),
-                'u_key' => $uKey,
-                'g_key' => $gKey,
-                'gm_role' => UserAccessController::ROLE_GUEST,
-            ];
-            $this->db->insert('group_members', $insertData);
+        if (!$uKey || !$gKey || $this->getMemberRole($gKey, $uKey) !== UserAccessController::ROLE_NO_PERMISSION) {
+            return FALSE;
         }
 
-        return TRUE;
+        $this->db->where('u_key', $uKey);
+        $this->db->where('g_key', $gKey);
+        $info = $this->db->get('group_members')->row_array();
+        if ($info) {
+            if ((int) $info['gm_status'] !== COMMON_STATUS_DELETE) {
+                return FALSE;
+            }
+            $this->db->where('gm_key', $info['gm_key']);
+            $this->db->where('gm_status', COMMON_STATUS_DELETE);
+            $updated = $this->db->update('group_members', [
+                'gm_role' => UserAccessController::ROLE_GUEST,
+                'gm_status' => COMMON_STATUS_NORMAL,
+                'gm_deleted' => NULL,
+            ]);
+            return $updated && $this->db->affected_rows() === 1;
+        }
+
+        return $this->db->insert('group_members', [
+            'gm_key' => UUID::getKey(),
+            'u_key' => $uKey,
+            'g_key' => $gKey,
+            'gm_role' => UserAccessController::ROLE_GUEST,
+        ]);
     }
 
     public function setMemberRole(string $uKey, string $gKey, int $roleID)

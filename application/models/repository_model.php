@@ -492,28 +492,33 @@ class Repository_model extends CI_Model
 
     public function addMember(string $uKey, string $rKey)
     {
-        if (!$uKey || !$rKey) {
+        if (!$uKey || !$rKey || $this->getMemberRole($rKey, $uKey) !== UserAccessController::ROLE_NO_PERMISSION) {
             return FALSE;
-        } else {
-            $this->db->where('u_key', $uKey);
-            $this->db->where('r_key', $rKey);
-            $query = $this->db->get('repository_members');
-            $info = $query->row_array();
         }
 
+        $this->db->where('u_key', $uKey);
+        $this->db->where('r_key', $rKey);
+        $info = $this->db->get('repository_members')->row_array();
         if ($info) {
-            $this->setMemberRole($uKey, $rKey, UserAccessController::ROLE_GUEST);
-        } else {
-            $insertData = [
-                'rm_key' => UUID::getKey(),
-                'u_key' => $uKey,
-                'r_key' => $rKey,
+            if ((int) $info['rm_status'] !== COMMON_STATUS_DELETE) {
+                return FALSE;
+            }
+            $this->db->where('rm_key', $info['rm_key']);
+            $this->db->where('rm_status', COMMON_STATUS_DELETE);
+            $updated = $this->db->update('repository_members', [
                 'rm_role' => UserAccessController::ROLE_GUEST,
-            ];
-            $this->db->insert('repository_members', $insertData);
+                'rm_status' => COMMON_STATUS_NORMAL,
+                'rm_deleted' => NULL,
+            ]);
+            return $updated && $this->db->affected_rows() === 1;
         }
 
-        return TRUE;
+        return $this->db->insert('repository_members', [
+            'rm_key' => UUID::getKey(),
+            'u_key' => $uKey,
+            'r_key' => $rKey,
+            'rm_role' => UserAccessController::ROLE_GUEST,
+        ]);
     }
 
     public function setMemberRole(string $uKey, string $rKey, int $roleID)
@@ -775,8 +780,9 @@ class Repository_model extends CI_Model
             $query = $this->db->get('repository_members');
             $data = $query->row_array();
 
-            if ((int) $data['rm_role']) {
-                return (int) $data['rm_role'];
+            $role = (int) ($data['rm_role'] ?? 0);
+            if ($role) {
+                return $role;
             }
 
             // search group
@@ -907,15 +913,25 @@ class Repository_model extends CI_Model
         return $result;
     }
 
-    public function updateProtectedBranchRule(string $pbrKey, array $data)
+    public function updateProtectedBranchRule(string $rKey, string $pbrKey, array $data)
     {
-        if (!$pbrKey || !$data) {
+        if (!$rKey || !$pbrKey || !$data) {
             return FALSE;
         }
 
-        $this->db->where('pbr_key', $pbrKey);
-        $result = $this->db->update('proteced_branch_rules', $data);
-        return $result;
+        $scope = ['r_key' => $rKey, 'pbr_key' => $pbrKey, 'pbr_status' => COMMON_STATUS_NORMAL];
+        $this->db->where($scope);
+        if (!$this->db->update('proteced_branch_rules', $data)) {
+            return FALSE;
+        }
+        if ($this->db->affected_rows() === 1) {
+            return TRUE;
+        }
+
+        // An unchanged rule is a successful save only if it exists in this repository.
+        $this->db->where($scope);
+        $rule = $this->db->get('proteced_branch_rules')->row_array();
+        return $rule && array_intersect_key($rule, $data) == $data;
     }
 
     public function searchByUKeyAndName(string $uKey, string $name)
@@ -1024,13 +1040,19 @@ class Repository_model extends CI_Model
         string $targetRepositoryCommitHash,
         string $uKey
     ) {
-        $targetHeadCommand = 'log --pretty="%H" -n1 ' . $targetRepositoryCommitHash;
+        foreach ([$sourceRepositoryCommitHash, $targetRepositoryCommitHash] as $hash) {
+            if (!preg_match('/\A(?:[a-f0-9]{40}|[a-f0-9]{64})\z/i', $hash)) {
+                return FALSE;
+            }
+        }
+
+        $targetHeadCommand = 'log --pretty=%H -n1 ' . escapeshellarg($targetRepositoryCommitHash) . ' --';
         $targetHead = $this->execCommand($targetRepositoryKey, $uKey, GIT_COMMAND_QUERY, $targetHeadCommand);
 
         if ($targetHead) {
             $targetHead = trim($targetHead);
 
-            $sourceLogCommand = 'log --pretty="%H" ' . $sourceRepositoryCommitHash;
+            $sourceLogCommand = 'log --pretty=%H ' . escapeshellarg($sourceRepositoryCommitHash) . ' --';
             $sourceCommit = $this->execCommand($sourceRepositoryKey, $uKey, GIT_COMMAND_QUERY, $sourceLogCommand);
             $sourceCommitArray = explode("\n", $sourceCommit);
 
@@ -1067,9 +1089,17 @@ class Repository_model extends CI_Model
         string $message = NULL,
         bool $usingSquash = FALSE
     ) {
+        if (!GitCommand::isBranchName($sourceRepositoryBranchName) || !GitCommand::isBranchName($targetRepositoryBranchName)) {
+            return FALSE;
+        }
+
         // get repository internal url
         $sourceRepositoryURL = $this->getAccessURL($sourceRepositoryKey, $uKey);
         $targetRepositoryURL = $this->getAccessURL($targetRepositoryKey, $uKey);
+
+        if (!$sourceRepositoryURL || !$targetRepositoryURL) {
+            return FALSE;
+        }
 
         // get userInfo
         $userInfo = $this->userModel->get($uKey);
@@ -1078,16 +1108,19 @@ class Repository_model extends CI_Model
         }
         $name = Command::wrapArgument(explode('@', $userInfo['u_email'])[0]);
         $email = Command::wrapArgument($userInfo['u_email']);
-        $sourceRepositoryBranchName = Command::wrapArgument($sourceRepositoryBranchName);
-        $targetRepositoryBranchName = Command::wrapArgument($targetRepositoryBranchName);
+        $sourceRef = escapeshellarg('refs/heads/' . $sourceRepositoryBranchName);
+        $targetRef = 'refs/heads/' . $targetRepositoryBranchName;
+        $pushRefspec = escapeshellarg($targetRef . ':' . $targetRef);
+        $targetBranch = escapeshellarg($targetRepositoryBranchName);
+        $sourceRemote = escapeshellarg($sourceRepositoryKey);
 
         // create target repository workspace
         $workspace = Workspace::create();
 
         // clone target repository and checkout target branch
         $status = Command::runWithoutOutput([
-            'cd', $workspace, '&&',
-            YAML_CLI_GIT, 'clone', '-b', $targetRepositoryBranchName, $targetRepositoryURL, '.'
+            'cd', escapeshellarg($workspace), '&&',
+            YAML_CLI_GIT, 'clone', '-b', $targetBranch, '--', escapeshellarg($targetRepositoryURL), '.'
         ]);
 
         if (!$status) {
@@ -1097,9 +1130,9 @@ class Repository_model extends CI_Model
 
         // fetch source branch
         $status = Command::runWithoutOutput([
-            'cd', $workspace, '&&',
-            YAML_CLI_GIT, 'remote', 'add', $sourceRepositoryKey, $sourceRepositoryURL, '&&',
-            YAML_CLI_GIT, 'fetch', $sourceRepositoryKey, $sourceRepositoryBranchName
+            'cd', escapeshellarg($workspace), '&&',
+            YAML_CLI_GIT, 'remote', 'add', '--', $sourceRemote, escapeshellarg($sourceRepositoryURL), '&&',
+            YAML_CLI_GIT, 'fetch', '--', $sourceRemote, $sourceRef
         ]);
 
         if (!$status) {
@@ -1112,7 +1145,7 @@ class Repository_model extends CI_Model
         if ($message) {
             if ($usingSquash) {
                 $status = Command::run([
-                    'cd', $workspace, '&&',
+                    'cd', escapeshellarg($workspace), '&&',
                     YAML_CLI_GIT, 'merge', '--squash', 'FETCH_HEAD', '&&',
                     YAML_CLI_GIT, 'commit', '-m', Command::wrapArgument($message)
                 ], $output, [
@@ -1123,7 +1156,7 @@ class Repository_model extends CI_Model
                 ]);
             } else {
                 $status = Command::run([
-                    'cd', $workspace, '&&',
+                    'cd', escapeshellarg($workspace), '&&',
                     YAML_CLI_GIT, 'merge', '--no-ff', '-m', Command::wrapArgument($message), 'FETCH_HEAD'
                 ], $output, [
                     'GIT_COMMITTER_NAME' => $name,
@@ -1134,7 +1167,7 @@ class Repository_model extends CI_Model
             }
         } else {
             $status = Command::run([
-                'cd', $workspace, '&&',
+                'cd', escapeshellarg($workspace), '&&',
                 YAML_CLI_GIT, 'merge', 'FETCH_HEAD'
             ], $output);
         }
@@ -1146,8 +1179,8 @@ class Repository_model extends CI_Model
 
         // push to tareget repository
         $status = Command::runWithoutOutput([
-            'cd', $workspace, '&&',
-            YAML_CLI_GIT, 'push', 'origin', $targetRepositoryBranchName
+            'cd', escapeshellarg($workspace), '&&',
+            YAML_CLI_GIT, 'push', '--', 'origin', $pushRefspec
         ]);
 
         if (!$status) {
