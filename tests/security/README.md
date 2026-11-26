@@ -161,3 +161,16 @@ unchanged, and legitimate keys keep the forced command and SSH restrictions.
 On upgrade, restart the SSH key worker so it loads the patched code. The fix
 prevents new injected entries. Review existing authorized keys for entries
 created before the upgrade and remove unauthorized entries.
+
+## Merge arguments and object ownership
+
+Run `php tests/security/merge_git_arguments_test.php` with Git installed.
+It checks that invalid branch names and commit IDs are rejected before Git
+runs, then uses local repositories to verify fast-forward, merge-commit and
+squash flows. The test uses no network credentials or live repository.
+
+Run `php tests/security/object_scope_permission_test.php` to verify permission
+checks for merge-request creation, fork-source lookups, protected branch rules,
+and commit emails. API/model methods run with synthetic account and repository
+records. The member role test also verifies duplicate invitations preserve
+direct and inherited roles and removed members can still be invited again.

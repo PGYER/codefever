@@ -218,16 +218,28 @@ class User_model extends CI_Model
         return $result;
     }
 
-    public function updateCommitEmail(string $ceKey, array $data)
+    public function getCommitEmail(string $uKey, string $ceKey)
     {
-        if (!$ceKey || !$data) {
+        $this->db->where([
+            'u_key' => $uKey,
+            'ce_key' => $ceKey,
+            'ce_status' => COMMON_STATUS_NORMAL,
+        ]);
+        return $this->db->get('commit_emails')->row_array();
+    }
+
+    public function updateCommitEmail(string $uKey, string $ceKey, array $data)
+    {
+        if (!$uKey || !$ceKey || !$data) {
             return FALSE;
         }
 
-        $this->db->where('ce_key', $ceKey);
-        $result = $this->db->update('commit_emails', $data);
-
-        return $result;
+        $this->db->where([
+            'u_key' => $uKey,
+            'ce_key' => $ceKey,
+            'ce_status' => COMMON_STATUS_NORMAL,
+        ]);
+        return $this->db->update('commit_emails', $data) && $this->db->affected_rows() === 1;
     }
 
     public function createAvatar($char)

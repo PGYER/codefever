@@ -13,6 +13,25 @@ class Command
         return $value !== '' && $value[0] !== '-' && strpos($value, "\0") === FALSE;
     }
 
+    public static function isBranchName(string $branch)
+    {
+        // Apply Git ref-name rules without asking Git to interpret the input.
+        if (!self::isOperand($branch) || in_array($branch, ['@', 'HEAD'], TRUE)
+            || substr($branch, -1) === '.' || strpos($branch, '..') !== FALSE
+            || strpos($branch, '@{') !== FALSE || preg_match('/[\x00-\x20\x7f]/', $branch)
+            || strpbrk($branch, '~^:?*[\\') !== FALSE) {
+            return FALSE;
+        }
+
+        foreach (explode('/', $branch) as $component) {
+            if ($component === '' || $component[0] === '.' || substr($component, -5) === '.lock') {
+                return FALSE;
+            }
+        }
+
+        return TRUE;
+    }
+
     static function getLog($since = NULL, $until = NULL, $author = NULL, $max = NULL)
     {
         $command = ['log'];

@@ -339,11 +339,11 @@ class User extends Base
 
     public function deleteCommitEmail_post()
     {
-        $userInfo = Request::parse()->authData['userData'];
+        $uKey = Request::parse()->authData['userData']['u_key'];
         $data = Request::parse()->parsed;
-        $ceKey = $data['id'];
+        $ceKey = $data['id'] ?? NULL;
 
-        if (!$ceKey) {
+        if (!is_string($ceKey) || $ceKey === '') {
             Response::reject(0x0201);
         }
 
@@ -352,7 +352,7 @@ class User extends Base
             'ce_deleted' => date('Y-m-d H:i:s')
         ];
 
-        if (!$this->userModel->updateCommitEmail($ceKey, $data)) {
+        if (!$this->userModel->updateCommitEmail($uKey, $ceKey, $data)) {
             Response::reject(0x0405);
         }
 
@@ -361,25 +361,35 @@ class User extends Base
 
     public function validationCommitEmailCode_post()
     {
-        $userInfo = Request::parse()->authData['userData'];
+        $uKey = Request::parse()->authData['userData']['u_key'];
         $data = Request::parse()->parsed;
-        $ceKey = $data['id'];
-        $email = $data['email'];
-        $code = $data['code'];
+        $ceKey = $data['id'] ?? NULL;
+        $email = $data['email'] ?? NULL;
+        $code = $data['code'] ?? NULL;
 
-        if (!$ceKey || !$email || !$code) {
+        if (!is_string($ceKey) || $ceKey === '' || !is_string($email) || $email === ''
+            || (!is_string($code) && !is_int($code))) {
             Response::reject(0x0201);
         }
 
-        if (!TOTP::check($email, $code)) {
+        $commitEmail = $this->userModel->getCommitEmail($uKey, $ceKey);
+        if (!$commitEmail || $commitEmail['ce_email'] !== $email) {
             Response::reject(0x040C);
+        }
+
+        if (!TOTP::check($commitEmail['ce_email'], $code)) {
+            Response::reject(0x040C);
+        }
+
+        if ((int) $commitEmail['ce_is_check'] === GLOBAL_TRUE) {
+            Response::output([]);
         }
 
         $data = [
             'ce_is_check' => GLOBAL_TRUE
         ];
 
-        if (!$this->userModel->updateCommitEmail($ceKey, $data)) {
+        if (!$this->userModel->updateCommitEmail($uKey, $ceKey, $data)) {
             Response::reject(0x0405);
         }
 

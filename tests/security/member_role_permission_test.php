@@ -53,6 +53,7 @@ namespace {
         public $tables;
         public $writes = [];
         private $filters = [];
+        private $affected = 0;
         public function __construct($scope, $callerRole, $targetRole) {
             $this->tables = [
                 'repositories' => [['r_key' => 'repository', 'g_key' => 'group', 'u_key' => 'creator', 'r_status' => COMMON_STATUS_NORMAL, 'r_display_name' => 'Repository']],
@@ -62,7 +63,7 @@ namespace {
             $prefix = $scope === 'repository' ? 'rm' : 'gm';
             $key = $scope === 'repository' ? 'r_key' : 'g_key';
             foreach (['caller' => $callerRole, 'member' => $targetRole] as $user => $role) {
-                $this->tables[$scope . '_members'][] = [$key => $scope, 'u_key' => $user, $prefix . '_role' => $role, $prefix . '_status' => COMMON_STATUS_NORMAL];
+                $this->tables[$scope . '_members'][] = [$key => $scope, 'u_key' => $user, $prefix . '_key' => 'row-' . $user, $prefix . '_role' => $role, $prefix . '_status' => COMMON_STATUS_NORMAL];
             }
         }
         public function where($column, $value) { $this->filters[$column] = $value; }
@@ -84,12 +85,17 @@ namespace {
         }
         public function update($table, $data) {
             $this->writes[] = [$table, $this->filters, $data];
+            $this->affected = 0;
             foreach ($this->tables[$table] as &$row) {
-                if ($this->matches($row)) { $row = array_merge($row, $data); }
+                if ($this->matches($row)) {
+                    $row = array_merge($row, $data);
+                    $this->affected++;
+                }
             }
             $this->filters = [];
             return TRUE;
         }
+        public function affected_rows() { return $this->affected; }
         public function insert($table, $data) { $this->writes[] = [$table, [], $data]; $this->tables[$table][] = $data; return TRUE; }
     }
     class RoleGroup extends Group_model {
@@ -117,6 +123,7 @@ namespace {
         $controller->repositoryModel = new RoleRepository($db, $controller->groupModel);
         $controller->service = new RoleService($controller);
         $controller->userModel = new class {
+            public function getInfoByEmail($email) { return $this->get(explode('@', $email)[0]); }
             public function get($user) { return ['u_key' => $user, 'u_name' => 'Fixture', 'u_email' => 'fixture@example.invalid']; }
         };
         return $controller;
@@ -133,6 +140,33 @@ namespace {
         $checks++;
         if (!$condition) { $failures++; echo 'FAIL: ' . $label . "\n"; }
     }
+    foreach (['repository', 'group'] as $scope) {
+        $controller = controller($scope, UserAccessController::ROLE_MAINTAINER, UserAccessController::ROLE_OWNER);
+        $db = $controller->repositoryModel->db;
+        $table = $scope . '_members';
+        $prefix = $scope === 'repository' ? 'rm' : 'gm';
+        $add = [$scope => $scope, 'email' => 'member@example.invalid'];
+        check(invoke($controller, 'addMember_post', $add) === 0x0405, $scope . ' duplicate invite denied');
+        check($db->tables[$table][1][$prefix . '_role'] === UserAccessController::ROLE_OWNER, $scope . ' owner role preserved');
+        check($db->writes === [] && $controller->service->events === [], $scope . ' rejected invite makes no changes');
+
+        $db->tables[$table][1][$prefix . '_status'] = COMMON_STATUS_DELETE;
+        check(invoke($controller, 'addMember_post', $add) === 200, $scope . ' can re-invite a removed member');
+        check($db->tables[$table][1][$prefix . '_role'] === UserAccessController::ROLE_GUEST, $scope . ' gives a re-invited member the default role');
+        check(count($db->tables[$table]) === 2, $scope . ' reuses the existing membership');
+
+        $add['email'] = 'new-member@example.invalid';
+        check(invoke($controller, 'addMember_post', $add) === 200, $scope . ' can invite a new member');
+        check($db->tables[$table][2][$prefix . '_role'] === UserAccessController::ROLE_GUEST, $scope . ' gives a new member the default role');
+    }
+
+    $controller = controller('repository', UserAccessController::ROLE_MAINTAINER);
+    $db = $controller->repositoryModel->db;
+    $db->tables['groups'][0]['u_key'] = 'group-owner';
+    check(invoke($controller, 'addMember_post', ['repository' => 'repository', 'email' => 'group-owner@example.invalid']) === 0x0405, 'cannot shadow the group creator with a repository membership');
+    check($controller->service->getRepositoryRole('repository', 'group-owner') === UserAccessController::ROLE_OWNER, 'inherited owner role preserved');
+    check($db->writes === [], 'inherited owner receives no repository override');
+
     foreach (['repository', 'group'] as $scope) {
         foreach ([[4, 5, 'member', 0x0106], [5, 3, 'creator', 0x0106], [4, 3, 'member', 200], [5, 5, 'member', 200], [3, 2, 'member', 0x0106]] as $case) {
             list($callerRole, $targetRole, $target, $expected) = $case;
